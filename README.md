@@ -4,7 +4,7 @@
 
 A collection of **essential C# utility scripts** for Unity game development, designed to **simplify common tasks** and **avoid hardcoding**.  
 
-## 📦 Features & Tools  
+## 📦 Features & Static Tools  
 
 | Category | Script | Description |
 |----------|--------|-------------|
