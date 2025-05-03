@@ -12,11 +12,18 @@ A collection of **essential C# utility scripts** for Unity game development, des
 | **🔄 Arrays** | [`AA.cs`](#aa) / [`ArraysTools.cs`](#arraytools) | Array operations (comparison, sum, zeroing) |
 | **⏱️ Time** | [`TimeTools.cs`](#timetools) | Time conversion (H:M:S) and countdown timers |
 | **💾 Saving** | [`SaveTools.cs`](#savetools) | Save/Load arrays, lists, and ScriptableObjects |
-| **🆔 Unique IDs** | [`UniqueIdTools.cs`](#uniqueidtools) | Generate scene-specific unique IDs |
+| **🆔 Unique IDs** | [`UniqueIdTools.cs`](#uniqueidtools) | Generate scene-specific unique IDs based on position|
 | **🧩 Pooling** | [`PoolManager.cs`](#poolmanager) | Object pooling for optimal performance |
 | **🧮 Vectors** | [`VectorsAndQuaTools.cs`](#vectortools) | Vector/Quaternion utilities |
-| **🎲 Random** | [`AA.cs`](#aa) | Custom random number generators |
-| **📜 Enums** | [`EnumGenerator.cs`](#enumgenerator) | Auto-generate enums from data |
+| **📜 Enums** | [`EnumGenerator.cs`](#enumgenerator) | Auto-generate enums based on fields of strings |
+
+## 📦 Attributes
+| Name | Script | Description |
+|------|--------|-------------|
+| **🔖 Conditional Field** | [`Attr_ConditionField.cs`](#ConditionField) | show or hide a field in the inspector based on a bool |
+| **🔖 Conditional Enum** | [`Attr_ConditionEnum.cs`](#ConditionEnum) | show or hide a field based on the value of an enum |
+| **🔖 Create Buttons** | [`Attr_CreateButton.cs`](#CreateButton) | generate a button in the inspector to invoke a method or lambda |
+| **🔖 Read Only Field** | [`Attr_ReadOnly.cs`](#ReadOnly) | make a field read only and grey for debug or visual purposes |
 
 ## 📄 Script Details  
 
