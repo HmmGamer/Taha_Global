@@ -125,6 +125,13 @@ public class Sample : MonoBehaviour
 
 ---
 
+## ✨ How to use
+Directly add/clone the folder to your game (recommended folder: Scripts)
+
+Attributes: Add them directly on your fields or methods (as shown in usage examples).
+Tools: Call static methods from utility classes when needed.
+Dynamic Tools: Add the prefabs/managers to your scenes as needed.
+
 ## 📜 License
 MIT License — Free to use and modify
 
