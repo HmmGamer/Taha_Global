@@ -1,9 +1,10 @@
-current version : 1.2.2
+Current Version : 1.2.3
 
+1.2.4 Future Updated : add more documents for other tools
 -----------------------------------------------------------------------------------------
-1.2.3 future updates : added readme and more comments
+1.2.3 Updates : added readme and more comments
 -----------------------------------------------------------------------------------------
-1.2.2 updates : changed the file order and separated the tools for more clarity
+1.2.2 Updates : changed the file order and separated the tools for more clarity
 -----------------------------------------------------------------------------------------
-1.2.1 updates : removed unfinished products and updated save tools
+1.2.1 Updates : removed unfinished products and updated save tools
 -----------------------------------------------------------------------------------------

@@ -35,6 +35,7 @@ public class YesNoPanelController : MonoBehaviour
         {
             _confirmButton.onClick.AddListener(action);
         }
+        _confirmButton.onClick.AddListener(_CloseMenu);
     }
     public void _CloseMenu()
     {
@@ -43,6 +44,7 @@ public class YesNoPanelController : MonoBehaviour
     private void _ActivateMenu(bool iActivation)
     {
         _canvasGroup.blocksRaycasts = iActivation;
+        _canvasGroup.alpha = iActivation ? 1 : 0;
         gameObject.SetActive(iActivation);
     }
 }

@@ -1,2 +1,0 @@
-# Taha_Global
-

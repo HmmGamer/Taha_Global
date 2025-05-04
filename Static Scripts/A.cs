@@ -8,9 +8,9 @@ public static class A
 {
     public static class Tags
     {
-        public static string player = "Player";
-        public static string enemy = "enemy";
-        public static string arrow = "Arrow";
+        public const string player = "Player";
+        public const string enemy = "enemy";
+        public const string arrow = "Arrow";
     }
     public static class LayerMasks
     {
@@ -19,23 +19,23 @@ public static class A
     }
     public static class Layers
     {
-        public static int player = 8;
-        public static int default1 = 0;
-        public static int item = 7;
-        public static int floor = 6;
+        public const int player = 8;
+        public const int default1 = 0;
+        public const int item = 7;
+        public const int floor = 6;
     }
     public static class Anim
     {
-        public static string playerJump = "jump";
-        public static string playerSpeed = "Speed";
-        public static string playerIsOnWall = "isOnWall";
-        public static string playerIsGrounded = "isOnGround";
-        public static string playerIsJumping = "isJumping";
-        public static string enemyAttack = "attack";
+        public const string playerJump = "jump";
+        public const string playerSpeed = "Speed";
+        public const string playerIsOnWall = "isOnWall";
+        public const string playerIsGrounded = "isOnGround";
+        public const string playerIsJumping = "isJumping";
+        public const string enemyAttack = "attack";
     }
     public static class DataKey
     {
-        private static string keyIdData = "ji385";
+        private const string keyIdData = "ji385";
         public static string GetKeyIdData(int iId)
         {
             return keyIdData + iId;
