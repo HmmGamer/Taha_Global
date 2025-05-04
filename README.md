@@ -44,7 +44,7 @@ A collection of **essential C# utility scripts** for Unity game development, des
 Hide or show fields in the Inspector based on a single bool, making your Inspector super clean.
 
 **Note:** Usable in nested classes and ScriptableObjects. Cannot be used on lists/arrays.  
-![ConditionalField Demo](main/conditionalfield_demo.gif)
+![ConditionalField Demo](Github%20Docs/conditional_field_vid.gif)
 
 **Usage:**
 ```csharp
@@ -63,7 +63,7 @@ public class Sample : MonoBehaviour
 Hide or show fields in the Inspector based on an enum value for better organization.
 
 **Note:** Usable in nested classes and ScriptableObjects. Cannot be used on lists/arrays.  
-![ConditionalField Demo](Github%20Docs/conditional_field_vid.gif)
+![ConditionalEnum Demo](Github%20Docs/conditional_enum_vid.gif)
 
 **Usage:**
 ```csharp
@@ -90,8 +90,7 @@ public enum _AllFields
 Generate a button in the Inspector to invoke methods in both play and edit mode.
 
 **Note:** Some methods (like PlayerPrefs access) may only work in play mode.  
-![CreateButton Demo](Github%20Docs/createbutton_demo.gif)
-
+![CreateButton Demo](Github%20Docs/create_button_vid.gif)
 **Usage:**
 ```csharp
 public class Sample : MonoBehaviour
@@ -113,7 +112,7 @@ public class Sample : MonoBehaviour
 ### 🔖 ReadOnly  
 Disable and grey out a field in the Inspector for visual clarity or debugging.
 
-![ReadOnly Demo](Github%20Docs/readonly_demo.png)
+![ReadOnly Demo](Github%20Docs/readonly%20photo.png)
 
 **Usage:**
 ```csharp
