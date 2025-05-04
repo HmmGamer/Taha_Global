@@ -1,62 +1,71 @@
-# 🚀 Unity Utility Toolkit by Taha Mirheidari
+# 🌍 Taha_Global
 
-A comprehensive collection of **essential C# utility scripts** for Unity game development, designed to **simplify common tasks** and **avoid hardcoding**.
+## 🚀 Unity Utility Toolkit  
+A collection of **essential C# utility scripts** for Unity game development, designed to **simplify common tasks** and **eliminate hardcoding**, crafted by **[Taha Mirheidari](https://github.com/your-github-username)**.
 
-![GitHub](https://img.shields.io/github/license/taha-mirheidari/unity-utility-toolkit?color=blue) 
-![GitHub stars](https://img.shields.io/github/stars/taha-mirheidari/unity-utility-toolkit?style=social)
+---
 
-## 📦 Features Overview
+## 📦 Attributes
+| Name | Script | Description |
+|------|--------|-------------|
+| **🔖 Conditional Field** | [`Attr_ConditionField.cs`](#conditionalfield) | Show or hide a field in the Inspector based on a bool |
+| **🔖 Conditional Enum** | [`Attr_ConditionEnum.cs`](#conditionalenum) | Show or hide a field based on the value of an enum |
+| **🔖 Create Buttons** | [`Attr_CreateButton.cs`](#createbutton) | Generate a button in the Inspector to invoke a method |
+| **🔖 Read Only Field** | [`Attr_ReadOnly.cs`](#readonly) | Make a field read-only and greyed-out for debug/visual purposes |
 
-### 🔧 Attributes
-| Attribute | Description | Example |
-|-----------|-------------|---------|
-| [**`ConditionField`**](#conditionfield) | Show/hide fields based on bool values | `[ConditionField(nameof(_showField))]` |
-| [**`ConditionEnum`**](#conditionenum) | Show/hide fields based on enum values | `[ConditionEnum(nameof(_mode), (int)Mode.Advanced)]` |
-| [**`CreateButton`**](#createbutton) | Create inspector buttons to invoke methods | `[CreateButton("Save Data")]` |
-| [**`ReadOnly`**](#readonly) | Make fields non-editable in inspector | `[ReadOnly] public float score;` |
+---
 
-### 🛠️ Static Tools
-| Category | Description | Key Features |
-|----------|-------------|--------------|
-| [**Constants**](#a) | Centralized game tags/layers | `A.Tags.player`, `A.Layers.ui` |
-| [**Array Tools**](#array-tools) | Advanced array operations | Comparison, summation, filtering |
-| [**Time Tools**](#time-tools) | Time conversion utilities | `TimeTools.TotalStringTime(seconds)` |
+## ⚙️ Features & Static Tools  
+| Category | Script | Description |
+|----------|--------|-------------|
+| **🔖 Constants** | [`A.cs`](#a) | Centralized tags, layers, and animation names |
+| **🔄 Arrays** | [`AA.cs`](#aa) / [`ArraysTools.cs`](#arraytools) | Array operations (comparison, sum, zeroing) |
+| **⏱️ Time** | [`TimeTools.cs`](#timetools) | Time conversion (H:M:S) and countdown timers |
+| **💾 Saving** | [`SaveTools.cs`](#savetools) | Save/Load arrays, lists, and ScriptableObjects |
+| **🆔 Unique IDs** | [`UniqueIdTools.cs`](#uniqueidtools) | Generate scene-specific unique IDs based on position |
+| **🧩 Pooling** | [`PoolManager.cs`](#poolmanager) | Object pooling for optimal performance |
+| **🧮 Vectors** | [`VectorsAndQuaTools.cs`](#vectortools) | Vector and Quaternion utilities |
+| **📜 Enums** | [`EnumGenerator.cs`](#enumgenerator) | Auto-generate enums based on string fields |
 
-### 🎮 Dynamic Tools
-| Tool | Description | Use Case |
-|------|-------------|----------|
-| [**MessageBox**](#messagebox) | Popup/confirmation system | Player notifications |
-| [**Raycast Debugger**](#raycast-debugger) | UI interaction analyzer | Fixing non-clickable buttons |
-| [**EventController**](#eventcontroller) | Timeline event handler | Cutscene triggers |
+---
 
-## 📚 Detailed Documentation
+## ⚙️ Features & Dynamic Tools  
+| Name | Script | Description |
+|------|--------|-------------|
+| **🗨️ MessageBox** | [`MessageBoxManager.cs`](#messagebox) | A complete tool for showing confirmation/pop-ups without duplicating canvases |
+| **🕵️ Raycast Debugger** | [`UiRaycastDebuger.cs`](#raycastdebugger) | Debug tool to inspect UI raycast issues with buttons/canvases |
+| **🎬 EventController** | [`EventController.cs`](#eventcontroller) | Handle timeline events and debug them easily without signals |
 
-### <a name="conditionfield"></a>🔷 `ConditionField` Attribute
-Make your inspector cleaner by hiding unwanted fields conditionally.
+---
 
-**Features**:
-✔ Works with nested classes and ScriptableObjects  
-✔ Supports boolean inversion  
-❌ Doesn't work with lists/arrays  
+## 📄 Script Details
 
+### 🔖 ConditionalField
+Hide or show fields in the Inspector based on a single bool, making your Inspector super clean.
+
+**Note:** Usable in nested classes and ScriptableObjects. Cannot be used on lists/arrays.  
+*(Demo video placeholder)*
+
+**Usage:**
 ```csharp
-public class Character : MonoBehaviour
+public class Sample : MonoBehaviour
 {
-    [SerializeField] bool showStats;
-    
-    [ConditionField(nameof(showStats))]
-    [SerializeField] float health;
-    
-    [ConditionField(nameof(showStats))]
-    [SerializeField] float stamina;
+    [SerializeField] bool _showFields;
+    [SerializeField, ConditionField(nameof(_showFields))] float _field1;
+    [SerializeField, ConditionField(nameof(_showFields))] Vector3 _field2;
+
+    [SerializeField] bool _hideFields;
+    [SerializeField, ConditionField(nameof(_hideFields), true)] GameObject _field3;
 }
 
-ConditionEnum : with this attribute you can make you inspector super clean by hiding the unwanted fields using a single enum in the inspector.
+### 🔖 ConditionalEnum  
+Hide or show fields in the Inspector based on an enum value for better organization.
 
-Note : you can use this attribute in almost any condition ( like nested classes or Scriptable Objects ) the only limitation is that it cant be used on lists/arrays.
-( video is placed in here )
-how to use :
-------------------------------------
+**Note:** Usable in nested classes and ScriptableObjects. Cannot be used on lists/arrays.  
+*(Demo video placeholder)*
+
+**Usage:**
+```csharp
 public class Sample : MonoBehaviour
 {
     [SerializeField] _AllFields _fields;
@@ -66,6 +75,7 @@ public class Sample : MonoBehaviour
 
     [SerializeField, ConditionalEnum(nameof(_fields), (int)_AllFields.field2_3)]
     float field2;
+    
     [SerializeField, ConditionalEnum(nameof(_fields), (int)_AllFields.field2_3)]
     float field3;
 }
@@ -73,14 +83,18 @@ public enum _AllFields
 {
     field1, field2_3, none
 }
-------------------------------------
 
-CreateButton : with this attribute you can generate a button in the inspector to invoke a method in both inside and outside the play mode
 
-Note : you can invoke any method inside the play mode but some methods wont work outside the play mode like ( getting and setting for the PlayerPrfs )
-( video is placed in here )
-how to use :
-------------------------------------
+```markdown
+# 🔖 CreateButton
+
+Generate a button in the Inspector to invoke methods in both play and edit mode.
+
+**Note:** Some methods (like PlayerPrefs access) may only work in play mode.  
+*(Demo video placeholder)*
+
+## Usage
+```csharp
 public class Sample : MonoBehaviour
 {
     [CreateButton("Invoke Test 1")]
@@ -95,18 +109,21 @@ public class Sample : MonoBehaviour
         Debug.Log("Test2 was invoked!");
     }
 }
-------------------------------------
 
-CreateButton : with this attribute you can disable and grey out a field in the inspector for both visual and debugging purposes 
-( video is placed in here )
-how to use :
-------------------------------------
+```markdown
+# 🔖 ReadOnly
+
+Disable and grey out a field in the Inspector for visual clarity or debugging.
+
+*(Demo video placeholder)*
+
+## Usage
+```csharp
 public class Sample : MonoBehaviour
 {
     [SerializeField] float _normalField;
     [SerializeField, ReadOnly] float _readOnlyField = 3;
 }
-------------------------------------
 
 
 📜 License
