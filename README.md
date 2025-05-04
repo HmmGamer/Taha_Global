@@ -63,7 +63,7 @@ public class Sample : MonoBehaviour
 Hide or show fields in the Inspector based on an enum value for better organization.
 
 **Note:** Usable in nested classes and ScriptableObjects. Cannot be used on lists/arrays.  
-![ConditionalEnum Demo](Github%20Docs/conditionenum_demo.gif)
+![ConditionalField Demo](Github%20Docs/conditional_field_vid.gif)
 
 **Usage:**
 ```csharp
