@@ -57,7 +57,7 @@ public class Sample : MonoBehaviour
     [SerializeField] bool _hideFields;
     [SerializeField, ConditionField(nameof(_hideFields), true)] GameObject _field3;
 }
-
+```csharp
 ### 🔖 ConditionalEnum  
 Hide or show fields in the Inspector based on an enum value for better organization.
 
@@ -83,7 +83,7 @@ public enum _AllFields
 {
     field1, field2_3, none
 }
-
+```csharp
 
 ```markdown
 # 🔖 CreateButton
@@ -109,8 +109,8 @@ public class Sample : MonoBehaviour
         Debug.Log("Test2 was invoked!");
     }
 }
+```csharp
 
-```markdown
 # 🔖 ReadOnly
 
 Disable and grey out a field in the Inspector for visual clarity or debugging.
@@ -124,7 +124,7 @@ public class Sample : MonoBehaviour
     [SerializeField] float _normalField;
     [SerializeField, ReadOnly] float _readOnlyField = 3;
 }
-
+```csharp
 
 📜 License
 MIT License - Free to use and modify
