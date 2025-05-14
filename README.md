@@ -221,7 +221,7 @@ Custom [CreateButton] attribute must be present in your project for Inspector bu
 - Will not work during play mode
 - Handles basic name sanitization (spaces and dashes replaced with underscores)
 - For accessing the enum first generate it in the inspector
-- ![ConditionalEnum Demo](Github%20Docs/conditional_enum_vid.gif)
+- ![EnumGenerator Demo](Github%20Docs/EnumGenerator_Vid.gif)
 
 
 ## ✨ How to use
