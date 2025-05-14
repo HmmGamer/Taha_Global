@@ -18,13 +18,13 @@ A collection of **essential C# utility scripts** for Unity game development, des
 ## ⚙️ Features & Static Tools  
 | Category | Script | Description |
 |----------|--------|-------------|
-| **🔖 Constants** | [`A.cs`](#a) | Centralized tags, layers, and animation names |
-| **🔄 Arrays** | [`AA.cs`](#aa) / [`ArraysTools.cs`](#arraytools) | Array operations (comparison, sum, zeroing) |
-| **⏱️ Time** | [`TimeTools.cs`](#timetools) | Time conversion (H:M:S) and countdown timers |
-| **💾 Saving** | [`SaveTools.cs`](#savetools) | Save/Load arrays, lists, and ScriptableObjects |
+| **🔖 Constants** | [`A.cs`] | Centralized tags, layers, and animation names |
+| **🔄 Arrays** | [`ArrayTools.cs`] / [`ArraysTools.cs`](#arraytools) | Array operations (comparison, sum, zeroing) |
+| **⏱️ Time** | [`TimeTools.cs`] | Time conversion (H:M:S) and countdown timers |
+| **💾 Saving** | [`SaveTools.cs`] | Save/Load arrays, lists, and ScriptableObjects |
 | **🆔 Unique IDs** | [`UniqueIdTools.cs`](#uniqueidtools) | Generate scene-specific unique IDs based on position |
-| **🧩 Pooling** | [`PoolManager.cs`](#poolmanager) | Object pooling for optimal performance |
-| **🧮 Vectors** | [`VectorsAndQuaTools.cs`](#vectortools) | Vector and Quaternion utilities |
+| **🧩 Pooling** | [`PoolManager.cs`] | Object pooling for optimal performance |
+| **🧮 Vectors** | [`VectorsAndQuaTools.cs`] | Vector and Quaternion utilities |
 | **📜 Enums** | [`EnumGenerator.cs`](#enumgenerator) | Auto-generate enums based on string fields |
 
 ---
