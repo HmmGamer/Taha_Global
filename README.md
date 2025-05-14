@@ -124,6 +124,70 @@ public class Sample : MonoBehaviour
 ```
 
 ---
+## 📌 Scene Unique ID Generator
+
+This utility provides a way to automatically generate **unique identifiers** for GameObjects based on their transform position and scene index. It helps eliminate the need for manually assigning IDs in the inspector.
+
+### ✅ Features
+- Generates unique IDs based on:
+  - GameObject's X and Y position
+  - Parent GameObject name
+  - Scene build index
+- Ensures IDs are consistent and scene-aware
+- Avoids manual management of identifiers
+
+### 🛠 Usage
+
+Call from any script:
+
+```csharp
+string id = UniqueIdTools._MakeUniqueId(yourGameObject);
+```
+
+To check if an ID is from the currently active scene:
+
+```csharp
+bool isInScene = UniqueIdTools._IsUniqueIdInScene(id);
+```
+
+To extract the scene index from an ID:
+
+```csharp
+int sceneIndex = UniqueIdTools._GetUniqueIdScene(id);
+```
+
+### ⚠️ Guidelines
+- **Do not** attach this ID tool to multiple scripts on the same GameObject or overlapping positions under the same parent—this can lead to duplicate IDs and logical bugs.
+
+---
+
+## 🔧 Enum Generator (Editor Only)
+
+This tool enables automated generation of `enum` types from serialized data objects—ideal for cases where enums need to reflect configurable or data-driven values.
+
+### ✅ Features
+- Generates C# `enum` definitions from string fields in a data array
+- Writes enums to `Assets/Others/GeneratedEnums/`
+- Automatically refreshes Unity AssetDatabase
+
+### 🛠 Usage (Editor Only)
+
+Call the generator with:
+
+```csharp
+EnumGenerator.GenerateEnums("YourEnumName", dataArray, "fieldName");
+```
+
+Where:
+- `"YourEnumName"` is the name of the enum to be created
+- `dataArray` is your array of data objects
+- `"fieldName"` is the name of the field in your class to use as enum names (must be a `string`)
+
+### ⚠️ Notes
+- Must be run **only in the Unity Editor**
+- Will not work during play mode
+- Handles basic name sanitization (spaces and dashes replaced with underscores)
+
 
 ## ✨ How to use
 **installation:** Directly add/clone the folder to your game (recommended folder: Scripts)
