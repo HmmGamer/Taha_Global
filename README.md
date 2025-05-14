@@ -19,7 +19,7 @@ A collection of **essential C# utility scripts** for Unity game development, des
 | Category | Script | Description |
 |----------|--------|-------------|
 | **🔖 Constants** | [`A.cs`] | Centralized tags, layers, and animation names |
-| **🔄 Arrays** | [`ArrayTools.cs`] / [`ArraysTools.cs`](#arraytools) | Array operations (comparison, sum, zeroing) |
+| **🔄 Arrays** | [`ArrayTools.cs`] | Array operations (comparison, sum, zeroing) |
 | **⏱️ Time** | [`TimeTools.cs`] | Time conversion (H:M:S) and countdown timers |
 | **💾 Saving** | [`SaveTools.cs`] | Save/Load arrays, lists, and ScriptableObjects |
 | **🆔 Unique IDs** | [`UniqueIdTools.cs`](#uniqueidtools) | Generate scene-specific unique IDs based on position |
