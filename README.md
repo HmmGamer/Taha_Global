@@ -128,7 +128,7 @@ public class Sample : MonoBehaviour
 
 This utility provides a way to automatically generate **unique identifiers** for GameObjects based on their transform position and scene index. It helps eliminate the need for manually assigning IDs in the inspector.
 
-### ✅ Features
+**✅ Features** 
 - Generates unique IDs based on:
   - GameObject's X and Y position
   - Parent GameObject name
@@ -136,9 +136,7 @@ This utility provides a way to automatically generate **unique identifiers** for
 - Ensures IDs are consistent and scene-aware
 - Avoids manual management of identifiers
 
-### 🛠 Usage
-
-Call from any script:
+**Usage:**
 
 ```csharp
 string id = UniqueIdTools._MakeUniqueId(yourGameObject);
@@ -163,11 +161,10 @@ int sceneIndex = UniqueIdTools._GetUniqueIdScene(id);
 
 ## 🔧 Enum Generator (Editor Only)
 
-🎯 Sample Enum Generation Tool
 This script provides a streamlined interface to automatically generate enums from structured data directly in the Unity Editor.
 
-🔧 Key Functionalities
-🗃 Generate Enums from Nested Class
+### ✅ Features
+**🗃 Generate Enums from Nested Class** 
 Uses _NestedClass[] array as input.
 
 Generates an enum named _AllTitles using the _enumNames field.
@@ -175,6 +172,18 @@ Generates an enum named _AllTitles using the _enumNames field.
 Triggered using the "Generate Nested Class Enums" button in the Inspector.
 
 ```csharp
+public class Sample : MonoBehaviour
+{
+    [SerializeField] private _NestedClass[] _data;
+    //[SerializeField] private _AllTitles _nestedClassTitles; // uncomment when the enum was generated
+
+    [CreateButton("Generate Nested Class Enums")]
+    public void _GenerateNestedClassEnum()
+    {
+        EnumGenerator.GenerateEnums("_AllTitles", _data, nameof(_NestedClass._enumNames));
+    }
+}
+
 [System.Serializable]
 public class _NestedClass
 {
@@ -182,22 +191,8 @@ public class _NestedClass
     public int _showInt;
     // Add more fields if needed
 }
-
-public class Sample : MonoBehaviour
-{
-    [SerializeField] private _NestedClass[] _data;
-    [SerializeField] private _AllTitles _nestedClassTitles;
-
-    [CreateButton("Generate Nested Class Enums")]
-    public void _GenerateNestedClassEnum()
-    {
-#if UNITY_EDITOR
-        EnumGenerator.GenerateEnums("_AllTitles", _data, nameof(_NestedClass._enumNames));
-#endif
-    }
-}
 ```
-🧾 Generate Enums from String Array
+**🧾 Generate Enums from String Array** 
 Uses a plain string[] array.
 
 Generates an enum named _AllTitles2 using the string values as entries.
@@ -208,14 +203,12 @@ Triggered using the "Generate String Array Enums" button in the Inspector.
 public class Sample : MonoBehaviour
 {
     [SerializeField] private string[] _enumNames2;
-    [SerializeField] private _AllTitles2 _showEnumValues;
+    //[SerializeField] private _AllTitles2 _showEnumValues; // uncomment when the enum was generated
 
     [CreateButton("Generate String Array Enums")]
     public void _GenerateStringArrayEnum()
     {
-#if UNITY_EDITOR
         EnumGenerator.GenerateEnums("_AllTitles2", _enumNames2);
-#endif
     }
 }
 ```
@@ -227,6 +220,7 @@ Custom [CreateButton] attribute must be present in your project for Inspector bu
 - Must be run **only in the Unity Editor**
 - Will not work during play mode
 - Handles basic name sanitization (spaces and dashes replaced with underscores)
+- For accessing the enum first generate it in the inspector
 - ![ConditionalEnum Demo](Github%20Docs/conditional_enum_vid.gif)
 
 
