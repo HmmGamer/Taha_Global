@@ -187,6 +187,7 @@ Where:
 - Must be run **only in the Unity Editor**
 - Will not work during play mode
 - Handles basic name sanitization (spaces and dashes replaced with underscores)
+- ![ConditionalEnum Demo](Github%20Docs/conditional_enum_vid.gif)
 
 
 ## ✨ How to use
