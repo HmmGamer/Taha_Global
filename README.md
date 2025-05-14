@@ -164,7 +164,7 @@ int sceneIndex = UniqueIdTools._GetUniqueIdScene(id);
 This script provides a streamlined interface to automatically generate enums from structured data directly in the Unity Editor.
 
 ### ✅ Features
-**🗃 Generate Enums from Nested Class** 
+#### 🗃 Generate Enums from Nested Class
 Uses _NestedClass[] array as input.
 
 Generates an enum named _AllTitles using the _enumNames field.
@@ -192,7 +192,7 @@ public class _NestedClass
     // Add more fields if needed
 }
 ```
-**🧾 Generate Enums from String Array** 
+#### 🧾 Generate Enums from String Array
 Uses a plain string[] array.
 
 Generates an enum named _AllTitles2 using the string values as entries.
