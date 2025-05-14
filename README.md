@@ -163,25 +163,65 @@ int sceneIndex = UniqueIdTools._GetUniqueIdScene(id);
 
 ## 🔧 Enum Generator (Editor Only)
 
-This tool enables automated generation of `enum` types from serialized data objects—ideal for cases where enums need to reflect configurable or data-driven values.
+🎯 Sample Enum Generation Tool
+This script provides a streamlined interface to automatically generate enums from structured data directly in the Unity Editor.
 
-### ✅ Features
-- Generates C# `enum` definitions from string fields in a data array
-- Writes enums to `Assets/Others/GeneratedEnums/`
-- Automatically refreshes Unity AssetDatabase
+🔧 Key Functionalities
+🗃 Generate Enums from Nested Class
+Uses _NestedClass[] array as input.
 
-### 🛠 Usage (Editor Only)
+Generates an enum named _AllTitles using the _enumNames field.
 
-Call the generator with:
+Triggered using the "Generate Nested Class Enums" button in the Inspector.
 
 ```csharp
-EnumGenerator.GenerateEnums("YourEnumName", dataArray, "fieldName");
-```
+[System.Serializable]
+public class _NestedClass
+{
+    public string _enumNames;
+    public int _showInt;
+    // Add more fields if needed
+}
 
-Where:
-- `"YourEnumName"` is the name of the enum to be created
-- `dataArray` is your array of data objects
-- `"fieldName"` is the name of the field in your class to use as enum names (must be a `string`)
+public class Sample : MonoBehaviour
+{
+    [SerializeField] private _NestedClass[] _data;
+    [SerializeField] private _AllTitles _nestedClassTitles;
+
+    [CreateButton("Generate Nested Class Enums")]
+    public void _GenerateNestedClassEnum()
+    {
+#if UNITY_EDITOR
+        EnumGenerator.GenerateEnums("_AllTitles", _data, nameof(_NestedClass._enumNames));
+#endif
+    }
+}
+```
+🧾 Generate Enums from String Array
+Uses a plain string[] array.
+
+Generates an enum named _AllTitles2 using the string values as entries.
+
+Triggered using the "Generate String Array Enums" button in the Inspector.
+
+```csharp
+public class Sample : MonoBehaviour
+{
+    [SerializeField] private string[] _enumNames2;
+    [SerializeField] private _AllTitles2 _showEnumValues;
+
+    [CreateButton("Generate String Array Enums")]
+    public void _GenerateStringArrayEnum()
+    {
+#if UNITY_EDITOR
+        EnumGenerator.GenerateEnums("_AllTitles2", _enumNames2);
+#endif
+    }
+}
+```
+### 📌 Requirements
+
+Custom [CreateButton] attribute must be present in your project for Inspector buttons.
 
 ### ⚠️ Notes
 - Must be run **only in the Unity Editor**
