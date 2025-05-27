@@ -1,6 +1,9 @@
-Current Version : 1.2.3
+Current Version : 1.2.4
 
-1.2.4 Future Updated : add more documents for other tools
+Confirmed Future Updates : add more documents and readme for other tools
+
+-----------------------------------------------------------------------------------------
+1.2.4 Updates : changed the logic of Pool Manager and fixed a bug in Unique Key Generator
 -----------------------------------------------------------------------------------------
 1.2.3 Updates : added readme and more comments
 -----------------------------------------------------------------------------------------

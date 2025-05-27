@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-public class ConditionFieldAttribute : PropertyAttribute
+public class ConditionalFieldAttribute : PropertyAttribute
 {
     public string BoolVariableName { get; private set; }
     public bool Reverse { get; private set; }
 
-    public ConditionFieldAttribute(string boolVariableName, bool reverse = false)
+    public ConditionalFieldAttribute(string boolVariableName, bool reverse = false)
     {
         BoolVariableName = boolVariableName;
         Reverse = reverse;
@@ -15,8 +15,8 @@ public class ConditionFieldAttribute : PropertyAttribute
 }
 
 #if UNITY_EDITOR
-[CustomPropertyDrawer(typeof(ConditionFieldAttribute))]
-public class ConditionFieldDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(ConditionalFieldAttribute))]
+public class ConditionalFieldDrawer : PropertyDrawer
 {
     private struct BoolPropertyCache
     {
@@ -31,7 +31,7 @@ public class ConditionFieldDrawer : PropertyDrawer
     private static bool _repaintScheduled;
     private static readonly List<SerializedObject> ObjectsToRepaint = new List<SerializedObject>();
 
-    static ConditionFieldDrawer()
+    static ConditionalFieldDrawer()
     {
         AssemblyReloadEvents.beforeAssemblyReload += ClearCache;
         EditorApplication.playModeStateChanged += PlayModeStateChanged;
@@ -54,7 +54,7 @@ public class ConditionFieldDrawer : PropertyDrawer
     {
         CheckCacheCleanup();
 
-        ConditionFieldAttribute attr = attribute as ConditionFieldAttribute;
+        ConditionalFieldAttribute attr = attribute as ConditionalFieldAttribute;
         if (attr == null) return true;
 
         string cacheKey = $"{property.serializedObject.targetObject.GetInstanceID()}.{property.propertyPath}";
