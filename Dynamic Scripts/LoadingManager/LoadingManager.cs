@@ -7,7 +7,7 @@ public class LoadingManager : Singleton_Abs<LoadingManager>
 {
     [Header("General Settings")]
     [SerializeField] bool _autoLoadNext = false;
-    [SerializeField, ConditionField(nameof(_autoLoadNext))] _AllScenes _nextScene;
+    [SerializeField, ConditionalField(nameof(_autoLoadNext))] _AllScenes _nextScene;
 
     [Header("Attachments")]
     [SerializeField] Canvas _canvas;
@@ -46,6 +46,8 @@ public class LoadingManager : Singleton_Abs<LoadingManager>
         _canvas.gameObject.SetActive(false);
     }
 }
+
+// save the index as in the build settings
 public enum _AllScenes
 {
     Lobby, MainGame
