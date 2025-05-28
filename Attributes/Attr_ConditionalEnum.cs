@@ -1,3 +1,41 @@
+using UnityEngine;
+using UnityEditor;
+using System.Collections.Generic;
+
+public class ConditionalEnumAttribute : PropertyAttribute
+{
+    public string _enumField;
+    public HashSet<int> _targetEnumValues;
+
+    public ConditionalEnumAttribute(string enumFieldName, params int[] targetEnumValues)
+    {
+        _enumField = enumFieldName;
+        _targetEnumValues = new HashSet<int>(targetEnumValues);
+    }
+}
+#if UNITY_EDITOR
+[CustomPropertyDrawer(typeof(ConditionalEnumAttribute), true)]
+public class ConditionalEnumDrawer : PropertyDrawer
+{
+    private SerializedProperty _cachedEnumProperty;
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        ConditionalEnumAttribute attribute = (ConditionalEnumAttribute)this.attribute;
+
+        if (_cachedEnumProperty == null || _cachedEnumProperty.serializedObject != property.serializedObject)
+        {
+            _cachedEnumProperty = GetEnumProperty(property, attribute._enumField);
+        }
+
+        if (_cachedEnumProperty == null || !attribute._targetEnumValues.Contains(_cachedEnumProperty.enumValueIndex))
+        {
+            return;
+        }
+
+        EditorGUI.PropertyField(position, property, label, true);
+    }
+
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         ConditionalEnumAttribute attribute = (ConditionalEnumAttribute)this.attribute;

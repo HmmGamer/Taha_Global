@@ -17,11 +17,11 @@ public class LoadingManager : Singleton_Abs<LoadingManager>
     private void Start()
     {
         if (_autoLoadNext)
-            _LoadNextScene();
+            _LoadScene(_nextScene);
     }
-    public void _LoadNextScene()
+    public void _LoadScene(_AllScenes iNextScene)
     {
-        StartCoroutine(_LoadAsync(SceneManager.GetActiveScene().buildIndex + 1));
+        StartCoroutine(_LoadAsync((int)iNextScene));
     }
     private IEnumerator _LoadAsync(int iSceneIndex)
     {

@@ -8,10 +8,10 @@ public class EventController : MonoBehaviour
     [SerializeField] bool _invokeOnEnable;
     [SerializeField] bool _invokeOnDisable;
 
-    [SerializeField, ConditionField(nameof(_invokeOnEnable))] float _enableDelay;
-    [SerializeField, ConditionField(nameof(_invokeOnEnable))] UnityEvent _onEnableEvent;
-    [SerializeField, ConditionField(nameof(_invokeOnDisable))] float _disableDelay;
-    [SerializeField, ConditionField(nameof(_invokeOnDisable))] UnityEvent _onDisableEvent;
+    [SerializeField, ConditionalField(nameof(_invokeOnEnable))] float _enableDelay;
+    [SerializeField, ConditionalField(nameof(_invokeOnEnable))] UnityEvent _onEnableEvent;
+    [SerializeField, ConditionalField(nameof(_invokeOnDisable))] float _disableDelay;
+    [SerializeField, ConditionalField(nameof(_invokeOnDisable))] UnityEvent _onDisableEvent;
 
     private void OnEnable()
     {
