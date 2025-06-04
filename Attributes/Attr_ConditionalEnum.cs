@@ -13,21 +13,28 @@ public class ConditionalEnumAttribute : PropertyAttribute
         _targetEnumValues = new HashSet<int>(targetEnumValues);
     }
 }
+
 #if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(ConditionalEnumAttribute), true)]
 public class ConditionalEnumDrawer : PropertyDrawer
 {
     private SerializedProperty _cachedEnumProperty;
+    private string _lastPropertyPath;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         ConditionalEnumAttribute attribute = (ConditionalEnumAttribute)this.attribute;
 
-        if (_cachedEnumProperty == null || _cachedEnumProperty.serializedObject != property.serializedObject)
+        // Update cache if property path changed or serialized object changed
+        if (_cachedEnumProperty == null ||
+            _cachedEnumProperty.serializedObject != property.serializedObject ||
+            _lastPropertyPath != property.propertyPath)
         {
             _cachedEnumProperty = GetEnumProperty(property, attribute._enumField);
+            _lastPropertyPath = property.propertyPath;
         }
 
+        // Early return if enum property not found or value doesn't match
         if (_cachedEnumProperty == null || !attribute._targetEnumValues.Contains(_cachedEnumProperty.enumValueIndex))
         {
             return;
@@ -40,11 +47,16 @@ public class ConditionalEnumDrawer : PropertyDrawer
     {
         ConditionalEnumAttribute attribute = (ConditionalEnumAttribute)this.attribute;
 
-        if (_cachedEnumProperty == null || _cachedEnumProperty.serializedObject != property.serializedObject)
+        // Update cache if property path changed or serialized object changed
+        if (_cachedEnumProperty == null ||
+            _cachedEnumProperty.serializedObject != property.serializedObject ||
+            _lastPropertyPath != property.propertyPath)
         {
             _cachedEnumProperty = GetEnumProperty(property, attribute._enumField);
+            _lastPropertyPath = property.propertyPath;
         }
 
+        // Return 0 height if enum property not found or value doesn't match
         if (_cachedEnumProperty == null || !attribute._targetEnumValues.Contains(_cachedEnumProperty.enumValueIndex))
         {
             return 0;
@@ -55,8 +67,67 @@ public class ConditionalEnumDrawer : PropertyDrawer
 
     private SerializedProperty GetEnumProperty(SerializedProperty property, string enumField)
     {
-        string path = property.propertyPath.Replace(property.name, enumField);
-        return property.serializedObject.FindProperty(path);
+        // Handle nested properties properly
+        string propertyPath = property.propertyPath;
+
+        // Try different path resolution strategies for nested classes
+        SerializedProperty enumProperty = null;
+
+        // Strategy 1: Replace last property name with enum field name
+        int lastDotIndex = propertyPath.LastIndexOf('.');
+        if (lastDotIndex >= 0)
+        {
+            string basePath = propertyPath.Substring(0, lastDotIndex + 1);
+            enumProperty = property.serializedObject.FindProperty(basePath + enumField);
+        }
+
+        // Strategy 2: If that fails, try relative path from current property
+        if (enumProperty == null)
+        {
+            string relativePath = propertyPath.Replace(property.name, enumField);
+            enumProperty = property.serializedObject.FindProperty(relativePath);
+        }
+
+        // Strategy 3: If still fails, try sibling property search
+        if (enumProperty == null && property.depth > 0)
+        {
+            SerializedProperty parent = GetParentProperty(property);
+            if (parent != null)
+            {
+                SerializedProperty child = parent.Copy();
+                if (child.Next(true))
+                {
+                    do
+                    {
+                        if (child.name == enumField)
+                        {
+                            enumProperty = child.Copy();
+                            break;
+                        }
+                    } while (child.Next(false));
+                }
+            }
+        }
+
+        // Strategy 4: Last resort - search from root
+        if (enumProperty == null)
+        {
+            enumProperty = property.serializedObject.FindProperty(enumField);
+        }
+
+        return enumProperty;
+    }
+
+    private SerializedProperty GetParentProperty(SerializedProperty property)
+    {
+        string path = property.propertyPath;
+        int lastDotIndex = path.LastIndexOf('.');
+
+        if (lastDotIndex < 0)
+            return null;
+
+        string parentPath = path.Substring(0, lastDotIndex);
+        return property.serializedObject.FindProperty(parentPath);
     }
 }
 #endif
