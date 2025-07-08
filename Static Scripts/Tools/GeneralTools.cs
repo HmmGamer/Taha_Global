@@ -21,6 +21,10 @@ public static class GeneralTools
         else //(iDirection == Directions.left)
             return Vector2.left;
     }
+    public static Color _MakeColor(Vector4 iColor)
+    {
+        return new Color(iColor.x, iColor.y, iColor.z, iColor.w);
+    }
     public enum Directions
     {
         Up = 0, right = 1, left = 2, down = 3
