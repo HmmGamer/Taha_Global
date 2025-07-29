@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using System.Drawing;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -13,68 +10,144 @@ using UnityEditor;
 [CustomEditor(typeof(UnityEngine.Object), true, isFallback = true)]
 public class ButtonEditor : Editor
 {
-    private Dictionary<string, (MethodInfo method, CreateButtonAttribute attribute)> buttonMethods = new Dictionary<string, (MethodInfo, CreateButtonAttribute)>();
-    private bool buttonClicked = false;
-    private string buttonToInvoke = string.Empty;
+    // Cached button data structure for better memory layout
+    private struct ButtonData
+    {
+        public readonly MethodInfo method;
+        public readonly GUIContent content;
+        public readonly GUILayoutOption[] options;
+        public readonly bool requiresDirty;
+
+        public ButtonData(MethodInfo method, CreateButtonAttribute attribute)
+        {
+            this.method = method;
+            this.content = new GUIContent(attribute.ButtonName);
+            this.options = new GUILayoutOption[]
+            {
+                GUILayout.Width(attribute.Size.x),
+                GUILayout.Height(attribute.Size.y)
+            };
+            // Pre-calculate if target needs to be marked dirty
+            var declaringType = method.DeclaringType;
+            this.requiresDirty = typeof(MonoBehaviour).IsAssignableFrom(declaringType) ||
+                               typeof(ScriptableObject).IsAssignableFrom(declaringType);
+        }
+    }
+
+    // Static cache using more efficient data structure
+    private static readonly Dictionary<Type, ButtonData[]> typeButtonCache =
+        new Dictionary<Type, ButtonData[]>();
+
+    private ButtonData[] cachedButtons;
+    private bool hasButtons = false;
+
+    private void OnEnable()
+    {
+        CacheButtonMethods();
+    }
 
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        if (buttonMethods.Count == 0)
+
+        if (hasButtons)
         {
-            CacheButtonMethods();
-        }
-        foreach (var buttonMethod in buttonMethods)
-        {
-            var buttonName = buttonMethod.Key;
-            var attribute = buttonMethod.Value.attribute;
-            var size = attribute.Size;
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button(buttonName, GUILayout.Width(size.x), GUILayout.Height(size.y)))
-            {
-                buttonClicked = true;
-                buttonToInvoke = buttonName;
-                EditorApplication.update += HandleButtonClicks;
-            }
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
+            DrawButtons();
         }
     }
 
     private void CacheButtonMethods()
     {
-        var methods = target.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        foreach (var method in methods)
+        var targetType = target.GetType();
+
+        // Check static cache first
+        if (typeButtonCache.TryGetValue(targetType, out cachedButtons))
         {
-            var attribute = method.GetCustomAttribute<CreateButtonAttribute>();
-            if (attribute != null)
+            hasButtons = cachedButtons.Length > 0;
+            return;
+        }
+
+        // Build button data for this type
+        var buttonList = new List<ButtonData>();
+
+        // More efficient: traverse inheritance hierarchy manually to avoid duplicate method scanning
+        var currentType = targetType;
+        var processedMethods = new HashSet<string>(); // Avoid processing overridden methods multiple times
+
+        while (currentType != null && currentType != typeof(UnityEngine.Object))
+        {
+            // Use DeclaredOnly to avoid scanning inherited methods multiple times
+            var methods = currentType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic |
+                                               BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+            foreach (var method in methods)
             {
-                buttonMethods.Add(attribute.ButtonName, (method, attribute));
+                // Skip if we've already processed this method signature
+                if (!processedMethods.Add(method.Name))
+                    continue;
+
+                // Quick parameter check before attribute lookup
+                if (method.GetParameters().Length != 0)
+                    continue;
+
+                var attribute = method.GetCustomAttribute<CreateButtonAttribute>();
+                if (attribute != null)
+                {
+                    buttonList.Add(new ButtonData(method, attribute));
+                }
             }
+
+            currentType = currentType.BaseType;
+        }
+
+        // Convert to array for better cache performance
+        cachedButtons = buttonList.ToArray();
+        typeButtonCache[targetType] = cachedButtons;
+        hasButtons = cachedButtons.Length > 0;
+    }
+
+    private void DrawButtons()
+    {
+        for (int i = 0; i < cachedButtons.Length; i++)
+        {
+            var buttonData = cachedButtons[i];
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            if (GUILayout.Button(buttonData.content, buttonData.options))
+            {
+                InvokeMethod(buttonData);
+            }
+
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
         }
     }
 
-    private void HandleButtonClicks()
+    private void InvokeMethod(ButtonData buttonData)
     {
-        if (buttonClicked && !string.IsNullOrEmpty(buttonToInvoke) && buttonMethods.ContainsKey(buttonToInvoke))
+        try
         {
-            var method = buttonMethods[buttonToInvoke].method;
-            try
+            buttonData.method.Invoke(target, null);
+
+            // Use pre-calculated dirty check
+            if (buttonData.requiresDirty)
             {
-                method.Invoke(target, null);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Failed to invoke method {method.Name}: {ex.Message}");
-            }
-            finally
-            {
-                buttonClicked = false;
-                buttonToInvoke = string.Empty;
-                EditorApplication.update -= HandleButtonClicks;
+                EditorUtility.SetDirty(target);
             }
         }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to invoke method {buttonData.method.Name}: {ex.Message}\n{ex.StackTrace}");
+        }
+    }
+
+    // Clean up static cache when Unity recompiles
+    [InitializeOnLoadMethod]
+    private static void ClearCacheOnRecompile()
+    {
+        typeButtonCache.Clear();
     }
 }
 #endif
