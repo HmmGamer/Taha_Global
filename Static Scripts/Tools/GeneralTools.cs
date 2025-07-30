@@ -14,19 +14,24 @@ public static class GeneralTools
     {
         if (iDirection == Directions.Up)
             return Vector2.up;
-        else if (iDirection == Directions.down)
+        else if (iDirection == Directions.Down)
             return Vector2.down;
-        else if (iDirection == Directions.right)
+        else if (iDirection == Directions.Right)
             return Vector2.right;
         else //(iDirection == Directions.left)
             return Vector2.left;
     }
+
     public static Color _MakeColor(Vector4 iColor)
     {
         return new Color(iColor.x, iColor.y, iColor.z, iColor.w);
     }
-    public enum Directions
+    public static Color _MakeColor(Color iColor , float iAlpha)
     {
-        Up = 0, right = 1, left = 2, down = 3
+        return new Color(iColor.r, iColor.g, iColor.b, iAlpha);
     }
+}
+public enum Directions
+{
+    Up = 0, Right = 1, Left = 2, Down = 3
 }

@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
+
+
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 public class BackButtonManager : Singleton_Abs<BackButtonManager>
 {
-    [SerializeField] MessageBoxController _exitMsgBox;
+    [SerializeField] bool _autoGameQuit = true;
+    [SerializeField, ConditionalField(nameof(_autoGameQuit))] MessageBoxController _exitMsgBox;
 
     [Tooltip("if true => the game is closed after 2 backButtons")]
-    bool _isDoubleClickExit;
+    [SerializeField] bool _isDoubleClickExit;
 
     [Tooltip("minimum delay before 2 clicks")]
     [SerializeField, ConditionalField(nameof(_isDoubleClickExit))]
@@ -18,7 +25,7 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
     [SerializeField, ConditionalField(nameof(_isDoubleClickExit))]
     float _clickExpireTime;
 
-    [SerializeField, ReadOnly] List<_PanelsClass> _registeredPanels = new List<_PanelsClass>();
+    List<_PanelsClass> _registeredPanels = new List<_PanelsClass>();
     bool _isFirstClickActive = false;
     Coroutine _exitTimerCoroutine;
 
@@ -28,11 +35,33 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
     }
     private void Update()
     {
+        #region Old Input System
+#if !UNITY_ANDROID
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             _OnBackButtonPressed();
         }
+#endif
+#if UNITY_ANDROID
+        if (Input.backButtonLeavesApp)
+        {
+            _OnBackButtonPressed();
+        }
+#endif
+#endregion
     }
+    #region New Input System Event
+#if ENABLE_INPUT_SYSTEM
+    public void _OnBackInput(InputAction.CallbackContext context)
+    {
+        // Only respond to the "performed" phase (button press, not release)
+        if (context.performed)
+        {
+            _OnBackButtonPressed();
+        }
+    }
+#endif
+#endregion
     public void _OnBackButtonPressed()
     {
         // Find the first active panel (highest priority since list is sorted)
@@ -41,12 +70,13 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
             if (_registeredPanels[i]._panel != null && _registeredPanels[i]._panel.activeInHierarchy)
             {
                 _registeredPanels[i]._panel.SetActive(false);
+                _registeredPanels[i]._optionalEvent?.Invoke();
                 return;
             }
         }
 
         // No active panels found, handle exit logic
-        if (_isDoubleClickExit)
+        if (_isDoubleClickExit && _autoGameQuit)
         {
             if (_isFirstClickActive)
             {
@@ -75,9 +105,9 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
         _isFirstClickActive = false;
         _exitTimerCoroutine = null;
     }
-    public void _RegisterPanel(GameObject iPanel, int iOrder)
+    public void _RegisterPanel(GameObject iPanel, int iOrder,UnityEvent iEvent)
     {
-        _registeredPanels.Add(new _PanelsClass(iPanel, iOrder));
+        _registeredPanels.Add(new _PanelsClass(iPanel, iOrder, iEvent));
         _registeredPanels = _registeredPanels.OrderByDescending(p => p._priorityOrder).ToList();
     }
     public void _UnRegisterPanel(GameObject iPanel)
@@ -97,11 +127,13 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
     {
         public GameObject _panel;
         public int _priorityOrder;
+        public UnityEvent _optionalEvent;
 
-        public _PanelsClass(GameObject iPanel, int iOrder)
+        public _PanelsClass(GameObject iPanel, int iOrder, UnityEvent optionalEvent)
         {
             _panel = iPanel;
             _priorityOrder = iOrder;
+            _optionalEvent = optionalEvent;
         }
     }
 }

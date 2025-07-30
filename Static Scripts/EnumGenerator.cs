@@ -22,7 +22,7 @@ class _Comments
 }
 public static class EnumGenerator
 {
-    private const string GENERATION_PATH = "Assets/Others/GeneratedEnums";
+    private const string GENERATION_PATH = "Assets/Scripts/GeneratedEnums";
 
     public static void GenerateEnums<T>(string enumName, T[] dataArray, string fieldName) where T : class
     {
@@ -62,7 +62,6 @@ public static class EnumGenerator
         AssetDatabase.Refresh();
 #endif
     }
-
     public static void AddValue(string enumName, string newValue)
     {
 #if UNITY_EDITOR
@@ -135,5 +134,13 @@ public static class EnumGenerator
 
         Debug.Log($"Added '{cleanValue}' to enum '{enumName}'.");
 #endif
+    }
+    public static bool ContainsBannedSymbols(string iName)
+    {
+        if (iName.Contains(" ") || iName.Contains("-"))
+        {
+            return false;
+        }
+        return true;
     }
 }

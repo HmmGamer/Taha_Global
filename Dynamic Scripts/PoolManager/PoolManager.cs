@@ -72,8 +72,5 @@ public class _PooledObject : MonoBehaviour
 
 public enum _PoolType
 {
-    enemy,
-    bullet,
-    item,
-    tower
+    block
 }

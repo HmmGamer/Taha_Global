@@ -45,9 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c342b1f32091286489f3a2f8c9612231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _autoGameQuit: 1
   _exitMsgBox: {fileID: 4237605299599428756}
-  _doubleClickExitDelay: 0
-  _clickExpireTime: 0
+  _isDoubleClickExit: 1
+  _doubleClickExitDelay: 0.3
+  _clickExpireTime: 1.5
 --- !u!114 &4237605299599428756
 MonoBehaviour:
   m_ObjectHideFlags: 0

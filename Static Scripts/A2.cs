@@ -35,10 +35,10 @@ public static class A
     }
     public static class DataKey
     {
-        private const string keyIdData = "ji385";
-        public static string GetKeyIdData(int iId)
-        {
-            return keyIdData + iId;
-        }
+        public const string loadLevel = "ji385";
+        //public static string GetKeyIdData(int iId)
+        //{
+        //    return keyIdData + iId;
+        //}
     }
 }
