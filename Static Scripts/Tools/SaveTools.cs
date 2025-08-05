@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Xml.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -78,7 +77,6 @@ public static class SaveTools
         else if (!_fileName.EndsWith(".json"))
         {
             _fileName += ".json";
-            return;
         }
 
         string jsonData = JsonUtility.ToJson(_target, true);
@@ -97,7 +95,6 @@ public static class SaveTools
         else if (!_fileName.EndsWith(".json"))
         {
             _fileName += ".json";
-            return;
         }
 
         string filePath = Path.Combine(Application.persistentDataPath, _fileName);

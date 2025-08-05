@@ -21,6 +21,9 @@ public class CreateSOButtonAttribute : Attribute
 }
 
 #if UNITY_EDITOR
+// Solution 1: Make ButtonEditorBase a custom editor for ScriptableObject
+[CustomEditor(typeof(ScriptableObject), true)]
+[CanEditMultipleObjects]
 public class ButtonEditorBase : Editor
 {
     private struct ButtonData

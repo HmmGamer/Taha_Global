@@ -36,13 +36,12 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
     private void Update()
     {
         #region Old Input System
-#if !UNITY_ANDROID
+#if !UNITY_ANDROID || UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             _OnBackButtonPressed();
         }
-#endif
-#if UNITY_ANDROID
+#else
         if (Input.backButtonLeavesApp)
         {
             _OnBackButtonPressed();
@@ -54,7 +53,6 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
 #if ENABLE_INPUT_SYSTEM
     public void _OnBackInput(InputAction.CallbackContext context)
     {
-        // Only respond to the "performed" phase (button press, not release)
         if (context.performed)
         {
             _OnBackButtonPressed();
