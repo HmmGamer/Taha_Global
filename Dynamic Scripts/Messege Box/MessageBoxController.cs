@@ -7,6 +7,11 @@ public class MessageBoxController : MonoBehaviour
 {
     [SerializeField] _AllMsgTypes _messageType;
 
+    [Header("Functions")]
+    [SerializeField] bool _autoAddToButtons = false;
+    [SerializeField, ConditionalField(nameof(_autoAddToButtons))]
+    UnityEngine.UI.Button _msgButton;
+
     [Header("Message Info")]
     [SerializeField] string _title;
 
@@ -16,6 +21,11 @@ public class MessageBoxController : MonoBehaviour
     [SerializeField, ConditionalEnum(nameof(_messageType), (int)_AllMsgTypes.yesNo)]
     UnityEvent _confirmEvent;
 
+    private void Start()
+    {
+        if (_autoAddToButtons)
+            _msgButton.onClick.AddListener(_StartMsg);
+    }
     public void _StartMsg()
     {
         if (_messageType == _AllMsgTypes.notification)
@@ -34,6 +44,18 @@ public class MessageBoxController : MonoBehaviour
         if (iRemoveOtherEvents) _confirmEvent.RemoveAllListeners();
 
         _confirmEvent.AddListener(iAction.Invoke);
+    }
+    public void _AskForConfirmation(UnityEvent iEvent)
+    {
+        _confirmEvent.AddListener(iEvent.Invoke);
+        _confirmEvent.Invoke();
+        _confirmEvent.RemoveListener(iEvent.Invoke);
+    }
+    public void _AskForConfirmation(UnityAction iEvent)
+    {
+        _confirmEvent.AddListener(iEvent);
+        _confirmEvent.Invoke();
+        _confirmEvent.RemoveListener(iEvent);
     }
     public enum _AllMsgTypes
     {
