@@ -10,39 +10,59 @@ public class AudioManager : Singleton_Abs<AudioManager>
     [SerializeField] AudioSource _audioChanelTalk;
     [SerializeField] _SavedAudios[] _allSavedAudios;
 
-    public void _PlayAudio(_AudioType iType, AudioClip iClip)
+    public void _PlayAudio(_AudioType iType, AudioClip iClip, bool _isOneShot = false)
+{
+    if (iType == _AudioType.SFX1)
     {
-        if (iType == _AudioType.SFX1)
+        if (_isOneShot)
         {
-            _audioChanelSFX1.clip = iClip;
-            _audioChanelSFX1.Play();
+            _audioChanelSFX1.PlayOneShot(iClip);
+            return;
         }
-        else if (iType == _AudioType.SFX2)
+        _audioChanelSFX1.clip = iClip;
+        _audioChanelSFX1.Play();
+    }
+    else if (iType == _AudioType.SFX2)
+    {
+        if (_isOneShot)
         {
-            _audioChanelSFX2.clip = iClip;
-            _audioChanelSFX2.Play();
+            _audioChanelSFX2.PlayOneShot(iClip);
+            return;
         }
-        else if (iType == _AudioType.Music)
+        _audioChanelSFX2.clip = iClip;
+        _audioChanelSFX2.Play();
+    }
+    else if (iType == _AudioType.Music)
+    {
+        if (_isOneShot)
         {
-            _audioChanelMusic.clip = iClip;
-            _audioChanelMusic.Play();
+            _audioChanelMusic.PlayOneShot(iClip);
+            return;
         }
-        else if (iType == _AudioType.Talk)
+        _audioChanelMusic.clip = iClip;
+        _audioChanelMusic.Play();
+    }
+    else if (iType == _AudioType.Talk)
+    {
+        if (_isOneShot)
         {
-            _audioChanelTalk.clip = iClip;
-            _audioChanelTalk.Play();
+            _audioChanelTalk.PlayOneShot(iClip);
+            return;
+        }
+        _audioChanelTalk.clip = iClip;
+        _audioChanelTalk.Play();
+    }
+}
+public void _PlayAudio(_AudioType iType, SavedSounds iClipName, bool _isOneShot = false)
+{
+    for (int i = 0; i < _allSavedAudios.Length; i++)
+    {
+        if (_allSavedAudios[i]._audioName == iClipName.ToString())
+        {
+            _PlayAudio(iType, _allSavedAudios[i]._audio, _isOneShot);
         }
     }
-    public void _PlayAudio(_AudioType iType, SavedSounds iClipName)
-    {
-        for (int i = 0; i < _allSavedAudios.Length; i++)
-        {
-            if (_allSavedAudios[i]._audioName == iClipName.ToString())
-            {
-                _PlayAudio(iType, _allSavedAudios[i]._audio);
-            }
-        }
-    }
+}
     public void _StopGame()
     {
         _audioChanelSFX1.Stop();
