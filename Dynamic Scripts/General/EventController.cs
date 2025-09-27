@@ -8,36 +8,17 @@ public class EventController : MonoBehaviour
     [SerializeField] bool _invokeOnEnable;
     [SerializeField] bool _invokeOnDisable;
 
-    [SerializeField, ConditionalField(nameof(_invokeOnEnable))] float _enableDelay;
     [SerializeField, ConditionalField(nameof(_invokeOnEnable))] UnityEvent _onEnableEvent;
-    [SerializeField, ConditionalField(nameof(_invokeOnDisable))] float _disableDelay;
     [SerializeField, ConditionalField(nameof(_invokeOnDisable))] UnityEvent _onDisableEvent;
 
     private void OnEnable()
     {
         if (_invokeOnEnable)
-            StartCoroutine(_InvokeEventCD(_onEnableEvent, _enableDelay));
+            _onEnableEvent.Invoke();
     }
     private void OnDisable()
     {
         if (_invokeOnDisable)
-            StartCoroutine(_InvokeEventCD(_onDisableEvent, _disableDelay));
-    }
-    private void OnDestroy()
-    {
-        StopAllCoroutines();
-    }
-    public void _StartEnableEvent()
-    {
-        _onEnableEvent.Invoke();
-    }
-    public void _StartDisableEvent()
-    {
-        _onDisableEvent.Invoke();
-    }
-    IEnumerator _InvokeEventCD(UnityEvent iEvent, float iDelay)
-    {
-        yield return new WaitForSeconds(iDelay);
-        iEvent.Invoke();
+            _onEnableEvent.Invoke();
     }
 }

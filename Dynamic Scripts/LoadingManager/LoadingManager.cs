@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public class LoadingManager : Singleton_Abs<LoadingManager>
 {
+    // this event is always called after all of the new scene objects are initialized
+    // meaning methods > start,awake,onEnabled are all called before this event
     public static event UnityAction<_AllScenes> _onNewScene;
 
     [Header("General Settings")]
@@ -18,19 +20,24 @@ public class LoadingManager : Singleton_Abs<LoadingManager>
     [SerializeField] Slider _loadingSlider;
 
     [Header("Step Progress Settings")]
-    [SerializeField] GameObject[] _steps; 
+    [SerializeField] bool _useSteps = false;
+    [SerializeField, ConditionalField(nameof(_useSteps))] GameObject[] _steps;
 
     private void Start()
     {
         if (_autoLoadNext)
             _LoadScene(_nextScene);
     }
-
     public void _LoadScene(_AllScenes iNextScene)
     {
         StartCoroutine(_LoadAsync((int)iNextScene));
     }
-
+    public bool _CheckCurrentScene(_AllScenes iCurrentScene)
+    {
+        if (SceneManager.GetActiveScene().buildIndex == (int)iCurrentScene)
+            return true;
+        return false;
+    }
     private IEnumerator _LoadAsync(int iSceneIndex)
     {
         _canvas.gameObject.SetActive(true);
@@ -44,13 +51,14 @@ public class LoadingManager : Singleton_Abs<LoadingManager>
 
             float stepThreshold = 1f / _steps.Length;
 
-            for (int i = 0; i < _steps.Length; i++)
-            {
-                if (iProgress >= stepThreshold * (i + 1))
-                    _steps[i].SetActive(true);
-                else
-                    _steps[i].SetActive(false);
-            }
+            if (_useSteps)
+                for (int i = 0; i < _steps.Length; i++)
+                {
+                    if (iProgress >= stepThreshold * (i + 1))
+                        _steps[i].SetActive(true);
+                    else
+                        _steps[i].SetActive(false);
+                }
 
             if (iOperation.progress >= 0.9f)
             {
