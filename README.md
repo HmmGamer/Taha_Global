@@ -203,7 +203,7 @@ It ensures that only the **top-priority UI panel** reacts to the back button, pr
 - Optional Automatic creation of a **global anti-raycast layer** to block clicks behind top menus
 - you can o use **BackButtonController** to do everything in Editor without a single line of coding
 
-- ### ⚠️ Notes
+### ⚠️ Notes
 - its strictly recommended to use **BackButtonController** in the editor instead of manually handleing the **BackButtonManager** in the code
 - You can also check the **BackButtonController** and sample prefabs for more info.
 
