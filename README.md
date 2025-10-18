@@ -17,7 +17,7 @@ A collection of **essential C# utility scripts** for Unity game development, des
 
 ---
 
-## ⚙️ Features & Static Tools  
+## ⚙️ Static Tools  
 | Category | Script | Description |
 |----------|--------|-------------|
 | **🔖 Constants** | [`A.cs`] | Centralized tags, layers, and animation names |
@@ -25,16 +25,23 @@ A collection of **essential C# utility scripts** for Unity game development, des
 | **⏱️ Time** | [`TimeTools.cs`] | Time conversion (H:M:S) and countdown timers |
 | **💾 Saving** | [`SaveTools.cs`] | Save/Load arrays, lists, and ScriptableObjects |
 | **🆔 Unique IDs** | [`UniqueIdTools.cs`](#uniqueidtools) | Generate scene-specific unique IDs based on position |
-| **🧩 Pooling** | [`PoolManager.cs`] | Object pooling for optimal performance |
 | **🧮 Vectors** | [`VectorsAndQuaTools.cs`] | Vector and Quaternion utilities |
 | **📜 Enums** | [`EnumGenerator.cs`](#enumgenerator) | Auto-generate enums based on string fields |
 
 ---
 
-## ⚙️ Features & Dynamic Tools  
+## ⚙️ Dynamic Tools  
 | Name | Script | Description |
 |------|--------|-------------|
-| **🗨️ MessageBox** | [`MessageBoxManager.cs`](#messagebox) | A complete tool for showing confirmation/pop-ups without duplicating canvases |
+| **🗨️ MessageBox System** | [`MessageBoxManager.cs`](#messagebox) | A complete tool for showing confirmation/pop-ups without duplicating canvases |
+| **🧩 Pooling System** | [`PoolManager.cs`] | Easy Object pooling With optimal performance |
+| **🧭 Back Button System** | [`BackButtonManager.cs`](#backbuttonmanager) | Global manager handling Android “back” and windows “Esc” and UI closing hierarchy |
+
+---
+
+## ⚙️ Other Tools & Features  
+| Name | Script | Description |
+|------|--------|-------------|
 | **🕵️ Raycast Debugger** | [`UiRaycastDebuger.cs`](#raycastdebugger) | Debug tool to inspect UI raycast issues with buttons/canvases |
 | **🎬 EventController** | [`EventController.cs`](#eventcontroller) | Handle timeline events and debug them easily without signals |
 
@@ -92,21 +99,22 @@ public enum _AllFields
 
 ### 🔖 CreateButton  
 Generate a button in the Inspector to invoke methods in both play and edit mode.
+you can use CreateMonoButton for MonoBehaviour and CreateSoButton for scriptableObjects.
 
-**Note:** Some methods (like PlayerPrefs access) may only work in play mode.  
+**Note:** Some methods (like PlayerPrefs access) may only work in play mode based on unity version. 
 ![CreateButton Demo](Github%20Docs/create_button_vid.gif)
 
 **Usage:**
 ```csharp
 public class Sample : MonoBehaviour
 {
-    [CreateButton("Invoke Test 1")]
+    [CreateMonoButton("Invoke Test 1")]
     public void _Test1()
     {
         Debug.Log("Test1 was invoked!");
     }
 
-    [CreateButton("Invoke Test 2", 220, 40)]
+    [CreateMonoButton("Invoke Test 2", 220, 40)]
     public void _Test2()
     {
         Debug.Log("Test2 was invoked!");
@@ -182,9 +190,25 @@ public class _AutoInvokeSample : MonoBehaviour
     }
 }
 ```
+---
 
+### 🧭 BackButtonManager  
+This is a must have manager in any game, it controls all **back button interactions** globally across the game.
+It ensures that only the **top-priority UI panel** reacts to the back button, preventing interference between menus.
+
+**✅ Features**  
+- Manages all active panels with **BackButtonController**
+- Supports **both old and new Input Systems**  
+- Optional **double-click game exit** behavior that Integrates with **MsgBoxController** for custom exit confirmation  
+- Optional Automatic creation of a **global anti-raycast layer** to block clicks behind top menus
+- you can o use **BackButtonController** to do everything in Editor without a single line of coding
+
+- ### ⚠️ Notes
+- its strictly recommended to use **BackButtonController** in the editor instead of manually handleing the **BackButtonManager** in the code
+- You can also check the **BackButtonController** and sample prefabs for more info.
 
 ---
+
 ## 📌 Scene Unique ID Generator
 
 This utility provides a way to automatically generate **unique identifiers** for GameObjects based on their transform position and scene index. It helps eliminate the need for manually assigning IDs in the inspector.
@@ -275,7 +299,7 @@ public class Sample : MonoBehaviour
 ```
 ### 📌 Requirements
 
-Custom [CreateButton] attribute must be present in your project for Inspector buttons.
+Custom [CreateMonoButton] attribute must be present in your project for Inspector buttons.
 
 ### ⚠️ Notes
 - Must be run **only in the Unity Editor**
@@ -286,7 +310,7 @@ Custom [CreateButton] attribute must be present in your project for Inspector bu
 
 
 ## ✨ How to use
-**installation:** Directly add/clone the folder to your game (recommended folder: Scripts)
+**installation:** Directly add/clone the folder to your game (recommended folder: _Scripts)
 
 Attributes: Add them directly on your fields or methods (as shown in usage examples).
 
