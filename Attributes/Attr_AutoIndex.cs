@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 //class _AutoIndexSample : MonoBehaviour
 //{
-//    public LevelData[] _allLevelsData; // Each element's _level is set automatically
+//    public LevelData[] _allLevelsData; // Each element's _index is set automatically
 
 //    [System.Serializable]
 //    public class LevelData

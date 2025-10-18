@@ -3,29 +3,11 @@ using UnityEngine;
 using UnityEditor;
 using System.Reflection;
 using System.Collections.Generic;
+using CustomAttributes;
 
-/// <summary>
-/// Caution : this script is not optimized and completely tested yet
-/// 
-/// Automatically invokes a specified method when the field's value changes in the Inspector.
-/// Attach this to fields in a MonoBehaviour. The target method must be parameterless.
-/// The method is called whenever the field value changes or after play mode ends if the value changed.
-/// </summary>
-
-//class _AutoInvokeSample : MonoBehaviour
-//{
-//    [AutoInvoke("OnValueChanged")]
-//    public int _myValue;
-
-//    [AutoInvoke("OnValueChanged")]
-//    public string _myString;
-
-//    private void OnValueChanged()
-//    {
-//        Debug.Log($"Value changed: {_myValue}, {_myString}");
-//    }
-//}
-
+namespace CustomAttributes
+{
+    // The AutoInvoke attribute
     [AttributeUsage(AttributeTargets.Field)]
     public class AutoInvokeAttribute : PropertyAttribute
     {
@@ -221,3 +203,4 @@ using System.Collections.Generic;
         }
     }
 #endif
+}
