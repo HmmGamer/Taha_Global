@@ -60,6 +60,7 @@ public class Sample : MonoBehaviour
     [SerializeField, ConditionField(nameof(_hideFields), true)] GameObject _field3;
 }
 ```
+---
 
 ### 🔖 ConditionalEnum  
 Hide or show fields in the Inspector based on an enum value for better organization.
@@ -87,6 +88,7 @@ public enum _AllFields
     field1, field2_3, none
 }
 ```
+---
 
 ### 🔖 CreateButton  
 Generate a button in the Inspector to invoke methods in both play and edit mode.
@@ -111,6 +113,7 @@ public class Sample : MonoBehaviour
     }
 }
 ```
+---
 
 ### 🔖 ReadOnly  
 Disable and grey out a field in the Inspector for visual clarity or debugging.
@@ -125,6 +128,7 @@ public class Sample : MonoBehaviour
     [SerializeField, ReadOnly] float _readOnlyField = 3;
 }
 ```
+---
 
 ### 🔖 AutoIndex
 Automatically sets the integer field to match the element’s index in its array.  
@@ -148,7 +152,6 @@ public class _AutoIndexSample : MonoBehaviour
     }
 }
 ```
-
 ---
 
 ### 🔖 AutoInvoke
