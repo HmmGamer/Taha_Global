@@ -37,6 +37,19 @@ public class YesNoPanelController : MonoBehaviour
         }
         _confirmButton.onClick.AddListener(_CloseMenu);
     }
+    public void _OpenMenu(string iTitle, string iDescription, UnityEvent iYesActions)
+    {
+        _ActivateMenu(true);
+
+        _title.text = iTitle;
+        _description.text = iDescription;
+
+        _confirmButton.onClick.RemoveAllListeners();
+
+        if (iYesActions != null)
+            _confirmButton.onClick.AddListener(iYesActions.Invoke);
+        _confirmButton.onClick.AddListener(_CloseMenu);
+    }
     public void _CloseMenu()
     {
         _ActivateMenu(false);
@@ -45,6 +58,7 @@ public class YesNoPanelController : MonoBehaviour
     {
         _canvasGroup.blocksRaycasts = iActivation;
         _canvasGroup.alpha = iActivation ? 1 : 0;
+        _canvasGroup.interactable = iActivation;
         gameObject.SetActive(iActivation);
     }
 }

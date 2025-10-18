@@ -21,7 +21,6 @@ public enum _AllFields
     field1, field2_3, none
 }
 */
-
 public class ConditionalEnumAttribute : PropertyAttribute
 {
     public string _enumField;

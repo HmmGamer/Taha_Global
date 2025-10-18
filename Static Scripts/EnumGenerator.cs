@@ -3,144 +3,216 @@ using System.IO;
 using UnityEditor;
 #endif
 using UnityEngine;
-class _Comments
-{
-    //[SerializeField] _Test[] tests;
 
-    //[CreateButton("Make Enum")]
-    //private void _MakeEnum()
-    //{
-    //    EnumGenerator.GenerateEnums("testEnum", tests, nameof(_Test._name));
-    //    EnumGenerator.AddValue("testEnum", "None");
-    //}
-    //[Serializable]
-    //public class _Test
-    //{
-    //    public string _name;
-    //    public int _value;
-    //}
-}
+//class _EnumGeneratorSample : MonoBehaviour
+//{
+//    [SerializeField] _Test[] tests;
+
+//    [CreateMonoButton("Make Enum")]
+//    private void _MakeEnum()
+//    {
+//        EnumGenerator._GenerateEnums("testEnum", tests, nameof(_Test._name));
+//        EnumGenerator._AddValue("testEnum", "None");
+//    }
+
+//    [System.Serializable]
+//    public class _Test
+//    {
+//        public string _name;
+//        public int _value;
+//    }
+//}
+
 public static class EnumGenerator
 {
-    private const string GENERATION_PATH = "Assets/Scripts/GeneratedEnums";
+    private const string _DEFAULT_FILE_PATH = "Assets/_Scripts/Taha_Global/Others/GeneratedEnums";
 
-    public static void GenerateEnums<T>(string enumName, T[] dataArray, string fieldName) where T : class
+    public static void _GenerateEnums<T>(string iEnumName, T[] iDataArray, string iFieldName) where T : class
     {
 #if UNITY_EDITOR
-        if (Application.isPlaying)
-        {
-            Debug.LogError("Enum Generator Only Works in Editor");
+        if (!_CheckForErrors(iDataArray))
             return;
-        }
-        if (dataArray == null || dataArray.Length == 0)
+
+        string[] iNames = new string[iDataArray.Length];
+        for (int i = 0; i < iDataArray.Length; i++)
         {
-            Debug.LogWarning("Data array is empty or null.");
-            return;
-        }
-        Directory.CreateDirectory(GENERATION_PATH);
-        string filePath = Path.Combine(GENERATION_PATH, enumName + ".cs");
-        string enumCode = "using System;\n\n[Serializable]\npublic enum " + enumName + "\n{\n";
-        for (int i = 0; i < dataArray.Length; i++)
-        {
-            var field = dataArray[i].GetType().GetField(fieldName);
-            if (field == null)
+            var iField = iDataArray[i].GetType().GetField(iFieldName);
+            if (iField == null)
             {
-                Debug.LogError($"Class does not contain a field named '{fieldName}'.");
+                Debug.LogError($"Class does not contain a field named '{iFieldName}'.");
                 return;
             }
-            string enumValue = field.GetValue(dataArray[i]) as string;
-            if (string.IsNullOrEmpty(enumValue))
+            iNames[i] = iField.GetValue(iDataArray[i]) as string;
+        }
+
+        if (!_CheckForBannedSymbols(iNames))
+            return;
+
+        Directory.CreateDirectory(_DEFAULT_FILE_PATH);
+        string iCompletePath = Path.Combine(_DEFAULT_FILE_PATH, iEnumName + ".cs");
+
+        if (_CheckForDuplicatedFile(iCompletePath))
+            return;
+
+        string iCode = "using System;\n\n[Serializable]\npublic enum " + iEnumName + "\n{\n";
+        for (int i = 0; i < iDataArray.Length; i++)
+        {
+            string iValue = iNames[i];
+            if (string.IsNullOrEmpty(iValue))
             {
-                Debug.LogWarning($"{fieldName} value is null or empty at index {i}.");
+                Debug.LogWarning($"{iFieldName} value is null or empty at index {i}.");
                 continue;
             }
-            enumValue = enumValue.Replace(" ", "_").Replace("-", "_"); // Remove spaces and invalid characters
-            enumCode += "    " + enumValue + (i < dataArray.Length - 1 ? "," : "") + "\n";
+            iValue = iValue.Replace(" ", "_").Replace("-", "_");
+            iCode += "    " + iValue + (i < iDataArray.Length - 1 ? "," : "") + "\n";
         }
-        enumCode += "}";
-        File.WriteAllText(filePath, enumCode);
-        AssetDatabase.Refresh();
+        iCode += "}";
+        _WriteFileToDisk(iCompletePath, iCode);
 #endif
     }
-    public static void AddValue(string enumName, string newValue)
+
+    /// <summary>
+    /// Caution : using this method will change the order of the enum. 
+    /// if this was added after first phase of development use _AddValueToLast() instead.
+    /// </summary>
+    public static void _AddValueToFirst(string iEnumName, string iNewValue)
     {
 #if UNITY_EDITOR
-        if (Application.isPlaying)
+        _AddEnumValue(iEnumName, iNewValue, insertAtStart: true);
+#endif
+    }
+    public static void _AddValueToLast(string iEnumName, string iNewValue)
+    {
+#if UNITY_EDITOR
+        _AddEnumValue(iEnumName, iNewValue, insertAtStart: false);
+#endif
+    }
+
+    private static void _AddEnumValue(string iEnumName, string iNewValue, bool insertAtStart)
+    {
+#if UNITY_EDITOR
+        if (!_CheckForErrors(iEnumName, iNewValue))
+            return;
+
+        string iFilePath = Path.Combine(_DEFAULT_FILE_PATH, iEnumName + ".cs");
+        if (!File.Exists(iFilePath))
         {
-            Debug.LogError("Enum Generator Only Works in Editor");
+            Debug.LogError($"Enum file '{iEnumName}.cs' does not exist. Generate the enum first.");
             return;
         }
 
-        if (string.IsNullOrEmpty(newValue))
+        if (!_CheckForBannedSymbols(new string[] { iNewValue }))
+            return;
+
+        string iContent = File.ReadAllText(iFilePath);
+        string iCleanValue = iNewValue.Replace(" ", "_").Replace("-", "_");
+
+        if (iContent.Contains("    " + iCleanValue))
         {
-            Debug.LogWarning("New enum value cannot be null or empty.");
+            Debug.LogWarning($"Enum value '{iCleanValue}' already exists in {iEnumName}.");
             return;
         }
 
-        string filePath = Path.Combine(GENERATION_PATH, enumName + ".cs");
-
-        if (!File.Exists(filePath))
+        int iOpenBrace = iContent.IndexOf("{\n");
+        int iLastBrace = iContent.LastIndexOf('}');
+        if (iOpenBrace == -1 || iLastBrace == -1)
         {
-            Debug.LogError($"Enum file '{enumName}.cs' does not exist. Generate the enum first.");
+            Debug.LogError($"Invalid enum file format for '{iEnumName}.cs'.");
             return;
         }
 
-        string fileContent = File.ReadAllText(filePath);
+        string iBefore = iContent.Substring(0, iOpenBrace + 2);
+        string iAfter = iContent.Substring(iOpenBrace + 2, iLastBrace - (iOpenBrace + 2)).TrimEnd();
 
-        // Clean the new value (same rules as in GenerateEnums)
-        string cleanValue = newValue.Replace(" ", "_").Replace("-", "_");
-
-        // Check if the value already exists
-        if (fileContent.Contains("    " + cleanValue))
+        string iNewContent;
+        if (string.IsNullOrWhiteSpace(iAfter))
         {
-            Debug.LogWarning($"Enum value '{cleanValue}' already exists in {enumName}.");
-            return;
-        }
-
-        // Find the last enum value and add the new one
-        int lastBraceIndex = fileContent.LastIndexOf('}');
-        if (lastBraceIndex == -1)
-        {
-            Debug.LogError($"Invalid enum file format for '{enumName}.cs'.");
-            return;
-        }
-
-        // Find the opening brace to insert at the beginning
-        int openingBraceIndex = fileContent.IndexOf("{\n");
-        if (openingBraceIndex == -1)
-        {
-            Debug.LogError($"Invalid enum file format for '{enumName}.cs'.");
-            return;
-        }
-
-        string beforeEnum = fileContent.Substring(0, openingBraceIndex + 2); // Include "{\n"
-        string afterOpening = fileContent.Substring(openingBraceIndex + 2);
-        string beforeClosingBrace = afterOpening.Substring(0, afterOpening.LastIndexOf('}')).TrimEnd();
-
-        string newContent;
-        if (string.IsNullOrWhiteSpace(beforeClosingBrace))
-        {
-            // Empty enum, add first value
-            newContent = beforeEnum + "    " + cleanValue + "\n}";
+            // Empty enum, just add first value
+            iNewContent = iBefore + "    " + iCleanValue + "\n}";
         }
         else
         {
-            // Add new value at the beginning and comma after it
-            newContent = beforeEnum + "    " + cleanValue + ",\n" + beforeClosingBrace + "\n}";
+            if (insertAtStart)
+                iNewContent = iBefore + "    " + iCleanValue + ",\n" + iAfter + "\n}";
+            else
+            {
+                if (!iAfter.EndsWith(","))
+                    iAfter += ",";
+                iNewContent = iBefore + iAfter + "\n    " + iCleanValue + "\n}";
+            }
         }
 
-        File.WriteAllText(filePath, newContent);
-        AssetDatabase.Refresh();
-
-        Debug.Log($"Added '{cleanValue}' to enum '{enumName}'.");
+        _WriteFileToDisk(iFilePath, iNewContent);
+        Debug.Log($"Added '{iCleanValue}' to enum '{iEnumName}'.");
 #endif
     }
-    public static bool ContainsBannedSymbols(string iName)
+    private static void _WriteFileToDisk(string iPath, string iContent)
     {
-        if (iName.Contains(" ") || iName.Contains("-"))
+#if UNITY_EDITOR
+        File.WriteAllText(iPath, iContent);
+        AssetDatabase.Refresh();
+#endif
+    }
+
+    #region Error Detection
+    private static bool _CheckForBannedSymbols(string[] iArrayNames)
+    {
+        foreach (var item in iArrayNames)
         {
+            if (string.IsNullOrEmpty(item))
+                continue;
+
+            if (item.Contains(" ") || item.Contains("-") || char.IsDigit(item[0]))
+            {
+                Debug.LogError($"Enum name '{item}' can't contain spaces, '-' symbols, or start with a number.");
+                return false;
+            }
+        }
+        return true;
+    }
+    private static bool _CheckForErrors<T>(T[] iDataArray)
+    {
+        if (Application.isPlaying)
+        {
+            Debug.LogError("Enum Generator Only Works in Editor");
+            return false;
+        }
+        if (iDataArray == null || iDataArray.Length == 0)
+        {
+            Debug.LogWarning("Data array is empty or null.");
             return false;
         }
         return true;
     }
+    private static bool _CheckForErrors(string iEnumName, string iNewValue)
+    {
+        if (Application.isPlaying)
+        {
+            Debug.LogError("Enum Generator Only Works in Editor");
+            return false;
+        }
+        if (string.IsNullOrEmpty(iEnumName) || string.IsNullOrEmpty(iNewValue))
+        {
+            Debug.LogWarning("enum name or new value is empty.");
+            return false;
+        }
+        return true;
+    }
+    private static bool _CheckForDuplicatedFile(string iPath)
+    {
+        if (File.Exists(iPath))
+        {
+            string fullPath = Path.GetFullPath(iPath).Replace("\\", "/");
+            string defaultPath = Path.GetFullPath(Path.Combine(_DEFAULT_FILE_PATH, Path.GetFileName(iPath))).Replace("\\", "/");
+
+            if (fullPath != defaultPath)
+            {
+                Debug.LogWarning($"Enum file '{Path.GetFileName(iPath)}' already exists in a different path: {fullPath}");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    #endregion
 }

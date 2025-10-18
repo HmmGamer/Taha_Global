@@ -46,9 +46,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141286e69ef1c3e4f992840a13f0de38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _jobDescription: 'this is for testing the msgBox system.
+
+    it enables the msg
+    box at the start.'
+  _hasManualEvent: 0
   _invokeOnEnable: 1
   _invokeOnDisable: 0
-  _enableDelay: 0.5
+  _manualEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _onEnableEvent:
     m_PersistentCalls:
       m_Calls:
@@ -64,7 +71,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _disableDelay: 0
   _onDisableEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -81,6 +87,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _messageType: 1
+  _autoAddToButtons: 0
+  _msgButton: {fileID: 0}
   _title: Hi
   _description: do you want to disable the menu?
   _confirmEvent:
@@ -111,6 +119,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _messageType: 0
+  _autoAddToButtons: 0
+  _msgButton: {fileID: 0}
   _title: the menu was disabled
   _description: 
   _confirmEvent:

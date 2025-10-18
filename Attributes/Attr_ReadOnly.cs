@@ -1,6 +1,9 @@
 using UnityEngine;
-using UnityEditor;
 using System;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
 public class ReadOnlyAttribute : PropertyAttribute
@@ -76,8 +79,8 @@ public class ReadOnlyDrawer : PropertyDrawer
     {
         _heightCache.Clear();
     }
-#endif
 }
+
 
 // Alternative ultra-lightweight version for maximum performance
 [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
@@ -116,3 +119,4 @@ public class ReadOnlyDrawerUltraLight : PropertyDrawer
         return EditorGUI.GetPropertyHeight(property, label, true);
     }
 }
+#endif

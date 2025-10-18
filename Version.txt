@@ -1,15 +1,1 @@
-Current Version : 1.2.5
-
-Confirmed Future Updates : adding more documents and readme for other tools
-
------------------------------------------------------------------------------------------
-1.2.5 Update : improved attributes efficiency with AI
------------------------------------------------------------------------------------------
-1.2.4 Update : changed the logic of Pool Manager and fixed a bug in Unique Key Generator
------------------------------------------------------------------------------------------
-1.2.3 Update : added readme and more comments
------------------------------------------------------------------------------------------
-1.2.2 Update : changed the file order and separated the tools for more clarity
------------------------------------------------------------------------------------------
-1.2.1 Update : removed unfinished products and updated save tools
------------------------------------------------------------------------------------------
+Current Version : 2.1.1

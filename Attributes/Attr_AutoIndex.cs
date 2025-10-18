@@ -4,6 +4,24 @@ using System.Reflection;
 using UnityEditor;
 using System.Collections.Generic;
 
+/// <summary>
+/// Automatically sets the integer field to match the element's index in its array.
+/// The index is automatically updated in the Inspector whenever the array changes or elements are reordered.
+/// </summary>
+
+//class _AutoIndexSample : MonoBehaviour
+//{
+//    public LevelData[] _allLevelsData; // Each element's _index is set automatically
+
+//    [System.Serializable]
+//    public class LevelData
+//    {
+//        [AutoIndex, ReadOnly] public int _level;
+//        public string _someValue;
+//    }
+//}
+
+
 [AttributeUsage(AttributeTargets.Field)]
 public class AutoIndexAttribute : PropertyAttribute { }
 

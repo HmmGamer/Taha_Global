@@ -1,17 +1,17 @@
-///
-/// you can use this instead of manual singleton coding
-/// 
-/* example :
- * 
- * public class Sample : Singleton_Abs<Sample>
- * {
- *    private void Start()
- *   {
- *       print(_instance.name);
- *   }
- * }
- */
 using UnityEngine;
+
+/// <summary>
+/// you can use this instead of manual singleton coding
+/// you can override the awake if needed (protected override void Awake())
+/// </summary>
+
+public class Sample : Singleton_Abs<Sample>
+{
+    private void Start()
+    {
+        print(_instance.name);
+    }
+}
 
 public abstract class Singleton_Abs<T> : MonoBehaviour where T : MonoBehaviour
 {

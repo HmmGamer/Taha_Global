@@ -63,21 +63,27 @@ public static class TimeTools
     }
     public static string TotalStringTime(float iTime)
     {
-        int Hour = 0;
+        //int Hour = 0;
         int minutes = 0;
         int Seconds = 0;
-        if (iTime / 3600 > 1)
-        {
-            Hour = (int)(iTime / 3600);
-            iTime -= Hour * 3600;
-        }
+        //if (iTime / 3600 > 1)
+        //{
+        //    Hour = (int)(iTime / 3600);
+        //    iTime -= Hour * 3600;
+        //}
         if (iTime / 60 > 1)
         {
             minutes = (int)(iTime / 60);
             iTime -= minutes * 60;
         }
         Seconds = (int)iTime;
-        string _Result = System.String.Format("{0} : {1} : {2}", Hour, minutes, Seconds);
+
+        string _Result;
+        if (Seconds > 9)
+            _Result = string.Format("{0}:{1}", minutes, Seconds);
+        else
+            _Result = minutes.ToString() + ":0" + Seconds.ToString();
+
         return _Result;
     }
     public static string ReverseTimerString(float iTime, float iTimerTime)
