@@ -12,6 +12,8 @@ A collection of **essential C# utility scripts** for Unity game development, des
 | **🔖 Conditional Enum** | [`Attr_ConditionEnum.cs`](#-conditionalenum) | Show or hide a field based on the value of an enum |
 | **🔖 Create Buttons** | [`Attr_CreateButton.cs`](#-createbutton) | Generate a button in the Inspector to invoke a method |
 | **🔖 Read Only Field** | [`Attr_ReadOnly.cs`](#-readonly) | Make a field read-only and greyed-out for debug/visual purposes |
+| **🔖 Auto Index** | [`Attr_AutoIndex.cs`](#-autoindex) | Automatically assigns array element index values to integer fields |
+| **🔖 Auto Invoke** | [`Attr_AutoInvoke.cs`](#-autoinvoke) | Automatically calls a method when a serialized field value changes |
 
 ---
 
@@ -122,6 +124,60 @@ public class Sample : MonoBehaviour
     [SerializeField, ReadOnly] float _readOnlyField = 3;
 }
 ```
+### 🔖 AutoIndex
+Automatically sets the integer field to match the element’s index in its array.  
+The index is **automatically updated** whenever array elements are **reordered, added, or removed**.
+
+**Note:** Works on arrays and lists in `MonoBehaviour` or `ScriptableObject` classes.
+
+![AutoIndex Demo](Github%20Docs/autoindex_vid.gif)
+
+**Usage:**
+```csharp
+public class _AutoIndexSample : MonoBehaviour
+{
+    public LevelData[] _allLevelsData; // Each element's _level is set automatically
+
+    [System.Serializable]
+    public class LevelData
+    {
+        [AutoIndex, ReadOnly] public int _level;
+        public string _someValue;
+    }
+}
+```
+
+---
+
+### 🔖 AutoInvoke
+Automatically invokes a specified method whenever a serialized field’s value changes in the Inspector.
+
+**Caution:** This script is still experimental and not fully optimized.
+
+**Notes:**  
+- The target method **must be parameterless**.  
+- Works with multiple fields calling the same method.  
+- The method is called **instantly on change**, and again **after exiting Play Mode** if values changed during editing.  
+
+![AutoInvoke Demo](Github%20Docs/autoinvoke_vid.gif)
+
+**Usage:**
+```csharp
+public class _AutoInvokeSample : MonoBehaviour
+{
+    [AutoInvoke("OnValueChanged")]
+    public int _myValue;
+
+    [AutoInvoke("OnValueChanged")]
+    public string _myString;
+
+    private void OnValueChanged()
+    {
+        Debug.Log($"Value changed: {_myValue}, {_myString}");
+    }
+}
+```
+
 
 ---
 ## 📌 Scene Unique ID Generator
