@@ -93,6 +93,7 @@ Generate a button in the Inspector to invoke methods in both play and edit mode.
 
 **Note:** Some methods (like PlayerPrefs access) may only work in play mode.  
 ![CreateButton Demo](Github%20Docs/create_button_vid.gif)
+
 **Usage:**
 ```csharp
 public class Sample : MonoBehaviour
@@ -124,6 +125,7 @@ public class Sample : MonoBehaviour
     [SerializeField, ReadOnly] float _readOnlyField = 3;
 }
 ```
+
 ### 🔖 AutoIndex
 Automatically sets the integer field to match the element’s index in its array.  
 The index is **automatically updated** whenever array elements are **reordered, added, or removed**.
