@@ -1,7 +1,7 @@
 # 🌍 Taha_Global
 
 ## 🚀 Unity Utility Toolkit  
-A collection of **essential C# utility scripts** for Unity game development, designed to **simplify common tasks** and **eliminate hardcoding**, crafted by **[Taha Mirheidari](https://github.com/your-github-username)**.
+A collection of **essential C# utility scripts** for Unity game development, designed to **simplify common tasks** and **eliminate hardcoding**, crafted by **[Taha Mirheidari](https://github.com/HmmGamer)**.
 
 ---
 
