@@ -60,11 +60,11 @@ Hide or show fields in the Inspector based on a single bool, making your Inspect
 public class Sample : MonoBehaviour
 {
     [SerializeField] bool _showFields;
-    [SerializeField, ConditionField(nameof(_showFields))] float _field1;
-    [SerializeField, ConditionField(nameof(_showFields))] Vector3 _field2;
+    [SerializeField, ConditionalField(nameof(_showFields))] float _field1;
+    [SerializeField, ConditionalField(nameof(_showFields))] Vector3 _field2;
 
     [SerializeField] bool _hideFields;
-    [SerializeField, ConditionField(nameof(_hideFields), true)] GameObject _field3;
+    [SerializeField, ConditionalField(nameof(_hideFields), true)] GameObject _field3;
 }
 ```
 ---
@@ -203,7 +203,7 @@ It ensures that only the **top-priority UI panel** reacts to the back button, pr
 - Optional Automatic creation of a **global anti-raycast layer** to block clicks behind top menus
 - you can o use **BackButtonController** to do everything in Editor without a single line of coding
 
-### ⚠️ Notes
+**Notes:**  
 - its strictly recommended to use **BackButtonController** in the editor instead of manually handleing the **BackButtonManager** in the code
 - You can also check the **BackButtonController** and sample prefabs for more info.
 
@@ -239,7 +239,7 @@ To extract the scene index from an ID:
 int sceneIndex = UniqueIdTools._GetUniqueIdScene(id);
 ```
 
-### ⚠️ Guidelines
+## ⚠️ Guidelines
 - **Do not** attach this ID tool to multiple scripts on the same GameObject or overlapping positions under the same parent—this can lead to duplicate IDs and logical bugs.
 
 ---
@@ -301,13 +301,14 @@ public class Sample : MonoBehaviour
 
 Custom [CreateMonoButton] attribute must be present in your project for Inspector buttons.
 
-### ⚠️ Notes
+**Notes:**  
 - Must be run **only in the Unity Editor**
 - Will not work during play mode
 - Handles basic name sanitization (spaces and dashes replaced with underscores)
 - For accessing the enum first generate it in the inspector
 - ![EnumGenerator Demo](Github%20Docs/EnumGenerator_Vid.gif)
 
+---
 
 ## ✨ How to use
 **installation:** Directly add/clone the folder to your game (recommended folder: _Scripts)
