@@ -42,8 +42,8 @@ A collection of **essential C# utility scripts** for Unity game development, des
 ## ⚙️ Other Tools & Features  
 | Name | Script | Description |
 |------|--------|-------------|
-| **🕵️ Raycast Debugger** | [`UiRaycastDebuger.cs`](#raycastdebugger) | Debug tool to inspect UI raycast issues with buttons/canvases |
-| **🎬 EventController** | [`EventController.cs`](#eventcontroller) | Handle timeline events and debug them easily without signals |
+| **🕵️ Raycast Debugger** | [`UiRaycastDebuger.cs`] | Debug tool to inspect UI raycast issues with buttons/canvases |
+| **🎬 EventController** | [`EventController.cs`] | Handle timeline events and debug them easily without signals |
 
 ---
 
