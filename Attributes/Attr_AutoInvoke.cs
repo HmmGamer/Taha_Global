@@ -3,10 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Reflection;
 using System.Collections.Generic;
-using CustomAttributes;
 
-namespace CustomAttributes
-{
     // The AutoInvoke attribute
     [AttributeUsage(AttributeTargets.Field)]
     public class AutoInvokeAttribute : PropertyAttribute
@@ -203,4 +200,3 @@ namespace CustomAttributes
         }
     }
 #endif
-}

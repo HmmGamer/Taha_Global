@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-/*
-public class Sample : MonoBehaviour
+
+private class CondtionalField_Sample : MonoBehaviour
 {
     [SerializeField] _AllFields _fields;
 
@@ -15,12 +15,13 @@ public class Sample : MonoBehaviour
 
     [SerializeField, ConditionalEnum(nameof(_fields), (int)_AllFields.field2_3)]
     float field3;
+
+    public enum _AllFields
+    {
+        field1, field2_3, none
+    }
 }
-public enum _AllFields
-{
-    field1, field2_3, none
-}
-*/
+
 public class ConditionalEnumAttribute : PropertyAttribute
 {
     public string _enumField;
