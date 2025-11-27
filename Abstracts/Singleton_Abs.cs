@@ -5,7 +5,7 @@ using UnityEngine;
 /// you can override the awake if needed (protected override void Awake())
 /// </summary>
 
-private class Singleton_Sample : Singleton_Abs<Singleton_Sample>
+public class Singleton_Sample : Singleton_Abs<Singleton_Sample>
 {
     private void Start()
     {

@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections.Generic;
 
 
-private class CondtionalField_Sample : MonoBehaviour
+public class CondtionalField_Sample : MonoBehaviour
 {
     [SerializeField] _AllFields _fields;
 

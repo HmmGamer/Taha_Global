@@ -7,9 +7,9 @@ using UnityEngine.Events;
 /// you can use MsgBoxController for easier usage in the scene.
 /// 
 /// Key Features:
-/// • Supports both confirmation (Yes/No) and notification-style messages.
-/// • Automatically manages scene persistence with DontDestroyOnLoad.
-/// • Supports both UnityAction and UnityEvent callbacks for flexibility.
+///    Supports both confirmation (Yes/No) and notification-style messages.
+///    Automatically manages scene persistence with DontDestroyOnLoad.
+///    Supports both UnityAction and UnityEvent callbacks for flexibility.
 /// </summary>
 
 public class MsgBoxManager : Singleton_Abs<MsgBoxManager>

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// The index is automatically updated in the Inspector whenever the array changes or elements are reordered.
 /// </summary>
 
-private class _AutoIndexSample : MonoBehaviour
+public class _AutoIndexSample : MonoBehaviour
 {
     public LevelData[] _allLevelsData; // Each element's _index is set automatically
 
