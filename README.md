@@ -311,7 +311,7 @@ Custom [CreateMonoButton] attribute must be present in your project for Inspecto
 ---
 
 ## ✨ How to use
-**installation:** Directly add/clone the folder to your game (recommended folder: _Scripts)
+**installation:** Directly add/clone the folder to your game (recommended folder: _Scripts).
 
 Attributes: Add them directly on your fields or methods (as shown in usage examples).
 
