@@ -9,10 +9,10 @@ using UnityEngine.Events;
 /// </summary>
 public class BackButtonController : MonoBehaviour
 {
-    const int _MAX_CANVAS_PRIORITY = 99;
+    const int _MAX_CANVAS_PRIORITY = 9999;
 
-    [Header("false => you can't click out of the current menu Ui buttons even if " +
-        "they have more priority, so dont activate this for always active menus")]
+    [Tooltip("false => you can't click out of the current menu Ui buttons. " +
+        "Warning: dont activate this for always active menus")]
     [SerializeField] bool _blockOutsideMenuClicks = false;
 
     [Tooltip("true => if you click out of the current menu, the menu will close")]
@@ -22,6 +22,7 @@ public class BackButtonController : MonoBehaviour
     [Tooltip("if more than one menu with BB controller is active, " +
         "the one with the most priority will be disabled first")]
     [SerializeField] int _priorityOrder;
+
     [SerializeField] UnityEvent _onEnableEvent;
     [SerializeField] UnityEvent _onDisableEvent;
 
@@ -34,10 +35,21 @@ public class BackButtonController : MonoBehaviour
     }
     private void OnEnable()
     {
+        #region Editor Only
+#if UNITY_EDITOR
+        if (BackButtonManager._instance == null)
+        {
+            Debug.LogError("The BB manager needs to be higher than the BB Controller" +
+                " in the execution order");
+            return;
+        }
+#endif
+        #endregion
+
         if (_blockOutsideMenuClicks)
             _ChangeCanvasPriorityToMax();
 
-        BackButtonManager._instance._RegisterPanel(gameObject, this, _priorityOrder);
+        BackButtonManager._instance._RegisterPanel(gameObject, this, _priorityOrder, _onDisableEvent);
         _onEnableEvent.Invoke();
     }
     private void OnDisable()
@@ -50,6 +62,7 @@ public class BackButtonController : MonoBehaviour
         {
             BackButtonManager._instance._UnRegisterPanel(gameObject);
         }
+
         _onDisableEvent.Invoke();
     }
 
@@ -69,7 +82,22 @@ public class BackButtonController : MonoBehaviour
         }
         if (foundCanvas == null)
         {
-            Debug.LogError("No Canvas found in the parent hierarchy.");
+            MessageBoxController msgBox;
+            msgBox = GetComponent<MessageBoxController>();
+
+            if (msgBox != null)
+            {
+                if (MessageBoxManager._instance == null)
+                {
+                    Debug.LogError("The MsgBox manager needs to be higher than the " +
+                        "BB Controller in the execution order");
+                    return;
+                }
+
+                foundCanvas = MessageBoxManager._instance._msgBoxCanvas;
+            }
+            else
+                Debug.LogError("No Canvas found in the parent hierarchy.");
         }
         if (foundCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
         {
@@ -78,6 +106,9 @@ public class BackButtonController : MonoBehaviour
 
         _parentCanvas = foundCanvas;
         _canvasOriginalPriority = _parentCanvas.sortingOrder;
+
+        if (_priorityOrder == 0)
+            _priorityOrder = _parentCanvas.sortingOrder;
     }
 
     /// <summary>

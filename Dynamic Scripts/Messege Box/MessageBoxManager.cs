@@ -4,22 +4,16 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class MessageBoxManager : MonoBehaviour
+public class MessageBoxManager : Singleton_Abs<MessageBoxManager>
 {
-    public static MessageBoxManager Instance;
-
     [SerializeField] YesNoPanelController _yesNoController;
     [SerializeField] NotificationController _NotificationController;
+    public Canvas _msgBoxCanvas;
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        base.Awake();
+
         DontDestroyOnLoad(transform.root);
     }
     public void _ShowYesNoMessage(string iTitle, string iDescription, params UnityAction[] iYesActions)
@@ -34,5 +28,11 @@ public class MessageBoxManager : MonoBehaviour
     public void _ShowNotificationMessage(string iTitle)
     {
         _NotificationController._ShowNotification(iTitle);
+    }
+    public bool _IsMsgBoxActive()
+    {
+        if (_yesNoController._IsActive() || _NotificationController._IsActive())
+            return true;
+        return false;
     }
 }

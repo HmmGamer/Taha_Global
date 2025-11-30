@@ -7,6 +7,14 @@ using UnityEngine;
 
 public class Singleton_Sample : Singleton_Abs<Singleton_Sample>
 {
+    /// <summary>
+    /// using awake is completely optional
+    /// </summary>
+    protected override void Awake()
+    {
+        base.Awake();
+        print(_instance.name);
+    }
     private void Start()
     {
         print(_instance.name);

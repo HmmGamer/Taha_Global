@@ -15,23 +15,46 @@ public class MessageBoxController : MonoBehaviour
     [Header("Message Info")]
     [SerializeField] string _title;
 
-    [SerializeField, ConditionalEnum(nameof(_messageType), (int)_AllMsgTypes.yesNo)]
+    [SerializeField, ConditionalEnum(nameof(_messageType), (int)_AllMsgTypes.yesNo), TextArea]
     string _description;
 
     [SerializeField, ConditionalEnum(nameof(_messageType), (int)_AllMsgTypes.yesNo)]
     UnityEvent _confirmEvent;
+    UnityAction _lastAddedAction;
 
     private void Start()
     {
         if (_autoAddToButtons)
             _msgButton.onClick.AddListener(_StartMsg);
     }
+    private void OnDisable()
+    {
+        try
+        {
+            _confirmEvent.RemoveListener(_lastAddedAction);
+            _lastAddedAction = null;
+        }
+        catch
+        {
+
+        }
+    }
     public void _StartMsg()
     {
+        #region Editor Only
+#if UNITY_EDITOR
+        if (MessageBoxManager._instance == null)
+        {
+            Debug.LogError("There is no MsgBoxManager in the scene");
+            return;
+        }
+#endif
+        #endregion
+
         if (_messageType == _AllMsgTypes.notification)
-            MessageBoxManager.Instance._ShowNotificationMessage(_title);
+            MessageBoxManager._instance._ShowNotificationMessage(_title);
         else if (_messageType == _AllMsgTypes.yesNo)
-            MessageBoxManager.Instance._ShowYesNoMessage(_title, _description, _confirmEvent.Invoke);
+            MessageBoxManager._instance._ShowYesNoMessage(_title, _description, _confirmEvent.Invoke);
     }
     public void _AddEvent(UnityAction iAction, bool iRemoveOtherEvents = false)
     {
@@ -47,15 +70,17 @@ public class MessageBoxController : MonoBehaviour
     }
     public void _AskForConfirmation(UnityEvent iEvent)
     {
-        _confirmEvent.AddListener(iEvent.Invoke);
-        _confirmEvent.Invoke();
-        _confirmEvent.RemoveListener(iEvent.Invoke);
+        _lastAddedAction = iEvent.Invoke;
+        _confirmEvent.AddListener(_lastAddedAction);
+
+        _StartMsg();
     }
     public void _AskForConfirmation(UnityAction iEvent)
     {
-        _confirmEvent.AddListener(iEvent);
-        _confirmEvent.Invoke();
-        _confirmEvent.RemoveListener(iEvent);
+        _lastAddedAction = iEvent;
+        _confirmEvent.AddListener(_lastAddedAction);
+
+        _StartMsg();
     }
     public enum _AllMsgTypes
     {

@@ -1,44 +1,50 @@
-///
-/// this class is used to avoid hard coding
-///
-
 using UnityEngine;
 
+/// <summary>
+/// this class is used to store values that cause hardcoding
+/// </summary>
 public static class A
 {
     public static class Tags
     {
         public const string player = "Player";
-        public const string enemy = "enemy";
-        public const string arrow = "Arrow";
     }
     public static class LayerMasks
     {
         public static LayerMask player = LayerMask.GetMask("player");
-        public static LayerMask floor = LayerMask.GetMask("floor");
     }
     public static class Layers
     {
         public const int player = 8;
-        public const int default1 = 0;
-        public const int item = 7;
-        public const int floor = 6;
     }
     public static class Anim
     {
-        public const string playerJump = "jump";
-        public const string playerSpeed = "Speed";
-        public const string playerIsOnWall = "isOnWall";
-        public const string playerIsGrounded = "isOnGround";
-        public const string playerIsJumping = "isJumping";
-        public const string enemyAttack = "attack";
+        // optional naming : trigger => t, Bool => b, int => i, float => f
+        public const string t_collectAirdrop = "wco2k";
     }
     public static class DataKey
     {
-        public const string loadLevel = "ji385";
-        //public static string GetKeyIdData(int iId)
-        //{
-        //    return keyIdData + iId;
-        //}
+        public const int True = 331;
+        public const int False = 23;
+
+        public const string hasShownRateUs = "sd3";  // taha global reference
+        public const string totalLoadTimes = "dde";  // taha global reference
+        public const string areAdsRemoved = "0chg";  // taha global reference
+        public const string timersData = "1i115";    // taha global reference
+
+        public const string currentLevelIndex = "ji385";
+        public const string lastUnfinishedLevel = "ff3da";
+        public const string savedData = "sce3";
+
+        public static bool _IsTrue(string iKey)
+        {
+            if (PlayerPrefs.GetInt(iKey, False) == True)
+                return true;
+            return false;    
+        }
+        public static void _SetTrue(string iKey)
+        {
+            PlayerPrefs.SetInt (iKey, True);
+        }
     }
 }

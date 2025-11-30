@@ -21,7 +21,6 @@ public class _AutoIndexSample : MonoBehaviour
     }
 }
 
-
 [AttributeUsage(AttributeTargets.Field)]
 public class AutoIndexAttribute : PropertyAttribute { }
 

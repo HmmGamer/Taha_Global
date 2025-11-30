@@ -26,6 +26,14 @@ public class NotificationController : MonoBehaviour
     private void _PanelActivation()
     {
         // remember to check the animator so additional triggers dont cause bugs
+        // the animation needs to change the canvas group alpha
         _anim.SetTrigger(ANIM_TRIGGER);
+    }
+    public bool _IsActive()
+    {
+        if (_canvasGroup.alpha == 0)
+            return false;
+
+        return true;
     }
 }

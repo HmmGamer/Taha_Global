@@ -11,22 +11,24 @@ using UnityEngine.InputSystem;
 #endregion
 
 /// <summary>
-/// TODO: test the new input system
+/// TODO: test the new input system, reorganize properties
+/// 
+/// you can read the user manual for more info about the BackButtonManager features
 /// </summary>
 public class BackButtonManager : Singleton_Abs<BackButtonManager>
 {
     [Header("Exit Settings")]
     [SerializeField] bool _autoGameQuit = true;
-    [SerializeField, ConditionalField(nameof(_autoGameQuit))] MsgBoxController _exitMsgBox;
+    [SerializeField, ConditionalField(nameof(_autoGameQuit))] MessageBoxController _exitMsgBox;
 
     [Tooltip("if true => the game is closed after 2 backButtons")]
     [SerializeField] bool _isDoubleClickExit;
 
-    [Tooltip("minimum delay before 2 clicks")]
+    [Tooltip("minimum delay before second click can trigger exit")]
     [SerializeField, ConditionalField(nameof(_isDoubleClickExit))]
-    float _doubleClickExitDelay;
+    float _doubleClickExitDelay = 0.3f;
 
-    [Tooltip("time before the first click is expired (match it with notification)")]
+    [Tooltip("time before the first click is expired (recommended to match it with notification time)")]
     [SerializeField, ConditionalField(nameof(_isDoubleClickExit))]
     float _clickExpireTime;
 
@@ -34,14 +36,19 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
     [SerializeField] Canvas _mainCanvas;
     [SerializeField] Color _raycastBgColor = Color.clear;
 
+    bool _isFirstClickActive;
+    bool _isDoubleClickDelayFinished;
+
     List<_PanelsClass> _registeredPanels = new List<_PanelsClass>();
-    bool _isFirstClickActive = false;
-    Coroutine _exitTimerCoroutine;
+    Coroutine _firstClickExpireCoroutine;
+    Coroutine _doubleClickDelayCoroutine;
     Image _AntiRayCasterImage;
     Button _AntiRaycastButton;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         DontDestroyOnLoad(transform.root);
         _InitGlobalAntiRayCaster();
     }
@@ -109,49 +116,85 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
             return;
         }
 
-        _mainCanvas.sortingOrder = _GetTopActivePanel()._bbController._GetCanvasPriority();
-        _AntiRayCasterImage.gameObject.SetActive(true);
+        _mainCanvas.sortingOrder = topPanel._bbController._GetCanvasPriority();
+        if (topPanel._bbController._GetIsBlockOutsideClick())
+            _AntiRayCasterImage.gameObject.SetActive(true);
     }
     public void _OnBackButtonPressed()
     {
+        // check if a panel is open and close it first
         _PanelsClass topPanel = _GetTopActivePanel();
         if (topPanel != null)
         {
             topPanel._panel.SetActive(false);
             _UnRegisterPanel(topPanel._panel);
+
             return;
         }
 
+        // no panels are open, so we handle exiting logic
         if (_isDoubleClickExit && _autoGameQuit)
         {
+            // if first click already happened
             if (_isFirstClickActive)
             {
-                if (_exitTimerCoroutine != null)
+                // if delay before second click is NOT finished, ignore (prevents accidental exit)
+                if (!_isDoubleClickDelayFinished)
                 {
-                    StopCoroutine(_exitTimerCoroutine);
+                    return;
                 }
-                Application.Quit();
+
+                if (_firstClickExpireCoroutine != null)
+                {
+                    StopCoroutine(_firstClickExpireCoroutine);
+                }
+
+                _ExitApplication();
+                return;
             }
-            else
-            {
-                _isFirstClickActive = true;
-                _exitTimerCoroutine = StartCoroutine(_ExitTimer());
-            }
-        }
-        else
-        {
+
+            // first click
+            _isFirstClickActive = true;
+            _isDoubleClickDelayFinished = false;
+
+            // start timers (delay + expire)
+            _doubleClickDelayCoroutine = StartCoroutine(_doubleClickExitDelayCD());
+            _firstClickExpireCoroutine = StartCoroutine(_ExpireFirstClick());
+
             _exitMsgBox._StartMsg();
         }
+        else if (!_isDoubleClickExit && _autoGameQuit)
+        {
+            if (!MessageBoxManager._instance._IsMsgBoxActive())
+                _exitMsgBox._StartMsg();
+        }
     }
-    IEnumerator _ExitTimer()
+
+    public void _ExitApplication()
+    {
+        #region Editor Only
+#if UNITY_EDITOR
+        Debug.Log("you can't exit in play mode!");
+#endif
+        #endregion
+
+        Application.Quit();
+    }
+    IEnumerator _ExpireFirstClick()
     {
         yield return new WaitForSeconds(_clickExpireTime);
         _isFirstClickActive = false;
-        _exitTimerCoroutine = null;
+        _firstClickExpireCoroutine = null;
+        _isDoubleClickDelayFinished = false;
     }
-    public void _RegisterPanel(GameObject iPanel,BackButtonController iController, int iOrder)
+    IEnumerator _doubleClickExitDelayCD()
     {
-        _registeredPanels.Add(new _PanelsClass(iPanel, iController, iOrder));
+        yield return new WaitForSeconds(_doubleClickExitDelay);
+        _isDoubleClickDelayFinished = true;
+    }
+    public void _RegisterPanel(GameObject iPanel, BackButtonController iController, int iOrder, UnityEvent iEvent)
+    {
+        _registeredPanels.Add(new _PanelsClass(iPanel, iController, iOrder, iEvent));
         _UpdateAntiRayCasterOrder();
     }
     public void _UnRegisterPanel(GameObject iPanel)
@@ -203,11 +246,12 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
         public UnityEvent _optionalEvent;
 
         public _PanelsClass(GameObject iPanel, BackButtonController iController
-            , int iOrder)
+            , int iOrder, UnityEvent optionalEvent)
         {
             _panel = iPanel;
             _bbController = iController;
             _priorityOrder = iOrder;
+            _optionalEvent = optionalEvent;
         }
     }
 }

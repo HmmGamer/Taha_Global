@@ -9,6 +9,9 @@ public class AudioController : MonoBehaviour
     [Tooltip("true => automatically adds _playAudio event to the button")]
     [SerializeField] bool _playOnButtonClick;
     [SerializeField] bool _useSavedAudio;
+    [SerializeField] bool _playOneShot = false;
+    [SerializeField] bool _playOnAwake = false;
+    [SerializeField, Range(0, 1)] float _volume = 1;
 
     [SerializeField, ConditionalField(nameof(_useSavedAudio))]
     SavedSounds _audioName;
@@ -19,20 +22,24 @@ public class AudioController : MonoBehaviour
     {
         if (_playOnButtonClick)
         {
-            if (gameObject.TryGetComponent<Button>(out Button button))
+            Button button = gameObject.GetComponent<Button>();
+            if (button != null)
                 button.onClick.AddListener(_PlayAudio);
             else
-                Debug.LogError("attach button component to " + 
-                    gameObject.name + " or deactivate _playOnButtonClick boolean");
+                Debug.LogError("attach button component to " +
+                    gameObject.name + " or deactivate _playOnButtonClick condition");
         }
-            
+        if (_playOnAwake)
+            _PlayAudio();
     }
     public void _PlayAudio()
     {
+        if (AudioManager._instance == null) return;
+
         if (_useSavedAudio)
-            AudioManager._instance._PlayAudio(_audioType, _audioName);
+            AudioManager._instance._PlayAudio(_audioType, _audioName, _playOneShot, _volume);
         else
-            AudioManager._instance._PlayAudio(_audioType, _audio);
+            AudioManager._instance._PlayAudio(_audioType, _audio, _playOneShot, _volume);
     }
     public void _StopAudio()
     {

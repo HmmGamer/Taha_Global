@@ -2,8 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-
-public class CondtionalField_Sample : MonoBehaviour
+public class ConditionalField_Sample : MonoBehaviour
 {
     [SerializeField] _AllFields _fields;
 
