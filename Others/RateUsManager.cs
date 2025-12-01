@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class RateUsManager : MonoBehaviour
 {
     [SerializeField] int[] _showCd;
-    [SerializeField] MessageBoxController _msgBox;
+    [SerializeField] MsgBoxController _msgBox;
 
     bool _hasShownRateUs;
 

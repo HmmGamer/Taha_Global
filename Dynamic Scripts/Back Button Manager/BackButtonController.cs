@@ -82,19 +82,19 @@ public class BackButtonController : MonoBehaviour
         }
         if (foundCanvas == null)
         {
-            MessageBoxController msgBox;
-            msgBox = GetComponent<MessageBoxController>();
+            MsgBoxController msgBox;
+            msgBox = GetComponent<MsgBoxController>();
 
             if (msgBox != null)
             {
-                if (MessageBoxManager._instance == null)
+                if (MsgBoxManager._instance == null)
                 {
                     Debug.LogError("The MsgBox manager needs to be higher than the " +
                         "BB Controller in the execution order");
                     return;
                 }
 
-                foundCanvas = MessageBoxManager._instance._msgBoxCanvas;
+                foundCanvas = MsgBoxManager._instance._msgBoxCanvas;
             }
             else
                 Debug.LogError("No Canvas found in the parent hierarchy.");

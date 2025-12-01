@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class GeneralTools
@@ -19,16 +21,14 @@ public static class GeneralTools
         }
         return text;
     }
-
     public static void _RemoveAllChildren(GameObject iParent)
     {
         for (int i = iParent.transform.childCount - 1; i >= 0; i--)
         {
             GameObject iChild = iParent.transform.GetChild(i).gameObject;
-            Object.Destroy(iChild);
+            GameObject.Destroy(iChild);
         }
     }
-
     public static Vector2 _GetDirection(Directions iDirection)
     {
         if (iDirection == Directions.Up)
@@ -42,7 +42,6 @@ public static class GeneralTools
         else 
             return Vector2.zero;
     }
-
     public static Color _MakeColor(Vector4 iColor)
     {
         return new Color(iColor.x, iColor.y, iColor.z, iColor.w);

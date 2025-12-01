@@ -19,7 +19,7 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
 {
     [Header("Exit Settings")]
     [SerializeField] bool _autoGameQuit = true;
-    [SerializeField, ConditionalField(nameof(_autoGameQuit))] MessageBoxController _exitMsgBox;
+    [SerializeField, ConditionalField(nameof(_autoGameQuit))] MsgBoxController _exitMsgBox;
 
     [Tooltip("if true => the game is closed after 2 backButtons")]
     [SerializeField] bool _isDoubleClickExit;
@@ -165,7 +165,7 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
         }
         else if (!_isDoubleClickExit && _autoGameQuit)
         {
-            if (!MessageBoxManager._instance._IsMsgBoxActive())
+            if (!MsgBoxManager._instance._IsMsgBoxActive())
                 _exitMsgBox._StartMsg();
         }
     }
