@@ -18,7 +18,7 @@ public class RateUsManager : MonoBehaviour
     private void _CheckShowRateUs()
     {
         if (_hasShownRateUs)
-            if (LoadingTimesManager._instance._HasReachedNumber(_showCd))
+            if (LoadedTimesManager._instance._HasReachedNumber(_showCd))
                 _ShowRateUs_WithConfirmation();
     }
     private void _ShowRateUs_WithConfirmation()
