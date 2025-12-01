@@ -9,9 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5794132100508597278}
-  - component: {fileID: 3046232103210666735}
   - component: {fileID: 6707061530784586576}
-  - component: {fileID: 4799159498164630362}
+  - component: {fileID: 3046232103210666735}
   m_Layer: 0
   m_Name: SampleMsgBoxController
   m_TagString: Untagged
@@ -34,6 +33,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6707061530784586576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4341519785817359093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e767234ea96b74189bed1dfb67e1e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _messageType: 1
+  _autoAddToButtons: 0
+  _msgButton: {fileID: 0}
+  _title: Hi
+  _description: do you want to disable this sample object?
+  _confirmEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4341519785817359093}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3046232103210666735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,7 +80,7 @@ MonoBehaviour:
   _jobDescription: 'this is for testing the msgBox system.
 
     it enables the msg
-    box at the start.'
+    box ( yes no panel ) at the start.'
   _hasManualEvent: 0
   _invokeOnEnable: 1
   _invokeOnDisable: 0
@@ -72,57 +103,5 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _onDisableEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &6707061530784586576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4341519785817359093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7e767234ea96b74189bed1dfb67e1e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _messageType: 1
-  _autoAddToButtons: 0
-  _msgButton: {fileID: 0}
-  _title: Hi
-  _description: do you want to disable the menu?
-  _confirmEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4799159498164630362}
-        m_TargetAssemblyTypeName: MessageBoxController, Assembly-CSharp
-        m_MethodName: _StartMsg
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &4799159498164630362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4341519785817359093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7e767234ea96b74189bed1dfb67e1e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _messageType: 0
-  _autoAddToButtons: 0
-  _msgButton: {fileID: 0}
-  _title: the menu was disabled
-  _description: 
-  _confirmEvent:
     m_PersistentCalls:
       m_Calls: []

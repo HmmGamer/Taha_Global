@@ -1,9 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-/// <summary>
-/// this script is used to make using MsgBoxManager possible in the inspector.
-/// </summary>
 public class MsgBoxController : MonoBehaviour
 {
     [SerializeField] _AllMsgTypes _messageType;
@@ -30,17 +29,16 @@ public class MsgBoxController : MonoBehaviour
     }
     private void OnDisable()
     {
-        if (_confirmEvent != null && _lastAddedAction != null)
+        try
         {
             _confirmEvent.RemoveListener(_lastAddedAction);
             _lastAddedAction = null;
         }
-    }
+        catch
+        {
 
-    /// <summary>
-    /// The method opens the msg box.
-    /// you can call this via events in the inspector as well.
-    /// </summary>
+        }
+    }
     public void _StartMsg()
     {
         #region Editor Only
@@ -58,38 +56,18 @@ public class MsgBoxController : MonoBehaviour
         else if (_messageType == _AllMsgTypes.yesNo)
             MsgBoxManager._instance._ShowYesNoMessage(_title, _description, _confirmEvent.Invoke);
     }
-
-    /// <summary>
-    /// this used for managing the yes action event.
-    /// you can add a new events or override the current yes action events;
-    /// </summary>
     public void _AddEvent(UnityAction iAction, bool iRemoveOtherEvents = false)
     {
         if (iRemoveOtherEvents) _confirmEvent.RemoveAllListeners();
 
         _confirmEvent.AddListener(iAction);
     }
-
-    /// <summary>
-    /// this used for managing the yes action event.
-    /// you can add a new events or override the current yes action events;
-    /// </summary>
-    public void _AddEvent(UnityEvent iAction, bool iRemoveOtherEvents = false)
+    public void _ChangeEvent(UnityEvent iAction, bool iRemoveOtherEvents = false)
     {
         if (iRemoveOtherEvents) _confirmEvent.RemoveAllListeners();
 
         _confirmEvent.AddListener(iAction.Invoke);
     }
-
-    /// <summary>
-    /// this is a simple system to do something with confirmation.
-    /// 
-    /// this temporarily override the current yes action events and only call the 
-    ///     event passed as the parameter.
-    /// 
-    /// sample: when you want to start the next level, instead of calling the _StartNextLevel,
-    ///     call msgBoxController._AskForConfirmation(_StartNextLevel);
-    /// </summary>
     public void _AskForConfirmation(UnityEvent iEvent)
     {
         _lastAddedAction = iEvent.Invoke;
@@ -97,16 +75,6 @@ public class MsgBoxController : MonoBehaviour
 
         _StartMsg();
     }
-
-    /// <summary>
-    /// this is a simple system to do something with confirmation.
-    /// 
-    /// this temporarily override the current yes action events and only call the 
-    ///     event passed as the parameter.
-    /// 
-    /// sample: when you want to start the next level, instead of calling the _StartNextLevel,
-    ///     call msgBoxController._AskForConfirmation(_StartNextLevel);
-    /// </summary>
     public void _AskForConfirmation(UnityAction iEvent)
     {
         _lastAddedAction = iEvent;
