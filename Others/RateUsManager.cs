@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using TahaGlobal.MsgBox;
 public class RateUsManager : MonoBehaviour
 {
     [SerializeField] int[] _showCd;
@@ -27,7 +27,7 @@ public class RateUsManager : MonoBehaviour
         _event.AddListener(() => IntentManager._instance._OpenIntent(_Intents.RateUs));
         _event.AddListener(_SaveHasShownRateUs);
 
-        _msgBox._AskForConfirmation(_event);
+        _msgBox._StartNewMsg(_event);
     }
     private void _SaveHasShownRateUs()
     {

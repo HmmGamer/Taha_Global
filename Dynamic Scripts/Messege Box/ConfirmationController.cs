@@ -6,12 +6,9 @@ using UnityEngine.UI;
 
 namespace TahaGlobal.MsgBox
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    public class YesNoPanelController : MonoBehaviour
+    public class ConfirmationController : MonoBehaviour
     {
         [Header("Attachments")]
-        [SerializeField] Button _exitButton;
-        [SerializeField] Button _cancelButton;
         [SerializeField] Button _confirmButton;
         [SerializeField] Text _title;
         [SerializeField] Text _description;
@@ -21,9 +18,6 @@ namespace TahaGlobal.MsgBox
         private void Start()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
-
-            _exitButton.onClick.AddListener(_CloseMenu);
-            _cancelButton.onClick.AddListener(_CloseMenu);
         }
         public void _OpenMenu(string iTitle, string iDescription, UnityAction iYesActions)
         {
