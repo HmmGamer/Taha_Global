@@ -4,68 +4,71 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TahaGlobal.MsgBox;
 #region Using New InputSystem
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 #endregion
 
-/// <summary>
-/// TODO: test the new input system, reorganize properties
-/// 
-/// you can read the user manual for more info about the BackButtonManager features
-/// </summary>
-public class BackButtonManager : Singleton_Abs<BackButtonManager>
+namespace TahaGlobal.BackButton
 {
-    [Header("Exit Settings")]
-    [SerializeField] bool _autoGameQuit = true;
-    [SerializeField, ConditionalField(nameof(_autoGameQuit))] MsgBoxController _exitMsgBox;
-
-    [Tooltip("if true => the game is closed after 2 backButtons")]
-    [SerializeField] bool _isDoubleClickExit;
-
-    [Tooltip("minimum delay before second click can trigger exit")]
-    [SerializeField, ConditionalField(nameof(_isDoubleClickExit))]
-    float _doubleClickExitDelay = 0.3f;
-
-    [Tooltip("time before the first click is expired (recommended to match it with notification time)")]
-    [SerializeField, ConditionalField(nameof(_isDoubleClickExit))]
-    float _clickExpireTime;
-
-    [Header("Canvas Settings")]
-    [SerializeField] Canvas _mainCanvas;
-    [SerializeField] Color _raycastBgColor = Color.clear;
-
-    bool _isFirstClickActive;
-    bool _isDoubleClickDelayFinished;
-
-    List<_PanelsClass> _registeredPanels = new List<_PanelsClass>();
-    Coroutine _firstClickExpireCoroutine;
-    Coroutine _doubleClickDelayCoroutine;
-    Image _AntiRayCasterImage;
-    Button _AntiRaycastButton;
-
-    protected override void Awake()
+    /// <summary>
+    /// TODO: test the new input system, reorganize properties
+    /// 
+    /// you can read the user manual for more info about the BackButtonManager features
+    /// </summary>
+    public class BackButtonManager : Singleton_Abs<BackButtonManager>
     {
-        base.Awake();
+        [Header("Exit Settings")]
+        [SerializeField] bool _autoGameQuit = true;
+        [SerializeField, ConditionalField(nameof(_autoGameQuit))] MsgBoxController _exitMsgBox;
 
-        DontDestroyOnLoad(transform.root);
-        _InitGlobalAntiRayCaster();
-    }
+        [Tooltip("if true => the game is closed after 2 backButtons")]
+        [SerializeField] bool _isDoubleClickExit;
 
-    #region Old Input System
-#if !ENABLE_INPUT_SYSTEM
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        [Tooltip("minimum delay before second click can trigger exit")]
+        [SerializeField, ConditionalField(nameof(_isDoubleClickExit))]
+        float _doubleClickExitDelay = 0.3f;
+
+        [Tooltip("time before the first click is expired (recommended to match it with notification time)")]
+        [SerializeField, ConditionalField(nameof(_isDoubleClickExit))]
+        float _clickExpireTime;
+
+        [Header("Canvas Settings")]
+        [SerializeField] Canvas _mainCanvas;
+        [SerializeField] Color _raycastBgColor = Color.clear;
+
+        bool _isFirstClickActive;
+        bool _isDoubleClickDelayFinished;
+
+        List<_PanelsClass> _registeredPanels = new List<_PanelsClass>();
+        Coroutine _firstClickExpireCoroutine;
+        Coroutine _doubleClickDelayCoroutine;
+        Image _AntiRayCasterImage;
+        Button _AntiRaycastButton;
+
+        protected override void Awake()
         {
-            _OnBackButtonPressed();
-        }
-    }
-#endif
-    #endregion
+            base.Awake();
 
-    #region New Input System
+            DontDestroyOnLoad(transform.root);
+            _InitGlobalAntiRayCaster();
+        }
+
+        #region Old Input System
+#if !ENABLE_INPUT_SYSTEM
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                _OnBackButtonPressed();
+            }
+        }
+#endif
+        #endregion
+
+        #region New Input System
 #if ENABLE_INPUT_SYSTEM
     public void _OnBackInput(InputAction.CallbackContext context)
     {
@@ -83,175 +86,176 @@ public class BackButtonManager : Singleton_Abs<BackButtonManager>
         }
     }
 #endif
-    #endregion
+        #endregion
 
-    private void _InitGlobalAntiRayCaster()
-    {
-        if (_AntiRayCasterImage == null)
+        private void _InitGlobalAntiRayCaster()
         {
-            GameObject obj = new GameObject("GlobalRaycastCatcher", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
-            obj.transform.SetParent(_mainCanvas.transform, false);
-
-            RectTransform rect = obj.GetComponent<RectTransform>();
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
-            rect.pivot = new Vector2(0.5f, 0.5f);
-
-            _AntiRayCasterImage = obj.GetComponent<Image>();
-            _AntiRayCasterImage.color = _raycastBgColor;
-            _AntiRayCasterImage.raycastTarget = true;
-            _AntiRaycastButton = obj.GetComponent<Button>();
-            _AntiRaycastButton.onClick.AddListener(() => _TryHandleOutsideClick());
-        }
-        _AntiRayCasterImage.gameObject.SetActive(false);
-    }
-    private void _UpdateAntiRayCasterOrder()
-    {
-        _PanelsClass topPanel = _GetTopActivePanel();
-        if (topPanel == null)
-        {
-            _AntiRayCasterImage.gameObject.SetActive(false);
-            return;
-        }
-
-        _mainCanvas.sortingOrder = topPanel._bbController._GetCanvasPriority();
-        if (topPanel._bbController._GetIsBlockOutsideClick())
-            _AntiRayCasterImage.gameObject.SetActive(true);
-    }
-    public void _OnBackButtonPressed()
-    {
-        // check if a panel is open and close it first
-        _PanelsClass topPanel = _GetTopActivePanel();
-        if (topPanel != null)
-        {
-            topPanel._panel.SetActive(false);
-            _UnRegisterPanel(topPanel._panel);
-
-            return;
-        }
-
-        // no panels are open, so we handle exiting logic
-        if (_isDoubleClickExit && _autoGameQuit)
-        {
-            // if first click already happened
-            if (_isFirstClickActive)
+            if (_AntiRayCasterImage == null)
             {
-                // if delay before second click is NOT finished, ignore (prevents accidental exit)
-                if (!_isDoubleClickDelayFinished)
-                {
-                    return;
-                }
+                GameObject obj = new GameObject("GlobalRaycastCatcher", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+                obj.transform.SetParent(_mainCanvas.transform, false);
 
-                if (_firstClickExpireCoroutine != null)
-                {
-                    StopCoroutine(_firstClickExpireCoroutine);
-                }
+                RectTransform rect = obj.GetComponent<RectTransform>();
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+                rect.pivot = new Vector2(0.5f, 0.5f);
 
-                _ExitApplication();
+                _AntiRayCasterImage = obj.GetComponent<Image>();
+                _AntiRayCasterImage.color = _raycastBgColor;
+                _AntiRayCasterImage.raycastTarget = true;
+                _AntiRaycastButton = obj.GetComponent<Button>();
+                _AntiRaycastButton.onClick.AddListener(() => _TryHandleOutsideClick());
+            }
+            _AntiRayCasterImage.gameObject.SetActive(false);
+        }
+        private void _UpdateAntiRayCasterOrder()
+        {
+            _PanelsClass topPanel = _GetTopActivePanel();
+            if (topPanel == null)
+            {
+                _AntiRayCasterImage.gameObject.SetActive(false);
                 return;
             }
 
-            // first click
-            _isFirstClickActive = true;
-            _isDoubleClickDelayFinished = false;
-
-            // start timers (delay + expire)
-            _doubleClickDelayCoroutine = StartCoroutine(_doubleClickExitDelayCD());
-            _firstClickExpireCoroutine = StartCoroutine(_ExpireFirstClick());
-
-            _exitMsgBox._StartMsg();
+            _mainCanvas.sortingOrder = topPanel._bbController._GetCanvasPriority();
+            if (topPanel._bbController._GetIsBlockOutsideClick())
+                _AntiRayCasterImage.gameObject.SetActive(true);
         }
-        else if (!_isDoubleClickExit && _autoGameQuit)
+        public void _OnBackButtonPressed()
         {
-            if (!MsgBoxManager._instance._IsMsgBoxActive())
-                _exitMsgBox._StartMsg();
-        }
-    }
-
-    public void _ExitApplication()
-    {
-        #region Editor Only
-#if UNITY_EDITOR
-        Debug.Log("you can't exit in play mode!");
-#endif
-        #endregion
-
-        Application.Quit();
-    }
-    IEnumerator _ExpireFirstClick()
-    {
-        yield return new WaitForSeconds(_clickExpireTime);
-        _isFirstClickActive = false;
-        _firstClickExpireCoroutine = null;
-        _isDoubleClickDelayFinished = false;
-    }
-    IEnumerator _doubleClickExitDelayCD()
-    {
-        yield return new WaitForSeconds(_doubleClickExitDelay);
-        _isDoubleClickDelayFinished = true;
-    }
-    public void _RegisterPanel(GameObject iPanel, BackButtonController iController, int iOrder, UnityEvent iEvent)
-    {
-        _registeredPanels.Add(new _PanelsClass(iPanel, iController, iOrder, iEvent));
-        _UpdateAntiRayCasterOrder();
-    }
-    public void _UnRegisterPanel(GameObject iPanel)
-    {
-        for (int i = _registeredPanels.Count - 1; i >= 0; i--)
-        {
-            if (_registeredPanels[i]._panel == iPanel)
+            // check if a panel is open and close it first
+            _PanelsClass topPanel = _GetTopActivePanel();
+            if (topPanel != null)
             {
-                _registeredPanels.RemoveAt(i);
-                break;
+                topPanel._panel.SetActive(false);
+                _UnRegisterPanel(topPanel._panel);
+
+                return;
+            }
+
+            // no panels are open, so we handle exiting logic
+            if (_isDoubleClickExit && _autoGameQuit)
+            {
+                // if first click already happened
+                if (_isFirstClickActive)
+                {
+                    // if delay before second click is NOT finished, ignore (prevents accidental exit)
+                    if (!_isDoubleClickDelayFinished)
+                    {
+                        return;
+                    }
+
+                    if (_firstClickExpireCoroutine != null)
+                    {
+                        StopCoroutine(_firstClickExpireCoroutine);
+                    }
+
+                    _ExitApplication();
+                    return;
+                }
+
+                // first click
+                _isFirstClickActive = true;
+                _isDoubleClickDelayFinished = false;
+
+                // start timers (delay + expire)
+                _doubleClickDelayCoroutine = StartCoroutine(_doubleClickExitDelayCD());
+                _firstClickExpireCoroutine = StartCoroutine(_ExpireFirstClick());
+
+                _exitMsgBox._StartMsg();
+            }
+            else if (!_isDoubleClickExit && _autoGameQuit)
+            {
+                if (!MsgBoxManager._instance._IsAnyMsgBoxActive())
+                    _exitMsgBox._StartMsg();
             }
         }
-        _UpdateAntiRayCasterOrder();
-    }
-    _PanelsClass _GetTopActivePanel()
-    {
-        if (_registeredPanels.Count == 0)
+
+        public void _ExitApplication()
         {
-            return null;
+            #region Editor Only
+#if UNITY_EDITOR
+            Debug.Log("you can't exit in play mode!");
+#endif
+            #endregion
+
+            Application.Quit();
         }
-        return _registeredPanels.OrderByDescending(p => p._priorityOrder).FirstOrDefault(p => p._panel.activeInHierarchy);
-    }
-    public void _TryHandleOutsideClick()
-    {
-        _PanelsClass topPanel = _GetTopActivePanel();
-        if (topPanel == null)
+        IEnumerator _ExpireFirstClick()
         {
-            return;
+            yield return new WaitForSeconds(_clickExpireTime);
+            _isFirstClickActive = false;
+            _firstClickExpireCoroutine = null;
+            _isDoubleClickDelayFinished = false;
+        }
+        IEnumerator _doubleClickExitDelayCD()
+        {
+            yield return new WaitForSeconds(_doubleClickExitDelay);
+            _isDoubleClickDelayFinished = true;
+        }
+        public void _RegisterPanel(GameObject iPanel, BackButtonController iController, int iOrder, UnityEvent iEvent)
+        {
+            _registeredPanels.Add(new _PanelsClass(iPanel, iController, iOrder, iEvent));
+            _UpdateAntiRayCasterOrder();
+        }
+        public void _UnRegisterPanel(GameObject iPanel)
+        {
+            for (int i = _registeredPanels.Count - 1; i >= 0; i--)
+            {
+                if (_registeredPanels[i]._panel == iPanel)
+                {
+                    _registeredPanels.RemoveAt(i);
+                    break;
+                }
+            }
+            _UpdateAntiRayCasterOrder();
+        }
+        _PanelsClass _GetTopActivePanel()
+        {
+            if (_registeredPanels.Count == 0)
+            {
+                return null;
+            }
+            return _registeredPanels.OrderByDescending(p => p._priorityOrder).FirstOrDefault(p => p._panel.activeInHierarchy);
+        }
+        public void _TryHandleOutsideClick()
+        {
+            _PanelsClass topPanel = _GetTopActivePanel();
+            if (topPanel == null)
+            {
+                return;
+            }
+
+            if (!topPanel._bbController._GetIsBlockOutsideClick())
+            {
+                return;
+            }
+
+            if (topPanel._bbController._GetIsExitOnOutsideClick())
+            {
+                topPanel._panel.SetActive(false);
+                _UnRegisterPanel(topPanel._panel);
+            }
         }
 
-        if (!topPanel._bbController._GetIsBlockOutsideClick())
+        [System.Serializable]
+        public class _PanelsClass
         {
-            return;
-        }
+            public GameObject _panel;
+            [HideInInspector] public BackButtonController _bbController;
+            public int _priorityOrder;
+            public UnityEvent _optionalEvent;
 
-        if (topPanel._bbController._GetIsExitOnOutsideClick())
-        {
-            topPanel._panel.SetActive(false);
-            _UnRegisterPanel(topPanel._panel);
-        }
-    }
-
-    [System.Serializable]
-    public class _PanelsClass
-    {
-        public GameObject _panel;
-        [HideInInspector] public BackButtonController _bbController;
-        public int _priorityOrder;
-        public UnityEvent _optionalEvent;
-
-        public _PanelsClass(GameObject iPanel, BackButtonController iController
-            , int iOrder, UnityEvent optionalEvent)
-        {
-            _panel = iPanel;
-            _bbController = iController;
-            _priorityOrder = iOrder;
-            _optionalEvent = optionalEvent;
+            public _PanelsClass(GameObject iPanel, BackButtonController iController
+                , int iOrder, UnityEvent optionalEvent)
+            {
+                _panel = iPanel;
+                _bbController = iController;
+                _priorityOrder = iOrder;
+                _optionalEvent = optionalEvent;
+            }
         }
     }
 }
