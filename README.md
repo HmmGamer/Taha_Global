@@ -69,7 +69,7 @@ public class Sample : MonoBehaviour
 ```
 ---
 
-### 🔖 ConditionalEnum  
+### 🔖 ConditionalEnum
 Hide or show fields in the Inspector based on an enum value for better organization.
 
 **Note:** Usable in nested classes and ScriptableObjects. Cannot be used on lists/arrays.  
