@@ -53,7 +53,7 @@ A collection of **essential C# utility scripts** for Unity game development, des
 Hide or show fields in the Inspector based on a single bool, making your Inspector super clean.
 
 **Note:** Usable in nested classes and ScriptableObjects. Cannot be used on lists/arrays.  
-![ConditionalField Demo](Github%20Docs/conditional_field_vid.gif)
+![ConditionalField Demo](https://github.com/HmmGamer/Taha_Global_Assets/blob/main/Gifs/EnumGenerator_gif.gif)
 
 **Usage:**
 ```csharp
