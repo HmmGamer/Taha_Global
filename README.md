@@ -75,7 +75,8 @@ public class Sample : MonoBehaviour
 Hide or show fields in the Inspector based on an enum value for better organization.
 
 **Note:** Usable in nested classes and ScriptableObjects. Cannot be used on lists/arrays.  
-![ConditionalEnum Demo](Github%20Docs/conditional_enum_vid.gif)
+![ConditionalEnum Demo](https://raw.githubusercontent.com/HmmGamer/Taha_Global_Assets/main/Gifs/conditional_enum_gif.gif
+)
 
 **Usage:**
 ```csharp
@@ -104,7 +105,8 @@ Generate a button in the Inspector to invoke methods in both play and edit mode.
 you can use CreateMonoButton for MonoBehaviour and CreateSoButton for scriptableObjects.
 
 **Note:** Some methods (like PlayerPrefs access) may only work in play mode based on unity version. 
-![CreateButton Demo](Github%20Docs/create_button_vid.gif)
+![CreateButton Demo](https://raw.githubusercontent.com/HmmGamer/Taha_Global_Assets/main/Gifs/create_button_gif.gif
+)
 
 **Usage:**
 ```csharp
@@ -128,7 +130,8 @@ public class Sample : MonoBehaviour
 ### 🔖 ReadOnly  
 Disable and grey out a field in the Inspector for visual clarity or debugging.
 
-![ReadOnly Demo](Github%20Docs/readonly%20photo.png)
+![ReadOnly Demo](https://raw.githubusercontent.com/HmmGamer/Taha_Global_Assets/main/Images/readonly_Image.png
+)
 
 **Usage:**
 ```csharp
@@ -308,7 +311,8 @@ Custom [CreateMonoButton] attribute must be present in your project for Inspecto
 - Will not work during play mode
 - Handles basic name sanitization (spaces and dashes replaced with underscores)
 - For accessing the enum first generate it in the inspector
-- ![EnumGenerator Demo](Github%20Docs/EnumGenerator_Vid.gif)
+- ![EnumGenerator Demo](https://raw.githubusercontent.com/HmmGamer/Taha_Global_Assets/main/Gifs/EnumGenerator_gif.gif
+)
 
 ---
 
