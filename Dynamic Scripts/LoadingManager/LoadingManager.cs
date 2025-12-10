@@ -10,14 +10,14 @@ using UnityEngine.Events;
 /// 
 /// - Global Behavior: The loading process runs independently of gameplay time (uses real-time delays).
 ///   Meaning it works even if Time.timeScale = 0.
-/// - Local Behavior: Animation delays such as fade-in and fade-out rely on Unity’s internal time flow.
+/// - Local Behavior: Animation delays such as fade-in and fade-out rely on Unityï¿½s internal time flow.
 /// 
 /// Key Features:
-/// • Supports both slider-based, step-based and none progress displays.
-/// • Allows smooth fade animations using Animator triggers.
-/// • useful events for controlling the scene states.
-/// • Can automatically load a scene on start, or be triggered manually via _LoadScene().
-/// • supporting both Async and immediate (emergency) loading.
+/// ï¿½ Supports both slider-based, step-based and none progress displays.
+/// ï¿½ Allows smooth fade animations using Animator triggers.
+/// ï¿½ useful events for controlling the scene states.
+/// ï¿½ Can automatically load a scene on start, or be triggered manually via _LoadScene().
+/// ï¿½ supporting both Async and immediate (emergency) loading.
 /// </summary>
 
 public class LoadingManager : Singleton_Abs<LoadingManager>
@@ -63,6 +63,7 @@ public class LoadingManager : Singleton_Abs<LoadingManager>
     {
         if (_autoLoadNextScene)
             _LoadScene(_nextScene);
+        DontDestroyOnLoad(transform.root);
     }
     public void _LoadScene(_AllScenes iNextScene)
     {
