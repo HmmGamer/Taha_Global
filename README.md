@@ -166,7 +166,7 @@ public class _AutoIndexSample : MonoBehaviour
 }
 ```
 <!--
-### 🚫 Disabled Feature (will return later)
+### 🚫 Disabled Feature (will return soon)
 
 ---
 
