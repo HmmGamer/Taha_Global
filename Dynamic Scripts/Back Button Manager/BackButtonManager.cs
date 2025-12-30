@@ -14,7 +14,7 @@ using UnityEngine.InputSystem;
 namespace TahaGlobal.BackButton
 {
     /// <summary>
-    /// TODO: test the new input system, reorganize properties
+    /// TODO: test the new input system, reorganize properties, add regens
     /// 
     /// you can read the user manual for more info about the BackButtonManager features
     /// </summary>
@@ -37,7 +37,7 @@ namespace TahaGlobal.BackButton
 
         [Header("Canvas Settings")]
         [SerializeField] Canvas _mainCanvas;
-        [SerializeField] Color _raycastBgColor = Color.clear;
+        [SerializeField] Color _raycastBgColor = Color.clear; // default value
 
         bool _isFirstClickActive;
         bool _isDoubleClickDelayFinished;
@@ -121,7 +121,10 @@ namespace TahaGlobal.BackButton
 
             _mainCanvas.sortingOrder = topPanel._bbController._GetCanvasPriority();
             if (topPanel._bbController._GetIsBlockOutsideClick())
+            {
                 _AntiRayCasterImage.gameObject.SetActive(true);
+                _AntiRayCasterImage.color = topPanel._bgColor;
+            }
         }
         public void _OnBackButtonPressed()
         {
@@ -168,7 +171,7 @@ namespace TahaGlobal.BackButton
             }
             else if (!_isDoubleClickExit && _autoGameQuit)
             {
-                if (!MsgBoxManager._instance._IsAnyMsgBoxActive())
+                if (!MsgBoxManager._instance._IsMsgBoxActive(_AllMsgTypes.yesNo))
                     _exitMsgBox._StartMsg();
             }
         }
@@ -195,9 +198,22 @@ namespace TahaGlobal.BackButton
             yield return new WaitForSeconds(_doubleClickExitDelay);
             _isDoubleClickDelayFinished = true;
         }
+
+        /// <summary>
+        /// registering with the default anti ray caster color
+        /// </summary>
         public void _RegisterPanel(GameObject iPanel, BackButtonController iController, int iOrder, UnityEvent iEvent)
         {
-            _registeredPanels.Add(new _PanelsClass(iPanel, iController, iOrder, iEvent));
+            _registeredPanels.Add(new _PanelsClass(iPanel, iController, iOrder, iEvent, _raycastBgColor));
+            _UpdateAntiRayCasterOrder();
+        }
+
+        /// <summary>
+        /// registering with the overwriting the anti ray caster color
+        /// </summary>
+        public void _RegisterPanel(GameObject iPanel, BackButtonController iController, int iOrder, UnityEvent iEvent, Color iBgColor)
+        {
+            _registeredPanels.Add(new _PanelsClass(iPanel, iController, iOrder, iEvent, iBgColor));
             _UpdateAntiRayCasterOrder();
         }
         public void _UnRegisterPanel(GameObject iPanel)
@@ -247,14 +263,16 @@ namespace TahaGlobal.BackButton
             [HideInInspector] public BackButtonController _bbController;
             public int _priorityOrder;
             public UnityEvent _optionalEvent;
+            public Color _bgColor; // the color of the anti ray cast (if activated)
 
             public _PanelsClass(GameObject iPanel, BackButtonController iController
-                , int iOrder, UnityEvent optionalEvent)
+                , int iOrder, UnityEvent iOptionalEvent, Color iBgColor)
             {
                 _panel = iPanel;
                 _bbController = iController;
                 _priorityOrder = iOrder;
-                _optionalEvent = optionalEvent;
+                _optionalEvent = iOptionalEvent;
+                _bgColor = iBgColor;
             }
         }
     }

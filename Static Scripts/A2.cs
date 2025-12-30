@@ -20,7 +20,7 @@ public static class A
     public static class Anim
     {
         // optional naming : trigger => t, Bool => b, int => i, float => f
-        public const string t_collectAirdrop = "wco2k";
+        public const string t_collectAirdrop = "collect";
     }
     public static class DataKey
     {
@@ -31,16 +31,19 @@ public static class A
         public const string totalLoadTimes = "dde";  // taha global reference
         public const string areAdsRemoved = "0chg";  // taha global reference
         public const string timersData = "1i115";    // taha global reference
+        public const string lastLanguage = "dd293";  // taha global reference
 
         public const string currentLevelIndex = "ji385";
         public const string lastUnfinishedLevel = "ff3da";
         public const string savedData = "sce3";
+        public const string areMinesPurchased = "s4rw";
+        public const string isVibrateActive = "bh43";
 
-        public static bool _IsTrue(string iKey)
+        public static bool _IsTrue(string iKey, bool iReturnOnNotExists = false)
         {
             if (PlayerPrefs.GetInt(iKey, False) == True)
                 return true;
-            return false;    
+            return iReturnOnNotExists;    
         }
         public static void _SetTrue(string iKey)
         {

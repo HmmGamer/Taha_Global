@@ -21,6 +21,13 @@ namespace TahaGlobal.BackButton
         [SerializeField, ConditionalField(nameof(_blockOutsideMenuClicks))]
         bool _exitOnOutsideClick;
 
+        [Tooltip("true => overwrite the original bg color to an optional color")]
+        [SerializeField, ConditionalField(nameof(_blockOutsideMenuClicks))]
+        bool _overwriteBgColor = false;
+
+        [SerializeField, ConditionalField(nameof(_overwriteBgColor))]
+        Color _bgColor;
+
         [Tooltip("if more than one menu with BB controller is active, " +
             "the one with the most priority will be disabled first")]
         [SerializeField] int _priorityOrder;
@@ -51,7 +58,11 @@ namespace TahaGlobal.BackButton
             if (_blockOutsideMenuClicks)
                 _ChangeCanvasPriorityToMax();
 
-            BackButtonManager._instance._RegisterPanel(gameObject, this, _priorityOrder, _onDisableEvent);
+            if (_overwriteBgColor && _blockOutsideMenuClicks) // overwrite color
+                BackButtonManager._instance._RegisterPanel(gameObject, this, _priorityOrder, _onDisableEvent, _bgColor);
+            else // register with default Bg color
+                BackButtonManager._instance._RegisterPanel(gameObject, this, _priorityOrder, _onDisableEvent);
+
             _onEnableEvent.Invoke();
         }
         private void OnDisable()
