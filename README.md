@@ -141,8 +141,6 @@ public class Sample : MonoBehaviour
     [SerializeField, ReadOnly] float _readOnlyField = 3;
 }
 ```
-<!--
-### 🚫 Disabled Feature (will return later)
 ---
 
 ### 🔖 AutoIndex
@@ -167,7 +165,9 @@ public class _AutoIndexSample : MonoBehaviour
     }
 }
 ```
--->
+<!--
+### 🚫 Disabled Feature (will return soon)
+
 ---
 
 ### 🔖 AutoInvoke
@@ -198,6 +198,7 @@ public class _AutoInvokeSample : MonoBehaviour
     }
 }
 ```
+-->
 ---
 
 ### 🧭 BackButtonManager  
