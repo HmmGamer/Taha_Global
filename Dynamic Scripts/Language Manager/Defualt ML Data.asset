@@ -12,13 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8651427e13fbd124385247a2999e36a1, type: 3}
   m_Name: Defualt ML Data
   m_EditorClassIdentifier: 
-  _showWarnings: 0
-  _languageSettings:
+  _fontSettings:
   - _language: 0
     _font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     _fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   - _language: 1
     _font: {fileID: 12800000, guid: 0c27edb241745ac4fbfdb0d0d8a7436f, type: 3}
     _fontAsset: {fileID: 11400000, guid: af12283cb91a563459b3225b7fe19318, type: 2}
-  _translationDb: []
-  _searchName: 
+  _translationDb:
+  - _indexName: taha
+    _translations:
+    - taha
+    - "\u0637\u0627\u0647\u0627"
+  _spriteDb:
+  - _indexName: bashe EN Language
+    _sprites:
+    - {fileID: 21300000, guid: 351eda5044587fe4798a5299c101c2af, type: 3}
+    - {fileID: 21300000, guid: 10522a9d3a63f5d41a971caa08344e35, type: 3}
+  _searchTextName: bashe
