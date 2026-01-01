@@ -325,7 +325,7 @@ Custom [CreateMonoButton] attribute must be present in your project for Inspecto
 
 Attributes: Add them directly on your fields or methods (as shown in usage examples).
 
-Tools: Call static methods from utility classes when needed.
+Static Tools: Call static methods from utility classes when needed.
 
 Dynamic Tools: Add the prefabs/managers to your scenes as needed.
 
