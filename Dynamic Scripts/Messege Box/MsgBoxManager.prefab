@@ -1156,7 +1156,7 @@ GameObject:
   - component: {fileID: 4388923025561195034}
   - component: {fileID: 7447210945673820209}
   m_Layer: 0
-  m_Name: MessegBoxManager
+  m_Name: MsgBoxManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

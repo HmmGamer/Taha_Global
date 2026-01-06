@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static TahaGlobal.MsgBox.MsgBoxController;
 
 namespace TahaGlobal.MsgBox
 {
@@ -50,12 +51,25 @@ namespace TahaGlobal.MsgBox
         /// <summary>
         /// notifications are not included
         /// </summary>
+        public bool _IsMsgBoxActive(_AllMsgTypes iType)
+        {
+            if (iType == _AllMsgTypes.yesNo)
+                return _yesNoController._IsActive();
+            else if (iType == _AllMsgTypes.confirmation)
+                return _confirmationController._IsActive();
+            return false;
+        }
         public bool _IsAnyMsgBoxActive()
         {
-            if (_yesNoController._IsActive() || _confirmationController._IsActive())
-                return true;
-            return false;
+            return _yesNoController._IsActive() || _yesNoController._IsActive();
         }
         #endregion
     }
 }
+
+#region Types
+public enum _AllMsgTypes
+{
+    notification, yesNo, confirmation
+}
+#endregion

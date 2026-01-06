@@ -157,22 +157,15 @@ namespace TahaGlobal.MsgBox
                 Debug.LogError("There is no MsgBoxManager in the scene");
                 return true;
             }
-#endif
-            #endregion
 
-            if (MsgBoxManager._instance._IsAnyMsgBoxActive())
+            if (MsgBoxManager._instance._IsMsgBoxActive(_messageType))
             {
-                Debug.LogError("There is another open MsgBox in the scene!");
-                return true;
+                //Debug.LogError("There is another open MsgBox in the scene!");
+                //return true;
             }
             return false;
-        }
-        #endregion
-
-        #region Types
-        public enum _AllMsgTypes
-        {
-            notification, yesNo, confirmation
+#endif
+            #endregion
         }
         #endregion
     }
