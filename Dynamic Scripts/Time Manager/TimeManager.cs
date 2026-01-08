@@ -248,9 +248,10 @@ public class TimeManager : Singleton_Abs<TimeManager>
 // Optional Naming : G => Global, L => Local (in game time), T => Temp ( reset's on exit)
 public enum _TimerNames
 {
-    G_CoinAdTimer,  // in shop, for seeing rewarded ads to get coins
-    L_FirstAdTimer, // in game time to start showing ads (one-time timer)
-    T_IntraAdTimer  // in intra ad manager, for showing new intra ads
+    G_CoinAdTimer,   // in shop, for seeing rewarded ads to get coins
+    G_FeedbackTimer, // in feedback menu, min time before each feedback
+    L_FirstAdTimer,  // in game time to start showing ads (one-time timer)
+    T_IntraAdTimer   // in intra ad manager, for showing new intra ads
 }
 public enum _TimerStatus
 {
