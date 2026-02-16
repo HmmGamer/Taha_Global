@@ -10,7 +10,7 @@ public class Search_Sample
     [CreateMonoButton("Search")]
     public void _SearchList()
     {
-        SearchTools._SearchList_First(_dataBase, _searchName, i => i._name);
+        SearchTools._SearchAndSortList_First(_dataBase, _searchName, i => i._name);
     }
     [System.Serializable]
     public class _DataMata
@@ -27,10 +27,27 @@ public class Search_Sample
 /// </summary>
 public static class SearchTools
 {
+    //public static string _SearchList_First<T>(List<T> iList, string iSearchName)
+    //{
+    //    string searchLower = iSearchName.ToLower();
+    //    for (int i = 0; i < iList.Count; i++)
+    //    {
+    //        if (iNameSelector(iList[i]).ToLower().Contains(searchLower))
+    //        {
+    //            T foundItem = iList[i];
+
+    //            Debug.Log("the first similar result was moved to the top");
+    //            return;
+    //        }
+    //    }
+    //}
+
+    #region Search & Sort
+
     /// <summary>
     /// finds the first matched item and moves it to the top - ignore's the rest
     /// </summary>
-    public static void _SearchList_First<T>(List<T> iList, string iSearchName, Func<T, string> iNameSelector)
+    public static void _SearchAndSortList_First<T>(List<T> iList, string iSearchName, Func<T, string> iNameSelector)
     {
         string searchLower = iSearchName.ToLower();
         for (int i = 0; i < iList.Count; i++)
@@ -51,7 +68,7 @@ public static class SearchTools
     /// <summary>
     /// finds the first matched item to the first - ignore the rest
     /// </summary>
-    public static void _SearchArray_First<T>(T[] iArray, string iSearchName, Func<T, string> iNameSelector)
+    public static void _SearchAndSortArray_First<T>(T[] iArray, string iSearchName, Func<T, string> iNameSelector)
     {
         string searchLower = iSearchName.ToLower();
         for (int i = 0; i < iArray.Length; i++)
@@ -76,7 +93,7 @@ public static class SearchTools
     /// finds all of matched items and moves them to the top
     /// warning: may be a little heavy for big dataBases with many search results
     /// </summary>
-    public static void _SearchList_Full<T>(List<T> iList, string iSearchName, Func<T, string> iNameSelector)
+    public static void _SearchAndSortList_Full<T>(List<T> iList, string iSearchName, Func<T, string> iNameSelector)
     {
         string searchLower = iSearchName.ToLower();
         List<T> matchedItems = new List<T>();
@@ -105,7 +122,7 @@ public static class SearchTools
     /// finds all of matched items and moves them to the top
     /// warning: may be a little heavy for big dataBases with many search results
     /// </summary>
-    public static void _SearchArray_Full<T>(T[] iArray, string iSearchName, Func<T, string> iNameSelector)
+    public static void _SearchAndSortArray_Full<T>(T[] iArray, string iSearchName, Func<T, string> iNameSelector)
     {
         string searchLower = iSearchName.ToLower();
         List<T> matchedItems = new List<T>();
@@ -139,4 +156,5 @@ public static class SearchTools
             iArray[index++] = item;
         }
     }
+    #endregion
 }
