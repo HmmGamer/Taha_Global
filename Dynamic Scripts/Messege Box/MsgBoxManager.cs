@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using TahaGlobal.ML;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using static TahaGlobal.MsgBox.MsgBoxController;
 
 namespace TahaGlobal.MsgBox
 {
@@ -21,16 +20,39 @@ namespace TahaGlobal.MsgBox
         }
 
         #region Show Msg
-        public void _ShowYesNoMessage(string iTitle, string iDescription, UnityAction iYesActions)
+        public void _ShowYesNoMessage(string iTitle, string iDescription, string iTitleMlKey, string iDescMlKey, UnityAction iYesActions)
         {
+            if (_CanMlTranslate(iTitleMlKey))
+            {
+                iTitle = MLManager._instance._GetTranslatedText(iTitleMlKey);
+            }
+            if (_CanMlTranslate(iDescMlKey))
+            {
+                iDescription = MLManager._instance._GetTranslatedText(iDescMlKey);
+            }
+
             _yesNoController._OpenMenu(iTitle, iDescription, iYesActions);
         }
-        public void _ShowConfirmationMessage(string iTitle, string iDescription, UnityAction iYesActions)
+        public void _ShowConfirmationMessage(string iTitle, string iDescription, string iTitleMlKey, string iDescMlKey, UnityAction iYesActions)
         {
+            if (_CanMlTranslate(iTitleMlKey))
+            {
+                iTitle = MLManager._instance._GetTranslatedText(iTitleMlKey);
+            }
+            if (_CanMlTranslate(iDescMlKey))
+            {
+                iDescription = MLManager._instance._GetTranslatedText(iDescMlKey);
+            }
+
             _confirmationController._OpenMenu(iTitle, iDescription, iYesActions);
         }
-        public void _ShowNotificationMessage(string iTitle)
+        public void _ShowNotificationMessage(string iTitle, string iTitleMlKey)
         {
+            if (_CanMlTranslate(iTitleMlKey))
+            {
+                iTitle = MLManager._instance._GetTranslatedText(iTitleMlKey);
+            }
+
             _NotificationController._ShowNotification(iTitle);
         }
         #endregion
@@ -47,6 +69,14 @@ namespace TahaGlobal.MsgBox
         #endregion
 
         #region Others
+        private bool _CanMlTranslate(string iMlKey)
+        {
+            if (string.IsNullOrEmpty(iMlKey))
+                return false;
+            if (MLManager._instance ==  null)
+                return false;
+            return true;
+        }
 
         /// <summary>
         /// notifications are not included

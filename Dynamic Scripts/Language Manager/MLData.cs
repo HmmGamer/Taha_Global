@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -24,20 +25,40 @@ namespace TahaGlobal.ML
             return null;
         }
 
+        public List<_MLTextRecord> _GetAllTextRecordsReference()
+        {
+            return _translationDb;
+        }
+        public List<_MLSpriteRecord> _GetAllSpriteRecordsReference()
+        {
+            return _spriteDb;
+        }
+
         #region Editor Only
+#if UNITY_EDITOR
+        [Header("Translation")]
+        [SerializeField] string _rawPersianText;
+        [SerializeField] string _TranslatedText;
+
+        [CreateSOButton("Translate")]
+        private void _Translate()
+        {
+            _TranslatedText = FontTools._ConvertToPersian(_rawPersianText);
+        }
+
         [Header("Search => Moves founded Items To The Top")]
 
-        [SerializeField] string _searchTextName;
+        [SerializeField] string _searchKeyId;
 
         [CreateSOButton("Search Text Database")]
         private void _SearchTextDb()
         {
-            SearchTools._SearchList_Full(_translationDb, _searchTextName, i => i._indexName);
+            SearchTools._SearchAndSortList_Full(_translationDb, _searchKeyId, i => i._keyId);
         }
         [CreateSOButton("Search Sprite Database")]
         private void _SearchSpriteDb()
         {
-            SearchTools._SearchList_Full(_spriteDb, _searchTextName, i => i._indexName);
+            SearchTools._SearchAndSortList_Full(_spriteDb, _searchKeyId, i => i._keyId);
         }
 
         public void _CheckForMissingTranslation()
@@ -132,14 +153,7 @@ namespace TahaGlobal.ML
             }
 
         }
-        public List<_MLTextRecord> _GetAllTextRecordsReference()
-        {
-            return _translationDb;
-        }
-        public List<_MLSpriteRecord> _GetAllSpriteRecordsReference()
-        {
-            return _spriteDb;
-        }
+#endif
         #endregion
 
         #region Classes
@@ -148,6 +162,7 @@ namespace TahaGlobal.ML
         public class _FontMeta
         {
             public _AllLanguages _language;
+            public bool _isRTL;
             public Font _font;
             public TMP_FontAsset _fontAsset;
         }
@@ -155,14 +170,31 @@ namespace TahaGlobal.ML
         [System.Serializable]
         public class _MLTextRecord
         {
-            #region Editor Only Property
+            [Tooltip("this is the main unique key and it's used to search the list")]
+            public string _keyId;
+
+            public string[] _translations;
+
+            #region Editor Only
 #if UNITY_EDITOR
-            [Tooltip("this only changes the index name in the list and helps searching it")]
-            public string _indexName;
+            //[Tooltip("this is a debugging field to see/copy raw Persian texts")]
+            //[SerializeField] string _rawFaText;
+            [Tooltip("this is a debugging field to see Persian texts in editor" +
+                "due to the unity editor, Persian warping has a visual bug")]
+            [TextArea(2,4)] public string _faFormatted;
 #endif
             #endregion
 
-            public string[] _translations;
+            public _MLTextRecord() { }
+            public _MLTextRecord(_MLTextRecord iObject)
+            {
+                _keyId = iObject._keyId;
+                _translations = (string[])iObject._translations.Clone();
+
+#if UNITY_EDITOR
+                _faFormatted = iObject._faFormatted;
+#endif
+            }
 
             public string _GetTextForLanguage(_AllLanguages iLanguageIndex)
             {
@@ -188,14 +220,17 @@ namespace TahaGlobal.ML
         [System.Serializable]
         public class _MLSpriteRecord
         {
-            #region Editor Only Property
-#if UNITY_EDITOR
-            [Tooltip("this is only for finding things more easily, no logic behind it")]
-            public string _indexName;
-#endif
-            #endregion
+            [Tooltip("this is the main unique key and it's used to search the list")]
+            public string _keyId;
 
             public Sprite[] _sprites; // index = _AllLanguages enum index
+
+            public _MLSpriteRecord() { }
+            public _MLSpriteRecord(_MLSpriteRecord iObject)
+            {
+                _keyId = iObject._keyId;
+                _sprites = (Sprite[])iObject._sprites.Clone();
+            }
 
             public Sprite _GetSpriteForLanguage(_AllLanguages iLanguageIndex)
             {
@@ -220,3 +255,32 @@ namespace TahaGlobal.ML
         #endregion
     }
 }
+
+/* _Reverse
+[CreateSOButton("Rev")]
+private void _Reverse()
+{
+    for (int i = 0; i < _translationDb.Count; i++)
+    {
+        var record = _translationDb[i];
+
+        if (record == null || record._translations == null)
+            continue;
+
+        // assuming index 1 is Persian
+        if (record._translations.Length <= 1)
+            continue;
+
+        string text = record._translations[1];
+
+        if (string.IsNullOrEmpty(text))
+            continue;
+
+        record._translations[1] = new string(text.Reverse().ToArray());
+    }
+
+#if UNITY_EDITOR
+    UnityEditor.EditorUtility.SetDirty(this);
+#endif
+}
+*/

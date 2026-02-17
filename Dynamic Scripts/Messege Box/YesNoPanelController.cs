@@ -30,7 +30,10 @@ namespace TahaGlobal.MsgBox
             _ActivateMenu(true);
 
             _title.text = iTitle;
+            MLManager._instance._SetTextMeta(ref _title);
+
             _description.text = iDescription;
+            MLManager._instance._SetTextMeta(ref _description);
 
             _confirmButton.onClick.RemoveAllListeners();
 

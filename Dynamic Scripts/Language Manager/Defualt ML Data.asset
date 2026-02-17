@@ -14,19 +14,260 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fontSettings:
   - _language: 0
+    _isRTL: 0
     _font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     _fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   - _language: 1
-    _font: {fileID: 12800000, guid: 0c27edb241745ac4fbfdb0d0d8a7436f, type: 3}
-    _fontAsset: {fileID: 11400000, guid: af12283cb91a563459b3225b7fe19318, type: 2}
+    _isRTL: 1
+    _font: {fileID: 12800000, guid: 8cd8f5a06987fcf46a5a7758b1112b97, type: 3}
+    _fontAsset: {fileID: 11400000, guid: 1f6261c74de9b2c40aa6ddd04834e458, type: 2}
   _translationDb:
-  - _indexName: taha
+  - _keyId: taha
     _translations:
     - taha
-    - "\u0637\u0627\u0647\u0627"
+    - "\uFEB3\uFEE0\uFE8E\uFEE1"
+    _faFormatted: "\uFEE1\uFE8E\uFEE0\uFEB3"
+  - _keyId: legacy - test
+    _translations:
+    - legacy - test
+    - "\uFE97\uFEB4\uFE96 \uFEDF\uFB95\uFE8E\uFEB3\uFBFD"
+    _faFormatted: "\uFBFD\uFEB3\uFE8E\uFB95\uFEDF \uFE96\uFEB4\uFE97"
+  - _keyId: tmp - test
+    _translations:
+    - legacy - test
+    - "\u061F\uFEE5\uFEAE\uFB59\uFE91 \uFBFD\uFEE0\uFE92\uFED7 \uFBFC\uFE8E\uFEEB
+      \uFEE9\uFEA9\uFE8D\uFEA9 \uFEED \uFBFD\uFEE8\uFB90 \uFEEE\uFBFF\uFEB3 \uFEED\uFEAD
+      \uFEEA\uFEE0\uFEA3\uFEAE\uFEE3 \uFBFC\uFE8D\uFEEE\uFEA8\uFBFF\uFEE3 \uFBFD\uFEE8\uFE8C\uFEE4\uFEC4\uFEE3
+      \u060C\uFEE5\uFE8E\uFEE0\uFEB3"
+    _faFormatted: "\uFEB3\uFEE0\uFE8E\uFEE5\u060C \uFEE3\uFEC4\uFEE4\uFE8C\uFEE8\uFBFD
+      \uFEE3\uFBFF\uFEA8\uFEEE\uFE8D\uFBFC \uFEE3\uFEAE\uFEA3\uFEE0\uFEEA \uFEAD\uFEED
+      \uFEB3\uFBFF\uFEEE \uFB90\uFEE8\uFBFD \uFEED \uFEA9\uFE8D\uFEA9\uFEE9 \uFEEB\uFE8E\uFBFC
+      \uFED7\uFE92\uFEE0\uFBFD \uFE91\uFB59\uFEAE\uFEE5\u061F"
+  - _keyId: Msgbox- cancel
+    _translations:
+    - Cancel
+    - "\uFEDF\uFED0\uFEEE"
+    _faFormatted: "\uFEEE\uFED0\uFEDF"
+  - _keyId: Msgbox- confirm
+    _translations:
+    - Confirm
+    - "\uFE97\uFE84\uFBFE\uFBFF\uFEAA"
+    _faFormatted: "\uFEAA\uFBFF\uFBFE\uFE84\uFE97"
+  - _keyId: Dynamic- objective reach number
+    _translations:
+    - Create {0} block(s) with the value {1} to complete the level.
+    - "\uFE91\uFEAE\uFE8D\uFBFC \uFE8D\uFE97\uFEE4\uFE8E\uFEE1 \uFEE3\uFEAE\uFEA3\uFEE0\uFEEA\u060C}0{
+      \uFE91\uFEE0\uFE8E\uFB8E \uFE91\uFE8E \uFEE3\uFED8\uFEAA\uFE8D\uFEAD }1{ \uFE91\uFEB4\uFE8E\uFEAF\uFBFE\uFEAA."
+    _faFormatted: ".\uFEAA\uFBFE\uFEAF\uFE8E\uFEB4\uFE91 {1} \uFEAD\uFE8D\uFEAA\uFED8\uFEE3
+      \uFE8E\uFE91 \uFB8E\uFE8E\uFEE0\uFE91 {0}\u060C\uFEEA\uFEE0\uFEA3\uFEAE\uFEE3
+      \uFEE1\uFE8E\uFEE4\uFE97\uFE8D \uFBFC\uFE8D\uFEAE\uFE91"
+  - _keyId: Dynamic- objective fill place
+    _translations:
+    - Fill all special tiles with a block of value {0} or {1} to complete the level.
+    - "\uFE91\uFEAE\uFE8D\uFBFC \uFE8D\uFE97\uFEE4\uFE8E\uFEE1 \uFEE3\uFEAE\uFEA3\uFEE0\uFEEA\u060C
+      \uFEEB\uFEE4\uFEEA \uFEA7\uFE8E\uFEE7\uFEEA\u200C\uFEEB\uFE8E\uFBFC \uFEA7\uFE8E\uFEB9
+      \uFEAD\uFE8D \uFE91\uFE8E \uFE91\uFEE0\uFE8E\uFB8E }0{ \uFBFE\uFE8E }1{ \uFB58\uFEAE
+      \uFB90\uFEE8\uFBFF\uFEAA."
+    _faFormatted: ".\uFEAA\uFBFF\uFEE8\uFB90 \uFEAE\uFB58 {1} \uFE8E\uFBFE {0} \uFB8E\uFE8E\uFEE0\uFE91
+      \uFE8E\uFE91 \uFE8D\uFEAD \uFEB9\uFE8E\uFEA7 \uFBFC\uFE8E\uFEEB\u200C\uFEEA\uFEE7\uFE8E\uFEA7
+      \uFEEA\uFEE4\uFEEB \u060C\uFEEA\uFEE0\uFEA3\uFEAE\uFEE3 \uFEE1\uFE8E\uFEE4\uFE97\uFE8D
+      \uFBFC\uFE8D\uFEAE\uFE91"
+  - _keyId: MsgBox - Purchase Failed
+    _translations:
+    - Purchase Failed
+    - "\uFEA7\uFEAE\uFBFE\uFEAA \uFE8D\uFEE7\uFEA0\uFE8E\uFEE1 \uFEE7\uFEB8\uFEAA"
+    _faFormatted: "\uFEAA\uFEB8\uFEE7 \uFEE1\uFE8E\uFEA0\uFEE7\uFE8D \uFEAA\uFBFE\uFEAE\uFEA7"
+  - _keyId: MsgBox - Exit Game
+    _translations:
+    - Click again to exit
+    - "\uFE91\uFEAE\uFE8D\uFBFC \uFEA7\uFEAE\uFEED\uFE9D \uFEA9\uFEED\uFE91\uFE8E\uFEAD\uFEE9
+      \uFE91\uFEB0\uFEE7\uFBFF\uFEAA"
+    _faFormatted: "\uFEAA\uFBFF\uFEE7\uFEB0\uFE91 \uFEE9\uFEAD\uFE8E\uFE91\uFEED\uFEA9
+      \uFE9D\uFEED\uFEAE\uFEA7 \uFBFC\uFE8D\uFEAE\uFE91"
+  - _keyId: MsgBox T - Replay Confirmation
+    _translations:
+    - Restart Level
+    - "\uFEB7\uFEAE\uFEED\uFEC9 \uFEA9\uFEED\uFE91\uFE8E\uFEAD\uFEE9 \uFEE3\uFEAE\uFEA3\uFEE0\uFEEA"
+    _faFormatted: "\uFEEA\uFEE0\uFEA3\uFEAE\uFEE3 \uFEE9\uFEAD\uFE8E\uFE91\uFEED\uFEA9
+      \uFEC9\uFEED\uFEAE\uFEB7"
+  - _keyId: MsgBox D - Replay Confirmation
+    _translations:
+    - "Are you sure you want to restart this level? All current progress will be
+      lost, and you won\u2019t receive any rewards."
+    - "\uFEE3\uFEC4\uFEE4\uFE8C\uFEE6 \uFEEB\uFEB4\uFE98\uFBFF\uFEAA \uFB90\uFEEA
+      \uFEE3\uFBFD\u200C\uFEA7\uFEEE\uFE8D\uFEEB\uFBFF\uFEAA \uFEE3\uFEAE\uFEA3\uFEE0\uFEEA
+      \uFEAD\uFE8D \uFEA9\uFEED\uFE91\uFE8E\uFEAD\uFEE9 \uFEB7\uFEAE\uFEED\uFEC9
+      \uFB90\uFEE8\uFBFF\uFEAA\u061F \uFE97\uFEE4\uFE8E\uFEE1 \uFB58\uFBFF\uFEB8\uFEAE\uFED3\uFE96
+      \uFED3\uFECC\uFEE0\uFBFD \uFE8D\uFEAF \uFE91\uFBFF\uFEE6 \uFEE3\uFBFD\u200C\uFEAD\uFEED\uFEA9
+      \uFEED \uFEEB\uFBFF\uFB7B \uFB58\uFE8E\uFEA9\uFE8D\uFEB7\uFBFD \uFEA9\uFEAD\uFBFE\uFE8E\uFED3\uFE96
+      \uFEE7\uFEA8\uFEEE\uFE8D\uFEEB\uFBFF\uFEAA \uFB90\uFEAE\uFEA9."
+    _faFormatted: ".\uFEA9\uFEAE\uFB90 \uFEAA\uFBFF\uFEEB\uFE8D\uFEEE\uFEA8\uFEE7
+      \uFE96\uFED3\uFE8E\uFBFE\uFEAD\uFEA9 \uFBFD\uFEB7\uFE8D\uFEA9\uFE8E\uFB58 \uFB7B\uFBFF\uFEEB
+      \uFEED \uFEA9\uFEED\uFEAD\u200C\uFBFD\uFEE3 \uFEE6\uFBFF\uFE91 \uFEAF\uFE8D
+      \uFBFD\uFEE0\uFECC\uFED3 \uFE96\uFED3\uFEAE\uFEB8\uFBFF\uFB58 \uFEE1\uFE8E\uFEE4\uFE97
+      \u061F\uFEAA\uFBFF\uFEE8\uFB90 \uFEC9\uFEED\uFEAE\uFEB7 \uFEE9\uFEAD\uFE8E\uFE91\uFEED\uFEA9
+      \uFE8D\uFEAD \uFEEA\uFEE0\uFEA3\uFEAE\uFEE3 \uFEAA\uFBFF\uFEEB\uFE8D\uFEEE\uFEA7\u200C\uFBFD\uFEE3
+      \uFEEA\uFB90 \uFEAA\uFBFF\uFE98\uFEB4\uFEEB \uFEE6\uFE8C\uFEE4\uFEC4\uFEE3"
+  - _keyId: MsgBox - Purchase Succeed
+    _translations:
+    - Thanks for your Purchase
+    - "\uFE8D\uFEAF \uFEA7\uFEAE\uFBFE\uFEAA \uFEB7\uFEE4\uFE8E \uFEB3\uFB59\uFE8E\uFEB3\uFB95\uFEB0\uFE8D\uFEAD\uFBFE\uFEE2"
+    _faFormatted: "\uFEE2\uFBFE\uFEAD\uFE8D\uFEB0\uFB95\uFEB3\uFE8E\uFB59\uFEB3 \uFE8E\uFEE4\uFEB7
+      \uFEAA\uFBFE\uFEAE\uFEA7 \uFEAF\uFE8D"
+  - _keyId: MsgBox T - RateUs
+    _translations:
+    - Rate Us!
+    - "\uFE91\uFEEA \uFEE3\uFE8E \uFE8D\uFEE3\uFE98\uFBFF\uFE8E\uFEAF \uFEA9\uFEEB\uFBFF\uFEAA!"
+    _faFormatted: "!\uFEAA\uFBFF\uFEEB\uFEA9 \uFEAF\uFE8E\uFBFF\uFE98\uFEE3\uFE8D
+      \uFE8E\uFEE3 \uFEEA\uFE91"
+  - _keyId: MsgBox D - RateUs
+    _translations:
+    - Would you like to rate us?
+    - "\uFEE3\uFE8E\uFBFE\uFEE0\uFBFF\uFEAA \uFE91\uFEEA \uFEE3\uFE8E \uFE8D\uFEE3\uFE98\uFBFF\uFE8E\uFEAF
+      \uFEA9\uFEEB\uFBFF\uFEAA\u061F"
+    _faFormatted: "\u061F\uFEAA\uFBFF\uFEEB\uFEA9 \uFEAF\uFE8E\uFBFF\uFE98\uFEE3\uFE8D
+      \uFE8E\uFEE3 \uFEEA\uFE91 \uFEAA\uFBFF\uFEE0\uFBFE\uFE8E\uFEE3"
+  - _keyId: MsgBox T - Unlock All Mines
+    _translations:
+    - Unlock All Mines
+    - "\uFE91\uFE8E\uFEAF \uFB90\uFEAE\uFEA9\uFEE5 \uFEEB\uFEE4\uFEEA \uFEE3\uFECC\uFE8E\uFEA9\uFEE5"
+    _faFormatted: "\uFEE5\uFEA9\uFE8E\uFECC\uFEE3 \uFEEA\uFEE4\uFEEB \uFEE5\uFEA9\uFEAE\uFB90
+      \uFEAF\uFE8E\uFE91"
+  - _keyId: MsgBox D - Unlock All Mines
+    _translations:
+    - You need more stars to unlock the next mine. Would you like to purchase access
+      to all mines?
+    - "\uFE91\uFEAE\uFE8D\uFBFC \uFE91\uFE8E\uFEAF \uFB90\uFEAE\uFEA9\uFEE5 \uFEE3\uFECC\uFEAA\uFEE5
+      \uFE91\uFECC\uFEAA\uFBFC \uFE91\uFEEA \uFEB3\uFE98\uFE8E\uFEAD\uFEE9\u200C\uFEEB\uFE8E\uFBFC
+      \uFE91\uFBFF\uFEB8\uFE98\uFEAE\uFBFC \uFEE7\uFBFF\uFE8E\uFEAF \uFEA9\uFE8D\uFEAD\uFBFE\uFEAA.
+      \uFE81\uFBFE\uFE8E \uFEE3\uFE8E\uFBFE\uFEE0\uFBFF\uFEAA \uFEEB\uFEE4\uFEEA
+      \uFEE3\uFECC\uFE8E\uFEA9\uFEE5 \uFEAD\uFE8D \uFEA7\uFEAE\uFBFE\uFEAA\uFE8D\uFEAD\uFBFC
+      \uFB90\uFEE8\uFBFF\uFEAA\u061F "
+    _faFormatted: " \u061F\uFEAA\uFBFF\uFEE8\uFB90 \uFBFC\uFEAD\uFE8D\uFEAA\uFBFE\uFEAE\uFEA7
+      \uFE8D\uFEAD \uFEE5\uFEA9\uFE8E\uFECC\uFEE3 \uFEEA\uFEE4\uFEEB \uFEAA\uFBFF\uFEE0\uFBFE\uFE8E\uFEE3
+      \uFE8E\uFBFE\uFE81 .\uFEAA\uFBFE\uFEAD\uFE8D\uFEA9 \uFEAF\uFE8E\uFBFF\uFEE7
+      \uFBFC\uFEAE\uFE98\uFEB8\uFBFF\uFE91 \uFBFC\uFE8E\uFEEB\u200C\uFEE9\uFEAD\uFE8E\uFE98\uFEB3
+      \uFEEA\uFE91 \uFBFC\uFEAA\uFECC\uFE91 \uFEE5\uFEAA\uFECC\uFEE3 \uFEE5\uFEA9\uFEAE\uFB90
+      \uFEAF\uFE8E\uFE91 \uFBFC\uFE8D\uFEAE\uFE91"
+  - _keyId: MsgBox T - Start New Game
+    _translations:
+    - Start New Game?
+    - "\uFEB7\uFEAE\uFEED\uFEC9 \uFE91\uFE8E\uFEAF\uFBFC \uFE9F\uFEAA\uFBFE\uFEAA\u061F"
+    _faFormatted: "\u061F\uFEAA\uFBFE\uFEAA\uFE9F \uFBFC\uFEAF\uFE8E\uFE91 \uFEC9\uFEED\uFEAE\uFEB7"
+  - _keyId: MsgBox D - Start New Game
+    _translations:
+    - Starting a new game will delete your existing saved data. Are you sure you
+      want to continue?
+    - "\uFE91\uFE8E \uFEB7\uFEAE\uFEED\uFEC9 \uFEE3\uFEAE\uFEA3\uFEE0\uFEEA \uFE9F\uFEAA\uFBFE\uFEAA\u060C
+      \uFEAB\uFEA7\uFBFF\uFEAE\uFEE9 \uFED3\uFECC\uFEE0\uFBFD \uFEB7\uFEE4\uFE8E
+      \uFB58\uFE8E\uFB8E \uFEE3\uFBFD\u200C\uFEB7\uFEEE\uFEA9.  \uFE8D\uFEA9\uFE8D\uFEE3\uFEEA
+      \uFEE3\uFBFF\uFEAA\uFEEB\uFBFF\uFEAA\u061F "
+    _faFormatted: " \u061F\uFEAA\uFBFF\uFEEB\uFEAA\uFBFF\uFEE3 \uFEEA\uFEE3\uFE8D\uFEA9\uFE8D 
+      .\uFEA9\uFEEE\uFEB7\u200C\uFBFD\uFEE3 \uFB8E\uFE8E\uFB58 \uFE8E\uFEE4\uFEB7
+      \uFBFD\uFEE0\uFECC\uFED3 \uFEE9\uFEAE\uFBFF\uFEA7\uFEAB \u060C\uFEAA\uFBFE\uFEAA\uFE9F
+      \uFEEA\uFEE0\uFEA3\uFEAE\uFEE3 \uFEC9\uFEED\uFEAE\uFEB7 \uFE8E\uFE91"
+  - _keyId: MsgBox - Too Many Req
+    _translations:
+    - You can only submit feedback once every 10 minutes.
+    - "\uFED3\uFED8\uFEC2 \uFEEB\uFEAE \u06F1\u06F0 \uFEA9\uFED7\uFBFF\uFED8\uFEEA
+      \uFBFE\uFB8F \uFE91\uFE8E\uFEAD \uFEE3\uFBFD\u200C\uFE97\uFEEE\uFE8D\uFEE7\uFBFF\uFEAA
+      \uFE91\uFE8E\uFEAF\uFEA7\uFEEE\uFEAD\uFEA9 \uFE8D\uFEAD\uFEB3\uFE8E\uFEDD \uFB90\uFEE8\uFBFF\uFEAA."
+    _faFormatted: ".\uFEAA\uFBFF\uFEE8\uFB90 \uFEDD\uFE8E\uFEB3\uFEAD\uFE8D \uFEA9\uFEAD\uFEEE\uFEA7\uFEAF\uFE8E\uFE91
+      \uFEAA\uFBFF\uFEE7\uFE8D\uFEEE\uFE97\u200C\uFBFD\uFEE3 \uFEAD\uFE8E\uFE91 \uFB8F\uFBFE
+      \uFEEA\uFED8\uFBFF\uFED7\uFEA9 \u06F0\u06F1 \uFEAE\uFEEB \uFEC2\uFED8\uFED3"
+  - _keyId: MsgBox - Went Wrong
+    _translations:
+    - Something Went Wrong!
+    - "\uFEA7\uFEC4\uFE8E\uFBFE\uFBFD \uFEAD\uFEA5 \uFEA9\uFE8D\uFEA9!"
+    _faFormatted: "!\uFEA9\uFE8D\uFEA9 \uFEA5\uFEAD \uFBFD\uFBFE\uFE8E\uFEC4\uFEA7"
+  - _keyId: MsgBox - Thanks Feedback
+    _translations:
+    - Thanks For Your Feedback!
+    - "\uFE8D\uFEAF \uFE91\uFE8E\uFEAF\uFEA7\uFEEE\uFEAD\uFEA9 \uFEB7\uFEE4\uFE8E
+      \uFEB3\uFB59\uFE8E\uFEB3\uFB95\uFEB0\uFE8D\uFEAD\uFBFE\uFEE2!"
+    _faFormatted: "!\uFEE2\uFBFE\uFEAD\uFE8D\uFEB0\uFB95\uFEB3\uFE8E\uFB59\uFEB3
+      \uFE8E\uFEE4\uFEB7 \uFEA9\uFEAD\uFEEE\uFEA7\uFEAF\uFE8E\uFE91 \uFEAF\uFE8D"
   _spriteDb:
-  - _indexName: bashe EN Language
+  - _keyId: test - return
     _sprites:
-    - {fileID: 21300000, guid: 351eda5044587fe4798a5299c101c2af, type: 3}
-    - {fileID: 21300000, guid: 10522a9d3a63f5d41a971caa08344e35, type: 3}
-  _searchTextName: bashe
+    - {fileID: 21300000, guid: 1f65892c9b2f250409116190beb424bf, type: 3}
+    - {fileID: 21300000, guid: 03b294ef70026d8419ea43df2ea6adc5, type: 3}
+  - _keyId: Lobby-continue button
+    _sprites:
+    - {fileID: 21300000, guid: 5a70f8e4a78a61244a8bfdaaa072a21b, type: 3}
+    - {fileID: 21300000, guid: 2d23cb202737a5e4b8f05b175ccd88c8, type: 3}
+  - _keyId: Lobby-setting button
+    _sprites:
+    - {fileID: 21300000, guid: 213a9142df815d445ab4af1e29453025, type: 3}
+    - {fileID: 21300000, guid: f6f4db56ecee19e409f8f2108acfb3ff, type: 3}
+  - _keyId: Lobby-store button
+    _sprites:
+    - {fileID: 21300000, guid: 045f04ab7c4c95a4b9bdd57c0eac0b5b, type: 3}
+    - {fileID: 21300000, guid: 3491948628920664db52b57551e9e0ce, type: 3}
+  - _keyId: Lobby-chalanges panel
+    _sprites:
+    - {fileID: 21300000, guid: b4775c4dd4b337b42a2aeeea69800f3c, type: 3}
+    - {fileID: 21300000, guid: 972cf62b0750d384fb3481ee7fe2d18d, type: 3}
+  - _keyId: Global-music on
+    _sprites:
+    - {fileID: 21300000, guid: 7a50d5a141edd8b42831030ff06941c7, type: 3}
+    - {fileID: 21300000, guid: 3f811824c13c5194280e23394d41ea76, type: 3}
+  - _keyId: Global-music off
+    _sprites:
+    - {fileID: 21300000, guid: 29413dbf6d28ae04ab42d3237cd2f9bb, type: 3}
+    - {fileID: 21300000, guid: 627b731404723c84fb2ebe4b56618928, type: 3}
+  - _keyId: Global-audio on
+    _sprites:
+    - {fileID: 21300000, guid: 7b41f8da1f412a741a4d6f19c1e4c8d2, type: 3}
+    - {fileID: 21300000, guid: 8df3ea884002d6747a1d88ac426ee294, type: 3}
+  - _keyId: Global-audio off
+    _sprites:
+    - {fileID: 21300000, guid: 64762fb148a19d84b9cc446f53a49b20, type: 3}
+    - {fileID: 21300000, guid: f25e06cf6cd9cf147be80a38e617d375, type: 3}
+  - _keyId: Global-vibrate on
+    _sprites:
+    - {fileID: 21300000, guid: ed105866d85acf14182a574807831859, type: 3}
+    - {fileID: 21300000, guid: 67cea13c1c565c047bdfac48bec95e61, type: 3}
+  - _keyId: Global-vibrate off
+    _sprites:
+    - {fileID: 21300000, guid: 51e186635d2898e499a18c5d1b66ee95, type: 3}
+    - {fileID: 21300000, guid: a87bb439fde67ca4cb934de400aee083, type: 3}
+  - _keyId: Global-play button
+    _sprites:
+    - {fileID: 21300000, guid: dd0d54adc040c2c499df62bc7706eba7, type: 3}
+    - {fileID: 21300000, guid: cdee66d434a40a94fbe08f9dd985afc8, type: 3}
+  - _keyId: Global-setting panel
+    _sprites:
+    - {fileID: 21300000, guid: 2fbe8b6df2db0cf4daf973be9e8a7b60, type: 3}
+    - {fileID: 21300000, guid: 0ae8fb2f311211f428cdaf71701b3c6f, type: 3}
+  - _keyId: Global-shop bg
+    _sprites:
+    - {fileID: 21300000, guid: 4c900a9604d995948b205d07c913b612, type: 3}
+    - {fileID: 21300000, guid: 79f892a523738934f8587bb08f138056, type: 3}
+  - _keyId: Main-replay
+    _sprites:
+    - {fileID: 21300000, guid: 57edd6343fd73514dad3478ac5bc2327, type: 3}
+    - {fileID: 21300000, guid: 33628c3d0ab90d242ae793dca9e50da5, type: 3}
+  - _keyId: Main-return
+    _sprites:
+    - {fileID: 21300000, guid: dcc5f532fd2a23146921fdd503211216, type: 3}
+    - {fileID: 21300000, guid: 8bc9b24569766cd4abf104974ca5d456, type: 3}
+  - _keyId: Main-lose panel
+    _sprites:
+    - {fileID: 21300000, guid: 4192412de8cb0ce42a66401b0695c5ed, type: 3}
+    - {fileID: 21300000, guid: a29bd59dcde228049902b98fee7455d0, type: 3}
+  - _keyId: Main-win panel
+    _sprites:
+    - {fileID: 21300000, guid: 94a89138b8bd5464e80e061b7c069b14, type: 3}
+    - {fileID: 21300000, guid: 337cd255a0966694b962c428b4d5f1ca, type: 3}
+  - _keyId: Lobby-play button
+    _sprites:
+    - {fileID: 21300000, guid: dd0d54adc040c2c499df62bc7706eba7, type: 3}
+    - {fileID: 21300000, guid: cdee66d434a40a94fbe08f9dd985afc8, type: 3}
+  - _keyId: Lobby - feedback BG
+    _sprites:
+    - {fileID: 21300000, guid: 7c248018f1fa7c24c8e7e078e0f18756, type: 3}
+    - {fileID: 21300000, guid: ec9e56d5015b54344a34dbc66dbbb286, type: 3}
+  _rawPersianText: 
+  _TranslatedText: 
+  _searchKeyId: 

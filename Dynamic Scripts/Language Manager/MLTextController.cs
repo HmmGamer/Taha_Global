@@ -1,33 +1,56 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
 namespace TahaGlobal.ML
 {
+    /// <summary>
+    /// TODO: fix the hardcoded parts (Persian conversion)
+    /// </summary>
     public class MLTextController : MonoBehaviour
     {
-        private Text _legacyText;
-        private TMP_Text _tmpText;
-        private _AllLanguages _currentLanguage;
-        private string _baseText;
+        // Dev note:
+        // we have dynamic text changes, so we cant use the saved data on this script.
+        // but as it was hard and complicated to check the DB every time a new record
+        // was made, we made a _data field so the DB be seen and edited more easily.
 
-        private void Awake()
+        [Header("Function Settings")]
+        [Tooltip("True => disables the warning for null _keyId, used for" +
+            " dynamic texts without a fixed _keyId")]
+        [SerializeField] bool _isDynamicText;
+
+        [Header("Only Assign One Of Them")]
+        [Tooltip("True => automatically attach's the text component on start")]
+        [SerializeField] bool _autoTextAttachment = true;
+
+        [SerializeField, ConditionalField(nameof(_autoTextAttachment), true)]
+        Text _legacyText;
+
+        [SerializeField, ConditionalField(nameof(_autoTextAttachment), true)]
+        TMP_Text _tmpText;
+
+        [Header("In Database Record")]
+        [Tooltip("translation is not based on this record. this is for easier control, " +
+            "if you dont save the record to DB it be overwritten from the DB silently")]
+        [SerializeField] MLData._MLTextRecord _data;
+
+        private object[] _formatArgs;
+        private bool _useFormatArgs;
+
+        #region Starter Methods
+        private void Start()
         {
-            _legacyText = GetComponent<Text>();
-            _tmpText = GetComponent<TMP_Text>();
-            if (_legacyText != null)
-                _baseText = _legacyText.text;
-            else if (_tmpText != null)
-                _baseText = _tmpText.text;
-
-            if (!_legacyText && !_tmpText)
+            if (_autoTextAttachment)
             {
-                Debug.Log(gameObject + "'s MLController needs to have text or TMP");
-                return;
+                _legacyText = GetComponent<Text>();
+                _tmpText = GetComponent<TMP_Text>();
             }
+            if (!_legacyText && !_tmpText)
+                Debug.LogError("The MLController needs to have a legacy text or tmp", this);
 
+            #region Editor Only (Error/Null Detection)
+#if UNITY_EDITOR
             if (MLManager._instance == null)
             {
                 Debug.LogError("You either dont have a MLManager in the scene," +
@@ -35,105 +58,184 @@ namespace TahaGlobal.ML
                     " MLController's execution order");
                 return;
             }
-
-            #region Editor Only
-#if UNITY_EDITOR
-            _TryAddToDb();
+            if (string.IsNullOrWhiteSpace(_data._keyId) && !_isDynamicText)
+                Debug.Log("the keyId is empty", this);
 #endif
             #endregion
         }
         private void OnEnable()
         {
             MLManager._onLanguageChanged += _OnLanguageChange;
-            if (MLManager._instance._IsLanguageChanged(_currentLanguage))
-                _OnLanguageChange();
+            _OnLanguageChange();
         }
         private void OnDisable()
         {
             MLManager._onLanguageChanged -= _OnLanguageChange;
         }
+        #endregion
+
+        #region Fuctional Methods (private)
         private void _OnLanguageChange()
         {
-            _currentLanguage = MLManager._instance._GetCurrentLanguage();
-            _RefreshText();
-            _UpdateFont();
+            if (string.IsNullOrWhiteSpace(_data._keyId) && !_isDynamicText)
+                return;
+
+            StartCoroutine(_StartTranslation());
         }
         private void _RefreshText()
         {
-            if (_legacyText != null)
-                _legacyText.text = MLManager._instance._GetTranslatedText(_baseText);
-            else if (_tmpText != null)
-                _tmpText.text = MLManager._instance._GetTranslatedText(_baseText);
+            if (_useFormatArgs)
+                _SetText(MLManager._instance._GetTranslatedText(_data._keyId, _formatArgs));
+            else
+                _SetText(MLManager._instance._GetTranslatedText(_data._keyId));
         }
         private void _UpdateFont()
         {
             if (_legacyText != null)
-                _legacyText.font = MLManager._instance._GetTranslatedFont();
+                MLManager._instance._SetTextMeta(ref _legacyText);
             else if (_tmpText != null)
-                _tmpText.font = MLManager._instance._GetTranslatedFontAsset();
+                MLManager._instance._SetTextMeta(ref _tmpText);
         }
+        private IEnumerator _StartTranslation()
+        {
+            // to avoid problems of another script changing the text OnEnable after this
+            yield return new WaitForEndOfFrame();
+            _RefreshText();
+            _UpdateFont();
+        }
+        #endregion
 
+        #region Public Setters
         /// <summary>
         /// this method helps you change the text dynamically in run time
         /// </summary>
-        public void _ChangeText(string iText)
+        public void _ChangeText(string iKey)
         {
-            #region Editor Only
-#if UNITY_EDITOR
-            _TryAddToDb();
-#endif
-            #endregion
+            _data._keyId = iKey;
 
             if (_legacyText != null)
-                _legacyText.text = MLManager._instance._GetTranslatedText(iText);
+                _legacyText.text = MLManager._instance._GetTranslatedText(iKey);
             else if (_tmpText != null)
-                _tmpText.text = MLManager._instance._GetTranslatedText(iText);
+                _tmpText.text = MLManager._instance._GetTranslatedText(iKey);
         }
 
         /// <summary>
         /// this method helps you change a formatted text dynamically in run time
-        /// 
-        /// sample : _GetText("You have {0} coins", _coins)
         /// </summary>
-        public void _ChangeText(string iText, params object[] iArgs)
+        public void _ChangeText(string iKey, params object[] iArgs)
+        {
+            _data._keyId = iKey;
+
+            _formatArgs = iArgs;
+            _useFormatArgs = iArgs != null && iArgs.Length > 0;
+
+            _SetText(MLManager._instance._GetTranslatedText(iKey, iArgs));
+        }
+
+        #endregion
+
+        #region Private Getters
+        private void _SetText(string iNewText)
+        {
+            if (_legacyText != null)
+                _legacyText.text = iNewText;
+            else if (_tmpText != null)
+                _tmpText.text = iNewText;
+            else
+                Debug.LogError("The MLController needs to have a text or tmp", gameObject);
+        }
+        private string _GetText()
         {
             #region Editor Only
 #if UNITY_EDITOR
-            _TryAddToDb();
+            if (!Application.isPlaying)
+                Start();
 #endif
             #endregion
 
-            string localized = MLManager._instance._GetTranslatedText(iText, iArgs);
             if (_legacyText != null)
-                _legacyText.text = localized;
+                return _legacyText.text;
             else if (_tmpText != null)
-                _tmpText.text = localized;
+                return _tmpText.text;
+
+            Debug.LogError("The MLController needs to have a text or tmp", this);
+            return null;
         }
+        #endregion
 
         #region Editor Only
 #if UNITY_EDITOR
 
-        public string _GetText()
+        MLManager _MLManager;
+
+        [CreateMonoButton("Try Load From DB")]
+        private void _TryLoadFromDB()
         {
-            if (!Application.isPlaying)
-                Awake();
+            if (!_CheckMLManagerLoaded()) return;
+            // check if current _keyId exists, then load the _data from DB
+            if (!string.IsNullOrEmpty(_data._keyId))
+            {
+                MLData._MLTextRecord temp = null;
+                temp = _MLManager._GetTextRecordFromDB(_data._keyId);
 
-            if (_legacyText != null)
-                return _legacyText.text;
-            if (_tmpText != null)
-                return _tmpText.text;
-
-            return null;
+                if (temp != null)
+                {
+                    _data = temp;
+                    Debug.Log("successes, The record for the <keyId = " + _data._keyId
+                        + "> was loaded from the DB");
+                }
+                else
+                {
+                    Debug.Log("failed, the record with the <keyId = " + _data._keyId
+                        + "> was not found in the DB");
+                }
+            }
         }
+
+        [CreateMonoButton("Save To DB")]
         public void _TryAddToDb()
         {
-            if (!Application.isPlaying)
+            if (!_CheckMLManagerLoaded()) return;
+
+            _MLManager._AddOrReplaceTextRecordToDb(_data);
+        }
+        private bool _CheckMLManagerLoaded()
+        {
+            // already found, return true
+            if (_MLManager != null)
+                return true;
+
+            // try finding it
+            if (Application.isPlaying)
             {
-                Debug.Log("this method only works in run time");
-                return;
+                _MLManager = MLManager._instance;
+            }
+            else
+            {
+                _MLManager = GameObject.FindFirstObjectByType<MLManager>();
             }
 
-            MLManager._instance._TryAddTextTranslationToDb(_GetText());
+            // not found, give the error
+            if (_MLManager == null)
+            {
+                Debug.LogError("the MLManager is missing in the scene or " +
+                    "it's execution order is lower than the MLController's order");
+            }
+
+            return _MLManager != null;
+        }
+
+        /// <summary>
+        /// TODO: this is a half hardcoded part, fix this later
+        /// </summary>
+        [SerializeField, OnStringChanges_Mono("_ConvertPersianFont")]
+        string _rawPersianText;
+        private void _ConvertPersianFont()
+        {
+            _data._translations[(int)_AllLanguages.Persian] =
+                FontTools._ConvertToPersian(_rawPersianText);
+
+            _data._faFormatted = FontTools._ConvertToPersian_Visual(_rawPersianText);
         }
 #endif
         #endregion
