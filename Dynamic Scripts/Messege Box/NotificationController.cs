@@ -1,39 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
+using System.Collections;
+using TahaGlobal.ML;
 
 namespace TahaGlobal.MsgBox
 {
-    [RequireComponent(typeof(CanvasGroup))]
     public class NotificationController : MonoBehaviour
     {
-        const string ANIM_TRIGGER = "show";
-
-        [SerializeField] Text _descriptionText;
+        [SerializeField] GameObject _notificationPanel;
+        [SerializeField] TMP_Text _titleText;
         [SerializeField] Animator _anim;
 
-        CanvasGroup _canvasGroup;
+        [Tooltip("the hide animation duration is not included")]
+        [SerializeField] float _duration = 2.5f;
 
-        private void Start()
+        private Coroutine _disableCoroutine;
+
+        public void _ShowNotification(string iTitle)
         {
-            _canvasGroup = GetComponent<CanvasGroup>();
-            _canvasGroup.blocksRaycasts = false;
-        }
-        public void _ShowNotification(string iDescription)
-        {
-            _descriptionText.text = iDescription;
+            _titleText.text = iTitle;
+            MLManager._instance._SetTextMeta(ref _titleText);
+
             _PanelActivation();
+
+            if (_disableCoroutine != null)
+                StopCoroutine(_disableCoroutine);
+
+            _disableCoroutine = StartCoroutine(_DisableCoolDown());
         }
+
+        /// <summary>
+        /// remember to check the animator so additional triggers dont cause bugs
+        /// the animation needs to disable the panel
+        /// </summary>
         private void _PanelActivation()
         {
-            // remember to check the animator so additional triggers dont cause bugs
-            // the animation needs to change the canvas group alpha
-            _anim.SetTrigger(ANIM_TRIGGER);
+            _anim.ResetTrigger(A.Anim.t_showNotification);
+            _anim.SetTrigger(A.Anim.t_showNotification);
         }
+        private IEnumerator _DisableCoolDown()
+        {
+            yield return new WaitForSeconds(_duration);
+
+            _anim.ResetTrigger(A.Anim.t_showNotification);
+            _anim.SetTrigger(A.Anim.t_hideNotification);
+        }
+
         public bool _IsActive()
         {
-            return _canvasGroup.alpha != 0;
+            return _notificationPanel.activeInHierarchy;
         }
     }
 }

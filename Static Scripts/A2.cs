@@ -21,6 +21,8 @@ public static class A
     {
         // optional naming : trigger => t, Bool => b, int => i, float => f
         public const string t_collectAirdrop = "collect";
+        public const string t_showNotification = "show";
+        public const string t_hideNotification = "hide";
     }
     public static class DataKey
     {

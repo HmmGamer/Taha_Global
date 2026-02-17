@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using TahaGlobal.ML;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -9,22 +9,20 @@ namespace TahaGlobal.MsgBox
     public class ConfirmationController : MonoBehaviour
     {
         [Header("Attachments")]
+        [SerializeField] GameObject _confirmationPanel;
         [SerializeField] Button _confirmButton;
-        [SerializeField] Text _title;
-        [SerializeField] Text _description;
+        [SerializeField] TMP_Text _title;
+        [SerializeField] TMP_Text _description;
 
-        CanvasGroup _canvasGroup;
-
-        private void Start()
-        {
-            _canvasGroup = GetComponent<CanvasGroup>();
-        }
         public void _OpenMenu(string iTitle, string iDescription, UnityAction iYesActions)
         {
             _ActivateMenu(true);
 
             _title.text = iTitle;
+            MLManager._instance._SetTextMeta(ref _title);
+
             _description.text = iDescription;
+            MLManager._instance._SetTextMeta(ref _description);
 
             _confirmButton.onClick.RemoveAllListeners();
 
@@ -37,13 +35,11 @@ namespace TahaGlobal.MsgBox
         }
         private void _ActivateMenu(bool iActivation)
         {
-            _canvasGroup.blocksRaycasts = iActivation;
-            _canvasGroup.alpha = iActivation ? 1 : 0;
-            _canvasGroup.interactable = iActivation;
+            _confirmationPanel.SetActive(iActivation);
         }
         public bool _IsActive()
         {
-            return _canvasGroup.alpha != 0;
+            return _confirmationPanel.activeInHierarchy;
         }
     }
 }

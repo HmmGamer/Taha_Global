@@ -164,8 +164,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8389092035335119276}
   - component: {fileID: 7229221804812948423}
+  - component: {fileID: 7580537979236246682}
   m_Layer: 0
-  m_Name: Exit Msg Box
+  m_Name: Exit MsgBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -201,8 +202,36 @@ MonoBehaviour:
   _messageType: 0
   _autoAddToButtons: 0
   _msgButton: {fileID: 0}
-  _title: click again to exit
+  _titleMLKey: MsgBox - Exit Game
+  _descriptionMLKey: 
+  _titleFoundInDb: 1
+  _descFoundInDb: 0
+  _title: Click again to exit
   _description: 
   _confirmEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7580537979236246682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8708786803123637790}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca6bd551068a4eb489989f2f66840fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isDynamicText: 0
+  _autoTextAttachment: 0
+  _legacyText: {fileID: 0}
+  _tmpText: {fileID: 0}
+  _data:
+    _keyId: MsgBox - Exit Game
+    _translations:
+    - Click again to exit
+    - "\uFEAA\uFBFF\uFEE7\uFEB0\uFE91 \uFEE9\uFEAD\uFE8E\uFE91\uFEED\uFEA9 \uFE9D\uFEED\uFEAE\uFEA7
+      \uFBFC\uFE8D\uFEAE\uFE91"
+  _rawPersianText: "\u0628\u0631\u0627\u06CC \u062E\u0631\u0648\u062C \u062F\u0648\u0628\u0627\u0631\u0647
+    \u0628\u0632\u0646\u06CC\u062F"

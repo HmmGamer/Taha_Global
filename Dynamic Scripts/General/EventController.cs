@@ -8,7 +8,15 @@ using UnityEngine.Events;
 /// </summary>
 public class EventController : MonoBehaviour
 {
+    #region Editor Only - visual field
+#if UNITY_EDITOR
+    [Tooltip("this is an editor only description for more development clarity")]
     [SerializeField, TextArea(1, 2)] string _jobDescription;
+#endif
+    #endregion
+
+    [Header("Function Settings")]
+    [Tooltip("this is an event manually called from another script/editorEvent")]
     [SerializeField] bool _hasManualEvent;
     [SerializeField] bool _invokeOnEnable;
     [SerializeField] bool _invokeOnDisable;
@@ -17,10 +25,13 @@ public class EventController : MonoBehaviour
     [SerializeField, ConditionalField(nameof(_invokeOnEnable))] UnityEvent _onEnableEvent;
     [SerializeField, ConditionalField(nameof(_invokeOnDisable))] UnityEvent _onDisableEvent;
 
+    [CreateMonoButton("Invoke Manual Event")]
     public void _InvokeManualEvent()
     {
         if (_hasManualEvent)
             _manualEvent.Invoke();
+        else 
+            Debug.Log("the _hasManualEvent is disabled", this);
     }
     public void OnEnable()
     {

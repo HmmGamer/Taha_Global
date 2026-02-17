@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _autoLoadNextScene: 0
-  _nextScene: 1
+  _nextScene: 2
   _progressMode: 2
   _hasAnimation: 1
   _anim: {fileID: 5774609548025422337}
@@ -1312,7 +1312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141286e69ef1c3e4f992840a13f0de38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jobDescription: 
+  _jobDescription: called at the end of fade out animation
   _hasManualEvent: 1
   _invokeOnEnable: 0
   _invokeOnDisable: 0

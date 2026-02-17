@@ -1,27 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using TahaGlobal.ML;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace TahaGlobal.MsgBox
 {
-    [RequireComponent(typeof(CanvasGroup))]
     public class YesNoPanelController : MonoBehaviour
     {
         [Header("Attachments")]
+        [SerializeField] GameObject _yesNoPanel;
         [SerializeField] Button _exitButton;
         [SerializeField] Button _cancelButton;
         [SerializeField] Button _confirmButton;
-        [SerializeField] Text _title;
-        [SerializeField] Text _description;
-
-        CanvasGroup _canvasGroup;
+        [SerializeField] TMP_Text _title;
+        [SerializeField] TMP_Text _description;
 
         private void Start()
         {
-            _canvasGroup = GetComponent<CanvasGroup>();
-
             _exitButton.onClick.AddListener(_CloseMenu);
             _cancelButton.onClick.AddListener(_CloseMenu);
         }
@@ -46,13 +42,11 @@ namespace TahaGlobal.MsgBox
         }
         private void _ActivateMenu(bool iActivation)
         {
-            _canvasGroup.blocksRaycasts = iActivation;
-            _canvasGroup.alpha = iActivation ? 1 : 0;
-            _canvasGroup.interactable = iActivation;
+            _yesNoPanel.SetActive(iActivation);
         }
         public bool _IsActive()
         {
-            return _canvasGroup.alpha != 0;
+            return _yesNoPanel.activeInHierarchy;
         }
     }
 }

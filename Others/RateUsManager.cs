@@ -27,7 +27,7 @@ public class RateUsManager : MonoBehaviour
         _event.AddListener(() => IntentManager._instance._OpenIntent(_Intents.RateUs));
         _event.AddListener(_SaveHasShownRateUs);
 
-        _msgBox._StartNewMsg(_event);
+        _msgBox._StartAfterConfirmation(_event);
     }
     private void _SaveHasShownRateUs()
     {
